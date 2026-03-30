@@ -5,6 +5,7 @@ public class Map : MonoBehaviour
 {
     [SerializeField] private Transform[] _nodesParent;
     [SerializeField] private Node[] _nodePrefabs;
+    [SerializeField] private GameObject _linePrefab;
 
     private int _maxChapter = 1;
     private int[] _maxLayer = { 15 };
@@ -35,6 +36,8 @@ public class Map : MonoBehaviour
     private void Start()
     {
         CreateMap();
+        MakeConnectionBetweenNodes();
+        CreateLine();
     }
 
     private void CreateMap()
@@ -135,6 +138,107 @@ public class Map : MonoBehaviour
         node.Index = index;
 
         return node;
+    }
+
+    private void MakeConnectionBetweenNodes()
+    {
+        for (int c = 0; c < nodes.Length; c++)
+        {
+            for(int l = 0; l < nodes[c].Length - 1; l++)
+            {
+                if(l == 0)
+                {
+                    for(int i = 0; i < nodes[c][l + 1].Length; i++)
+                    {
+                        nodes[c][l][0].NextNode.Add(nodes[c][l + 1][i]);
+                    }
+                }
+                else if (l == _maxLayer[c] - 3)
+                {
+                    for (int i = 0; i < nodes[c][l].Length; i++)
+                    {
+                        nodes[c][l][i].NextNode.Add(nodes[c][l + 1][i]);
+                    }
+                }
+                else if (l == _maxLayer[c] - 2)
+                {
+                    for(int i = 0; i < nodes[c][l].Length; i++)
+                    {
+                        nodes[c][l][i].NextNode.Add(nodes[c][l + 1][0]);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < nodes[c][l].Length; i++)
+                    {
+                        Node current = nodes[c][l][i];
+                        int nextCount = nodes[c][l + 1].Length;
+
+                        // 기본 연결 대상 (같은 인덱스 비율로 매핑)
+                        int targetIndex = Mathf.RoundToInt((float)i / nodes[c][l].Length * nextCount);
+
+                        targetIndex = Mathf.Clamp(targetIndex, 0, nextCount - 1);
+
+                        // 최소 1개 연결
+                        current.NextNode.Add(nodes[c][l + 1][targetIndex]);
+
+                        // 추가 연결 (랜덤)
+                        if (Random.value < 0.5f)
+                        {
+                            int offset = Random.Range(-1, 2); // -1, 0, 1
+                            int newIndex = Mathf.Clamp(targetIndex + offset, 0, nextCount - 1);
+
+                            if (newIndex != targetIndex)
+                            {
+                                current.NextNode.Add(nodes[c][l + 1][newIndex]);
+                            }
+                        }
+                    }
+
+                    // 모든 다음 노드가 최소 1개는 연결되도록 보장
+                    for (int j = 0; j < nodes[c][l + 1].Length; j++)
+                    {
+                        Node nextNode = nodes[c][l + 1][j];
+
+                        bool hasConnection = false;
+
+                        for (int i = 0; i < nodes[c][l].Length; i++)
+                        {
+                            if (nodes[c][l][i].NextNode.Contains(nextNode))
+                            {
+                                hasConnection = true;
+                                break;
+                            }
+                        }
+
+                        if (!hasConnection)
+                        {
+                            int randomPrev = Random.Range(0, nodes[c][l].Length);
+                            nodes[c][l][randomPrev].NextNode.Add(nextNode);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void CreateLine()
+    {
+        for (int c = 0; c < nodes.Length; c++)
+        {
+            for (int l = 0; l < nodes[c].Length - 1; l++)
+            {
+                for (int i = 0; i < nodes[c][l].Length; i++)
+                {
+                    DrawLine(nodes[c][l][i]);
+                }
+            }
+        }
+    }
+
+    private void DrawLine(Node node)
+    {
+
     }
 
 }

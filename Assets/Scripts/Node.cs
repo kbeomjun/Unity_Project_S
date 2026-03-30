@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -25,6 +26,10 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private NodeType _type;
     [SerializeField] private NodeState _state;
+
+    private List<Node> _nextNode = new List<Node>();
+
+    public List<Node> NextNode => _nextNode;
 
     private Image _icon;
     private Color _iconBaseColor;
