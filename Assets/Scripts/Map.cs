@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Map : MonoBehaviour
 {
     [SerializeField] private Transform[] _nodesParent;
     [SerializeField] private Node[] _nodePrefabs;
+
+    [SerializeField] private Transform[] _linesParent;
     [SerializeField] private GameObject _linePrefab;
 
     private int _maxChapter = 1;
@@ -74,7 +77,7 @@ public class Map : MonoBehaviour
                 {
                     float xPos = nodes[c][l - 1][i].gameObject.transform.position.x;
 
-                    nodes[c][l][0] = SpawnNode(4, c, xPos, _startY * (l + 1), l, i);
+                    nodes[c][l][i] = SpawnNode(4, c, xPos, _startY * (l + 1), l, i);
                 }
             }
             else if (l == _maxLayer[c] - 1)
@@ -169,28 +172,29 @@ public class Map : MonoBehaviour
                 }
                 else
                 {
+                    List<(Vector2, Vector2)> edges = new List<(Vector2, Vector2)>();
+
                     for (int i = 0; i < nodes[c][l].Length; i++)
                     {
                         Node current = nodes[c][l][i];
+                        int prevCount = nodes[c][l].Length;
                         int nextCount = nodes[c][l + 1].Length;
 
-                        // 기본 연결 대상 (같은 인덱스 비율로 매핑)
-                        int targetIndex = Mathf.RoundToInt((float)i / nodes[c][l].Length * nextCount);
-
+                        float ratio = prevCount == 1 ? 0.5f : (float)i / (prevCount - 1);
+                        int targetIndex = Mathf.RoundToInt(ratio * (nextCount - 1));
                         targetIndex = Mathf.Clamp(targetIndex, 0, nextCount - 1);
 
-                        // 최소 1개 연결
-                        current.NextNode.Add(nodes[c][l + 1][targetIndex]);
+                        TryConnect(current, nodes[c][l + 1][targetIndex], edges);
 
-                        // 추가 연결 (랜덤)
+                        // 추가 연결 (좌/우 둘 다 시도)
                         if (Random.value < 0.5f)
                         {
-                            int offset = Random.Range(-1, 2); // -1, 0, 1
-                            int newIndex = Mathf.Clamp(targetIndex + offset, 0, nextCount - 1);
+                            int dir = Random.value < 0.5f ? -1 : 1;
+                            int newIndex = targetIndex + dir;
 
-                            if (newIndex != targetIndex)
+                            if (newIndex >= 0 && newIndex < nextCount)
                             {
-                                current.NextNode.Add(nodes[c][l + 1][newIndex]);
+                                TryConnect(current, nodes[c][l + 1][newIndex], edges);
                             }
                         }
                     }
@@ -213,13 +217,48 @@ public class Map : MonoBehaviour
 
                         if (!hasConnection)
                         {
-                            int randomPrev = Random.Range(0, nodes[c][l].Length);
-                            nodes[c][l][randomPrev].NextNode.Add(nextNode);
+                            int prevCount = nodes[c][l].Length;
+                            int nextCount = nodes[c][l + 1].Length;
+
+                            // 이 nextNode에 가장 자연스럽게 대응되는 prev 찾기
+                            float ratio = nextCount == 1 ? 0.5f : (float)j / (nextCount - 1);
+                            int closestPrev = Mathf.RoundToInt(ratio * (prevCount - 1));
+                            closestPrev = Mathf.Clamp(closestPrev, 0, prevCount - 1);
+
+                            nodes[c][l][closestPrev].NextNode.Add(nextNode);
                         }
                     }
                 }
             }
         }
+    }
+
+    private void TryConnect(Node a, Node b, List<(Vector2, Vector2)> edges)
+    {
+        Vector2 aPos = a.transform.position;
+        Vector2 bPos = b.transform.position;
+
+        foreach (var edge in edges)
+        {
+            if (IsCross(aPos, bPos, edge.Item1, edge.Item2))
+            {
+                return; // 교차하면 연결 안함
+            }
+        }
+
+        a.NextNode.Add(b);
+        edges.Add((aPos, bPos));
+    }
+
+    private bool IsCross(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+    {
+        float ccw(Vector2 A, Vector2 B, Vector2 C)
+        {
+            return (B.x - A.x) * (C.y - A.y) - (B.y - A.y) * (C.x - A.x);
+        }
+
+        return ccw(a1, a2, b1) * ccw(a1, a2, b2) < 0 &&
+               ccw(b1, b2, a1) * ccw(b1, b2, a2) < 0;
     }
 
     private void CreateLine()
@@ -230,15 +269,42 @@ public class Map : MonoBehaviour
             {
                 for (int i = 0; i < nodes[c][l].Length; i++)
                 {
-                    DrawLine(nodes[c][l][i]);
+                    DrawLine(nodes[c][l][i], c);
                 }
             }
         }
     }
 
-    private void DrawLine(Node node)
+    private void DrawLine(Node node, int chapter)
     {
+        List<Node> nextNodes = node.NextNode;
 
+        Vector3 startPos = node.transform.position;
+        Vector3 endPos = Vector3.zero;
+
+        for(int i = 0; i < nextNodes.Count; i++)
+        {
+            endPos = nextNodes[i].transform.position;
+
+            Vector3 direction = endPos - startPos;
+            direction = direction.normalized;
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            angle -= 90.0f;
+
+            float step = 60.0f;
+            Vector3 start = startPos + direction * step;
+            Vector3 end = endPos - direction * step;
+
+            float distance = Vector3.Distance(start, end);
+
+            GameObject line = Instantiate(_linePrefab, _linesParent[chapter], false);
+            
+            RectTransform rect = line.GetComponent<RectTransform>();
+            rect.position = (startPos + endPos) / 2.0f;
+            rect.localRotation = Quaternion.Euler(0, 0, angle);
+            rect.sizeDelta = new Vector2(rect.sizeDelta.x, distance);
+        }
     }
 
 }
