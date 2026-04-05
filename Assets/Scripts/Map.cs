@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Map : MonoBehaviour
 {
+    [SerializeField] private RectTransform _mapImageRectTr;
+
     [SerializeField] private Transform[] _nodesParent;
     [SerializeField] private Node[] _nodePrefabs;
 
@@ -19,20 +22,34 @@ public class Map : MonoBehaviour
     private int _maxRestInLayer = 1; // 층 별 최대 휴식 노드 수
 
     // xOffset: 380 + () + (-40 ~ 40) , yOffset: 200 + (-25 ~ 25)
-    private float _maxWidth = 1920.0f;
-    private float _maxHeight = 1080.0f;
+    private float _maxWidth;
+    private float _maxHeight;
+
+    private float _mapWidth;
     
-    private float _startX = 960.0f;
-    private float _startY = 200.0f;
+    private float _startX;
+    private float _startY = 250.0f;
 
     private float _baseX = 300.0f;
     private float _baseY = 0.0f;
 
     private Node[][][] nodes;
 
+    private float _nodeDistance = 0.0f;
+
     private void Awake()
     {
-        _maxWidth -= 2 * _baseX;
+        _maxWidth = GetComponent<RectTransform>().rect.width;
+        _maxHeight = GetComponent<RectTransform>().rect.height;
+
+        _startX = _maxWidth / 2.0f;
+
+        _baseX = _maxWidth / 6.0f;
+
+        _mapWidth = _maxWidth - 2 * _baseX;
+        _mapImageRectTr.sizeDelta = new Vector2(_mapWidth, _mapImageRectTr.sizeDelta.y);
+
+        _nodeDistance = _maxWidth / 4.26f;
     }
 
     private void Start()
@@ -97,13 +114,13 @@ public class Map : MonoBehaviour
         int shopCount = 0;
         int restCount = 0;
 
-        int nodeCount = Random.Range(2, 5);
+        int nodeCount = Random.Range(2, 6);
         nodes[c][l] = new Node[nodeCount];
 
-        _baseX = 300.0f;
+        _baseX = _maxWidth / 6.0f;
         _baseY = _startY * (l + 1);
 
-        float xOffset = _maxWidth / nodeCount;
+        float xOffset = _mapWidth / nodeCount;
 
         for (int i = 0; i < nodeCount; i++)
         {
@@ -146,6 +163,8 @@ public class Map : MonoBehaviour
     {
         for (int c = 0; c < nodes.Length; c++)
         {
+            List<(Vector2, Vector2)> edges = new List<(Vector2, Vector2)>();
+
             for(int l = 0; l < nodes[c].Length - 1; l++)
             {
                 if(l == 0)
@@ -171,29 +190,22 @@ public class Map : MonoBehaviour
                 }
                 else
                 {
-                    List<(Vector2, Vector2)> edges = new List<(Vector2, Vector2)>();
-
-                    for (int i = 0; i < nodes[c][l].Length; i++)
+                    for(int i = 0; i < nodes[c][l].Length; i++)
                     {
-                        Node current = nodes[c][l][i];
-                        int prevCount = nodes[c][l].Length;
-                        int nextCount = nodes[c][l + 1].Length;
+                        Node currentNode = nodes[c][l][i];
 
-                        float ratio = prevCount == 1 ? 0.5f : (float)i / (prevCount - 1);
-                        int targetIndex = Mathf.RoundToInt(ratio * (nextCount - 1));
-                        targetIndex = Mathf.Clamp(targetIndex, 0, nextCount - 1);
+                        List<Node> sortedNextNodes = nodes[c][l + 1]
+                            .Where(n => Vector3.Distance(currentNode.transform.position, n.transform.position) <= _nodeDistance)
+                            .OrderBy(n => Vector3.Distance(currentNode.transform.position, n.transform.position))
+                            .ToList();
 
-                        TryConnect(current, nodes[c][l + 1][targetIndex], edges);
+                        currentNode.NextNode.Add(sortedNextNodes[0]);
 
-                        // 추가 연결 (좌/우 둘 다 시도)
                         if (Random.value < 0.5f)
                         {
-                            int dir = Random.value < 0.5f ? -1 : 1;
-                            int newIndex = targetIndex + dir;
-
-                            if (newIndex >= 0 && newIndex < nextCount)
+                            for (int j = 1; j < sortedNextNodes.Count; j++)
                             {
-                                TryConnect(current, nodes[c][l + 1][newIndex], edges);
+                                TryConnect(currentNode, sortedNextNodes[j], edges);
                             }
                         }
                     }
@@ -216,15 +228,11 @@ public class Map : MonoBehaviour
 
                         if (!hasConnection)
                         {
-                            int prevCount = nodes[c][l].Length;
-                            int nextCount = nodes[c][l + 1].Length;
+                            List<Node> sortedCurrentNodes = nodes[c][l]
+                                .OrderBy(n => Vector3.Distance(nextNode.transform.position, n.transform.position))
+                                .ToList();
 
-                            // 이 nextNode에 가장 자연스럽게 대응되는 prev 찾기
-                            float ratio = nextCount == 1 ? 0.5f : (float)j / (nextCount - 1);
-                            int closestPrev = Mathf.RoundToInt(ratio * (prevCount - 1));
-                            closestPrev = Mathf.Clamp(closestPrev, 0, prevCount - 1);
-
-                            nodes[c][l][closestPrev].NextNode.Add(nextNode);
+                            sortedCurrentNodes[0].NextNode.Add(nextNode);
                         }
                     }
                 }
@@ -256,8 +264,7 @@ public class Map : MonoBehaviour
             return (B.x - A.x) * (C.y - A.y) - (B.y - A.y) * (C.x - A.x);
         }
 
-        return ccw(a1, a2, b1) * ccw(a1, a2, b2) < 0 &&
-               ccw(b1, b2, a1) * ccw(b1, b2, a2) < 0;
+        return ccw(a1, a2, b1) * ccw(a1, a2, b2) < 0 && ccw(b1, b2, a1) * ccw(b1, b2, a2) < 0;
     }
 
     private void CreateLine()
