@@ -427,14 +427,6 @@ MonoBehaviour:
   _nodesParent:
   - {fileID: 776183769}
   _nodePrefab: {fileID: 9072008333372901313, guid: c2b8bdaed79ef8f45842e5f506b7b227, type: 3}
-  _nodePrefabs:
-  - {fileID: 208274998106956742, guid: 911b2b5a2b2b28a4492f6a02aace2907, type: 3}
-  - {fileID: 7802869450713772816, guid: 3212b49d9bf3994408f6573ad6e29fd5, type: 3}
-  - {fileID: 7515899093136297593, guid: 68e7a66531902934aac28a8494e77b36, type: 3}
-  - {fileID: 7024337790255011245, guid: f143cbe41a560af4da51051693c23bfb, type: 3}
-  - {fileID: 5094149877790702737, guid: 4a0570c2fc78d274290dd82c337b297c, type: 3}
-  - {fileID: 1977704956371153639, guid: 3f12adbfbcefdc1428ca880bc0f640cf, type: 3}
-  - {fileID: 306432371540947043, guid: 434d10672333aee47bc6f754a9603cf0, type: 3}
   _linesParent:
   - {fileID: 1287449457}
   _linePrefab: {fileID: 7213289406044056265, guid: 1243fc59b0786474d9acb296b8fc1de5, type: 3}
@@ -859,7 +851,7 @@ MonoBehaviour:
   m_Content: {fileID: 673251876}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135

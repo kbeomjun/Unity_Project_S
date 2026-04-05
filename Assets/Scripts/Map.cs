@@ -75,7 +75,7 @@ public class Map : MonoBehaviour
 
     private void CreateLayer(int c)
     {
-        _maxEliteInChapter = (_maxLayer[c] - 3) / 2;
+        _maxEliteInChapter = (_maxLayer[c] - 3) / 3;
         _eliteCountInChapter = 0;
 
         _maxShopInChapter = (_maxLayer[c] - 3) / 3;
@@ -143,7 +143,7 @@ public class Map : MonoBehaviour
             List<int> allowedTypes = new List<int> { 1, 2, 3, 4, 5 };
 
             if (l == 1) allowedTypes = new List<int> { 1 }; // 첫 층은 전투 노드만
-            if (l <= 4 || eliteCount >= _maxEliteInLayer || _eliteCountInChapter >= _maxEliteInChapter) allowedTypes.Remove(2);
+            if (l <= 5 || eliteCount >= _maxEliteInLayer || _eliteCountInChapter >= _maxEliteInChapter) allowedTypes.Remove(2);
             if (shopCount >= _maxShopInLayer || _shopCountInChapter >= _maxShopInChapter) allowedTypes.Remove(3);
             if (l <= 4 || l == _maxLayer[c] - 3 || restCount >= _maxRestInLayer 
                 || _restCountInChapter >= _maxRestInChapter) allowedTypes.Remove(4);
@@ -225,7 +225,7 @@ public class Map : MonoBehaviour
                     if ((currentNode.Type == NodeType.Elite && sortedNextNodes[0].Type == NodeType.Elite)
                         || (currentNode.Type == NodeType.Shop && sortedNextNodes[0].Type == NodeType.Shop)
                         || (currentNode.Type == NodeType.Rest && sortedNextNodes[0].Type == NodeType.Rest))
-                        sortedNextNodes[0] = ResetNodeType(sortedNextNodes[0]);
+                        sortedNextNodes[0] = ResetNodeType(sortedNextNodes[0], l);
 
                     currentNode.NextNode.Add(sortedNextNodes[0]);
 
@@ -233,7 +233,7 @@ public class Map : MonoBehaviour
                     {
                         for (int j = 1; j < sortedNextNodes.Count; j++)
                         {
-                            TryConnect(currentNode, sortedNextNodes[j], edges);
+                            TryConnect(currentNode, sortedNextNodes[j], edges, l);
                         }
                     }
                 }
@@ -267,7 +267,7 @@ public class Map : MonoBehaviour
         }
     }
 
-    private void TryConnect(Node a, Node b, List<(Vector2, Vector2)> edges)
+    private void TryConnect(Node a, Node b, List<(Vector2, Vector2)> edges, int layer)
     {
         Vector2 aPos = a.transform.position;
         Vector2 bPos = b.transform.position;
@@ -283,7 +283,7 @@ public class Map : MonoBehaviour
         if((a.Type == NodeType.Elite && b.Type == NodeType.Elite)
             || (a.Type == NodeType.Shop && b.Type == NodeType.Shop)
             || (a.Type == NodeType.Rest && b.Type == NodeType.Rest)) 
-            b = ResetNodeType(b);
+            b = ResetNodeType(b, layer);
 
         a.NextNode.Add(b);
         edges.Add((aPos, bPos));
@@ -299,7 +299,7 @@ public class Map : MonoBehaviour
         return ccw(a1, a2, b1) * ccw(a1, a2, b2) < 0 && ccw(b1, b2, a1) * ccw(b1, b2, a2) < 0;
     }
 
-    private Node ResetNodeType(Node node)
+    private Node ResetNodeType(Node node, int layer)
     {
         List<int> allowedTypes = new List<int>();
 
@@ -307,18 +307,18 @@ public class Map : MonoBehaviour
         {
             _eliteCountInChapter--;
             if (_shopCountInChapter < _maxShopInChapter) allowedTypes.Add(3);
-            if (_restCountInChapter < _maxRestInChapter) allowedTypes.Add(4);
+            if (_restCountInChapter < _maxRestInChapter && layer > 4) allowedTypes.Add(4);
         } 
         else if (node.Type == NodeType.Shop)
         {
             _shopCountInChapter--;
-            if (_eliteCountInChapter < _maxEliteInChapter) allowedTypes.Add(2);
-            if (_restCountInChapter < _maxRestInChapter) allowedTypes.Add(4);
+            if (_eliteCountInChapter < _maxEliteInChapter && layer > 5) allowedTypes.Add(2);
+            if (_restCountInChapter < _maxRestInChapter && layer > 4) allowedTypes.Add(4);
         }
         else if (node.Type == NodeType.Rest)
         {
             _restCountInChapter--;
-            if (_eliteCountInChapter < _maxEliteInChapter) allowedTypes.Add(2);
+            if (_eliteCountInChapter < _maxEliteInChapter && layer > 5) allowedTypes.Add(2);
             if (_shopCountInChapter < _maxShopInChapter) allowedTypes.Add(3);
         }
 

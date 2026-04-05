@@ -32,11 +32,11 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         new Color32(40, 55, 210, 255),
         new Color32(210, 40, 40, 255),
-        new Color32(192, 32, 32, 255),
+        new Color32(84, 24, 71, 255),
         new Color32(94, 52, 20, 255),
         new Color32(18, 156, 34, 255),
         new Color32(221, 190, 20, 255),
-        new Color32(84, 24, 71, 255)
+        new Color32(0, 0, 0, 255)
     };
 
     public NodeType Type
