@@ -7,7 +7,7 @@ public class Map : MonoBehaviour
     [SerializeField] private RectTransform _mapImageRectTr;
 
     [SerializeField] private Transform[] _nodesParent;
-    [SerializeField] private Node[] _nodePrefabs;
+    [SerializeField] private Node _nodePrefab;
 
     [SerializeField] private Transform[] _linesParent;
     [SerializeField] private GameObject _linePrefab;
@@ -15,11 +15,18 @@ public class Map : MonoBehaviour
     private int _maxChapter = 1;
     private int[] _maxLayer = { 15 };
 
+    private int _maxEliteInChapter = 0;
+    private int _eliteCountInChapter = 0;
+
+    private int _maxShopInChapter = 0; 
+    private int _shopCountInChapter = 0;
+
     private int _maxRestInChapter = 0; // 챕터 별 최대 휴식 노드 수
     private int _restCountInChapter = 0;
 
-    private int _maxShopInLayer = 1; // 층 별 최대 상점 노드 수
-    private int _maxRestInLayer = 1; // 층 별 최대 휴식 노드 수
+    private int _maxEliteInLayer = 2;
+    private int _maxShopInLayer = 2; // 층 별 최대 상점 노드 수
+    private int _maxRestInLayer = 2; // 층 별 최대 휴식 노드 수
 
     // xOffset: 380 + () + (-40 ~ 40) , yOffset: 200 + (-25 ~ 25)
     private float _maxWidth;
@@ -54,23 +61,26 @@ public class Map : MonoBehaviour
 
     private void Start()
     {
-        CreateMap();
-        MakeConnectionBetweenNodes();
-        CreateLine();
-    }
-
-    private void CreateMap()
-    {
         nodes = new Node[_maxChapter][][];
 
-        for (int c = 0; c < nodes.Length; c++)
-        {
-            CreateLayer(c);
-        }
+        CreateMap(1);
+    }
+
+    private void CreateMap(int chapter)
+    {
+        CreateLayer(chapter - 1);
+        MakeConnectionBetweenNodes(chapter - 1);
+        CreateLine(chapter - 1);
     }
 
     private void CreateLayer(int c)
     {
+        _maxEliteInChapter = (_maxLayer[c] - 3) / 2;
+        _eliteCountInChapter = 0;
+
+        _maxShopInChapter = (_maxLayer[c] - 3) / 3;
+        _shopCountInChapter = 0;
+
         _maxRestInChapter = (_maxLayer[c] - 3) / 2;
         _restCountInChapter = 0;
 
@@ -113,6 +123,7 @@ public class Map : MonoBehaviour
     {
         int shopCount = 0;
         int restCount = 0;
+        int eliteCount = 0;
 
         int nodeCount = Random.Range(2, 6);
         nodes[c][l] = new Node[nodeCount];
@@ -132,17 +143,28 @@ public class Map : MonoBehaviour
             List<int> allowedTypes = new List<int> { 1, 2, 3, 4, 5 };
 
             if (l == 1) allowedTypes = new List<int> { 1 }; // 첫 층은 전투 노드만
-            if (l <= 4) allowedTypes.Remove(2);
-            if (shopCount >= _maxShopInLayer) allowedTypes.Remove(3);
-            if (restCount >= _maxRestInLayer || l <= 4 || _restCountInChapter >= _maxRestInChapter) allowedTypes.Remove(4);
+            if (l <= 4 || eliteCount >= _maxEliteInLayer || _eliteCountInChapter >= _maxEliteInChapter) allowedTypes.Remove(2);
+            if (shopCount >= _maxShopInLayer || _shopCountInChapter >= _maxShopInChapter) allowedTypes.Remove(3);
+            if (l <= 4 || l == _maxLayer[c] - 3 || restCount >= _maxRestInLayer 
+                || _restCountInChapter >= _maxRestInChapter) allowedTypes.Remove(4);
 
             int nodeType = allowedTypes[Random.Range(0, allowedTypes.Count)];
 
             nodes[c][l][i] = SpawnNode(nodeType, c, _baseX + randomXOffset, _baseY + randomYOffset, l, i);
 
-            if (nodeType == 3) shopCount++;
-            if (nodeType == 4) { 
-                restCount++;
+            if (nodeType == 2)
+            {
+                eliteCount++; 
+                _eliteCountInChapter++;
+            }
+            if (nodeType == 3) 
+            { 
+                shopCount++; 
+                _shopCountInChapter++;
+            }
+            if (nodeType == 4) 
+            { 
+                restCount++; 
                 _restCountInChapter++;
             }
         }
@@ -150,90 +172,95 @@ public class Map : MonoBehaviour
 
     private Node SpawnNode(int nodeType, int chapter, float x, float y, int layer, int index)
     {
-        Node node = Instantiate(_nodePrefabs[nodeType], _nodesParent[chapter], false);
+        Node node = Instantiate(_nodePrefab, _nodesParent[chapter], false);
+
         RectTransform rect = node.GetComponent<RectTransform>();
         rect.position = new Vector3(x, y, 0.0f);
+
+        node.Type = (NodeType)nodeType;
         node.Layer = layer;
         node.Index = index;
 
         return node;
     }
 
-    private void MakeConnectionBetweenNodes()
+    private void MakeConnectionBetweenNodes(int c)
     {
-        for (int c = 0; c < nodes.Length; c++)
-        {
-            List<(Vector2, Vector2)> edges = new List<(Vector2, Vector2)>();
+        List<(Vector2, Vector2)> edges = new List<(Vector2, Vector2)>();
 
-            for(int l = 0; l < nodes[c].Length - 1; l++)
+        for(int l = 0; l < nodes[c].Length - 1; l++)
+        {
+            if(l == 0)
             {
-                if(l == 0)
+                for(int i = 0; i < nodes[c][l + 1].Length; i++)
                 {
-                    for(int i = 0; i < nodes[c][l + 1].Length; i++)
+                    nodes[c][l][0].NextNode.Add(nodes[c][l + 1][i]);
+                }
+            }
+            else if (l == _maxLayer[c] - 3)
+            {
+                for (int i = 0; i < nodes[c][l].Length; i++)
+                {
+                    nodes[c][l][i].NextNode.Add(nodes[c][l + 1][i]);
+                }
+            }
+            else if (l == _maxLayer[c] - 2)
+            {
+                for(int i = 0; i < nodes[c][l].Length; i++)
+                {
+                    nodes[c][l][i].NextNode.Add(nodes[c][l + 1][0]);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < nodes[c][l].Length; i++)
+                {
+                    Node currentNode = nodes[c][l][i];
+
+                    List<Node> sortedNextNodes = nodes[c][l + 1]
+                        .Where(n => Vector3.Distance(currentNode.transform.position, n.transform.position) <= _nodeDistance)
+                        .OrderBy(n => Vector3.Distance(currentNode.transform.position, n.transform.position))
+                        .ToList();
+
+                    if ((currentNode.Type == NodeType.Elite && sortedNextNodes[0].Type == NodeType.Elite)
+                        || (currentNode.Type == NodeType.Shop && sortedNextNodes[0].Type == NodeType.Shop)
+                        || (currentNode.Type == NodeType.Rest && sortedNextNodes[0].Type == NodeType.Rest))
+                        sortedNextNodes[0] = ResetNodeType(sortedNextNodes[0]);
+
+                    currentNode.NextNode.Add(sortedNextNodes[0]);
+
+                    if (Random.value < 0.5f)
                     {
-                        nodes[c][l][0].NextNode.Add(nodes[c][l + 1][i]);
+                        for (int j = 1; j < sortedNextNodes.Count; j++)
+                        {
+                            TryConnect(currentNode, sortedNextNodes[j], edges);
+                        }
                     }
                 }
-                else if (l == _maxLayer[c] - 3)
+
+                // 모든 다음 노드가 최소 1개는 연결되도록 보장
+                for (int j = 0; j < nodes[c][l + 1].Length; j++)
                 {
+                    Node nextNode = nodes[c][l + 1][j];
+
+                    bool hasConnection = false;
+
                     for (int i = 0; i < nodes[c][l].Length; i++)
                     {
-                        nodes[c][l][i].NextNode.Add(nodes[c][l + 1][i]);
+                        if (nodes[c][l][i].NextNode.Contains(nextNode))
+                        {
+                            hasConnection = true;
+                            break;
+                        }
                     }
-                }
-                else if (l == _maxLayer[c] - 2)
-                {
-                    for(int i = 0; i < nodes[c][l].Length; i++)
-                    {
-                        nodes[c][l][i].NextNode.Add(nodes[c][l + 1][0]);
-                    }
-                }
-                else
-                {
-                    for(int i = 0; i < nodes[c][l].Length; i++)
-                    {
-                        Node currentNode = nodes[c][l][i];
 
-                        List<Node> sortedNextNodes = nodes[c][l + 1]
-                            .Where(n => Vector3.Distance(currentNode.transform.position, n.transform.position) <= _nodeDistance)
-                            .OrderBy(n => Vector3.Distance(currentNode.transform.position, n.transform.position))
+                    if (!hasConnection)
+                    {
+                        List<Node> sortedCurrentNodes = nodes[c][l]
+                            .OrderBy(n => Vector3.Distance(nextNode.transform.position, n.transform.position))
                             .ToList();
 
-                        currentNode.NextNode.Add(sortedNextNodes[0]);
-
-                        if (Random.value < 0.5f)
-                        {
-                            for (int j = 1; j < sortedNextNodes.Count; j++)
-                            {
-                                TryConnect(currentNode, sortedNextNodes[j], edges);
-                            }
-                        }
-                    }
-
-                    // 모든 다음 노드가 최소 1개는 연결되도록 보장
-                    for (int j = 0; j < nodes[c][l + 1].Length; j++)
-                    {
-                        Node nextNode = nodes[c][l + 1][j];
-
-                        bool hasConnection = false;
-
-                        for (int i = 0; i < nodes[c][l].Length; i++)
-                        {
-                            if (nodes[c][l][i].NextNode.Contains(nextNode))
-                            {
-                                hasConnection = true;
-                                break;
-                            }
-                        }
-
-                        if (!hasConnection)
-                        {
-                            List<Node> sortedCurrentNodes = nodes[c][l]
-                                .OrderBy(n => Vector3.Distance(nextNode.transform.position, n.transform.position))
-                                .ToList();
-
-                            sortedCurrentNodes[0].NextNode.Add(nextNode);
-                        }
+                        sortedCurrentNodes[0].NextNode.Add(nextNode);
                     }
                 }
             }
@@ -253,6 +280,11 @@ public class Map : MonoBehaviour
             }
         }
 
+        if((a.Type == NodeType.Elite && b.Type == NodeType.Elite)
+            || (a.Type == NodeType.Shop && b.Type == NodeType.Shop)
+            || (a.Type == NodeType.Rest && b.Type == NodeType.Rest)) 
+            b = ResetNodeType(b);
+
         a.NextNode.Add(b);
         edges.Add((aPos, bPos));
     }
@@ -267,16 +299,52 @@ public class Map : MonoBehaviour
         return ccw(a1, a2, b1) * ccw(a1, a2, b2) < 0 && ccw(b1, b2, a1) * ccw(b1, b2, a2) < 0;
     }
 
-    private void CreateLine()
+    private Node ResetNodeType(Node node)
     {
-        for (int c = 0; c < nodes.Length; c++)
+        List<int> allowedTypes = new List<int>();
+
+        if(node.Type == NodeType.Elite)
         {
-            for (int l = 0; l < nodes[c].Length - 1; l++)
+            _eliteCountInChapter--;
+            if (_shopCountInChapter < _maxShopInChapter) allowedTypes.Add(3);
+            if (_restCountInChapter < _maxRestInChapter) allowedTypes.Add(4);
+        } 
+        else if (node.Type == NodeType.Shop)
+        {
+            _shopCountInChapter--;
+            if (_eliteCountInChapter < _maxEliteInChapter) allowedTypes.Add(2);
+            if (_restCountInChapter < _maxRestInChapter) allowedTypes.Add(4);
+        }
+        else if (node.Type == NodeType.Rest)
+        {
+            _restCountInChapter--;
+            if (_eliteCountInChapter < _maxEliteInChapter) allowedTypes.Add(2);
+            if (_shopCountInChapter < _maxShopInChapter) allowedTypes.Add(3);
+        }
+
+        if(allowedTypes.Count == 0)
+        {
+            allowedTypes.Add(1);
+            allowedTypes.Add(5);
+        }
+
+        int nodeType = allowedTypes[Random.Range(0, allowedTypes.Count)];
+        node.Type = (NodeType)nodeType;
+
+        if (nodeType == 2) _eliteCountInChapter++;
+        if (nodeType == 3) _shopCountInChapter++;
+        if (nodeType == 4) _restCountInChapter++;
+
+        return node;
+    }
+
+    private void CreateLine(int c)
+    {
+        for (int l = 0; l < nodes[c].Length - 1; l++)
+        {
+            for (int i = 0; i < nodes[c][l].Length; i++)
             {
-                for (int i = 0; i < nodes[c][l].Length; i++)
-                {
-                    DrawLine(nodes[c][l][i], c);
-                }
+                DrawLine(nodes[c][l][i], c);
             }
         }
     }
@@ -310,6 +378,22 @@ public class Map : MonoBehaviour
             rect.position = (startPos + endPos) / 2.0f;
             rect.localRotation = Quaternion.Euler(0, 0, angle);
             rect.sizeDelta = new Vector2(rect.sizeDelta.x, distance);
+        }
+    }
+
+    private void ClearMap()
+    {
+        for(int c = 0; c < nodes.Length; c++)
+        {
+            for (int l = 0; l < nodes[c].Length; l++)
+            {
+                for(int i = 0; i < nodes[c][l].Length; i++)
+                {
+                    if (nodes[c][l][i] == null) return;
+
+                    Destroy(nodes[c][l][i].gameObject);
+                }
+            }
         }
     }
 

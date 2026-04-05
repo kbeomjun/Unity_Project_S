@@ -26,6 +26,31 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private NodeType _type;
     [SerializeField] private NodeState _state;
+    [SerializeField] private Sprite[] _images;
+
+    private Color[] colors =
+    {
+        new Color32(40, 55, 210, 255),
+        new Color32(210, 40, 40, 255),
+        new Color32(192, 32, 32, 255),
+        new Color32(94, 52, 20, 255),
+        new Color32(18, 156, 34, 255),
+        new Color32(221, 190, 20, 255),
+        new Color32(84, 24, 71, 255)
+    };
+
+    public NodeType Type
+    {
+        get => _type;
+        set
+        {
+            _type = value;
+            
+            _icon.sprite = _images[(int)value];
+            _icon.color = colors[(int)value];
+            _iconBaseColor = _icon.color;
+        }
+    }
 
     private List<Node> _nextNode = new List<Node>();
 
@@ -42,17 +67,18 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public int Layer
     {
+        get => _layer;
         set => _layer = value;
     }
     public int Index
     {
+        get => _index;
         set => _index = value;
     }
 
     private void Awake()
     {
         _icon = GetComponent<Image>();
-
         _iconBaseColor = _icon.color;
         _iconBaseScale = GetComponent<RectTransform>().localScale;
     }

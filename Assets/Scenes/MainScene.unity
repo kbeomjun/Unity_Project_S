@@ -426,6 +426,7 @@ MonoBehaviour:
   _mapImageRectTr: {fileID: 1139294585}
   _nodesParent:
   - {fileID: 776183769}
+  _nodePrefab: {fileID: 9072008333372901313, guid: c2b8bdaed79ef8f45842e5f506b7b227, type: 3}
   _nodePrefabs:
   - {fileID: 208274998106956742, guid: 911b2b5a2b2b28a4492f6a02aace2907, type: 3}
   - {fileID: 7802869450713772816, guid: 3212b49d9bf3994408f6573ad6e29fd5, type: 3}
