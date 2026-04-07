@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -27,6 +28,9 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private NodeType _type;
     [SerializeField] private NodeState _state;
     [SerializeField] private Sprite[] _images;
+
+    [SerializeField] private GameObject _selectCircle;
+    private Image _selectCircleImage;
 
     private Color[] colors =
     {
@@ -81,11 +85,13 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _icon = GetComponent<Image>();
         _iconBaseColor = _icon.color;
         _iconBaseScale = GetComponent<RectTransform>().localScale;
+
+        _selectCircleImage = _selectCircle.GetComponent<Image>();
     }
 
     private void Start()
     {
-
+        _selectCircle.SetActive(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -107,8 +113,27 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (_state != NodeState.HighLited) return;
 
         SetState(NodeState.Selected);
+        _selectCircle.SetActive(true);
+        StartCoroutine(DrawCircle());
 
         Debug.Log($"OnClick - {_type.ToString()}, ({_layer}, {_index})");
+    }
+
+    IEnumerator DrawCircle()
+    {
+        _selectCircleImage.fillAmount = 0.0f;
+
+        float t = 0.0f;
+        float duration = 0.2f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            _selectCircleImage.fillAmount = t / duration;
+            yield return null;
+        }
+
+        _selectCircleImage.fillAmount = 1.0f;
     }
 
     private void SetState(NodeState state)
