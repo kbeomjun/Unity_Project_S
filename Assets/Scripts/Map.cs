@@ -15,6 +15,9 @@ public class Map : MonoBehaviour
     private int _maxChapter = 1;
     private int[] _maxLayer = { 15 };
 
+    public int MaxChapter => _maxChapter;
+    public int[] MaxLayer => _maxLayer;
+
     private int _maxEliteInChapter = 0;
     private int _eliteCountInChapter = 0;
 
@@ -40,7 +43,8 @@ public class Map : MonoBehaviour
     private float _baseX = 300.0f;
     private float _baseY = 0.0f;
 
-    private Node[][][] nodes;
+    private Node[][][] _nodes;
+    public Node[][][] Nodes => _nodes;
 
     private float _nodeDistance = 0.0f;
 
@@ -57,20 +61,15 @@ public class Map : MonoBehaviour
         _mapImageRectTr.sizeDelta = new Vector2(_mapWidth, _mapImageRectTr.sizeDelta.y);
 
         _nodeDistance = _maxWidth / 4.26f;
+
+        _nodes = new Node[_maxChapter][][];
     }
 
-    private void Start()
+    public void CreateMap(int chapter)
     {
-        nodes = new Node[_maxChapter][][];
-
-        CreateMap(1);
-    }
-
-    private void CreateMap(int chapter)
-    {
-        CreateLayer(chapter - 1);
-        MakeConnectionBetweenNodes(chapter - 1);
-        CreateLine(chapter - 1);
+        CreateLayer(chapter);
+        MakeConnectionBetweenNodes(chapter);
+        CreateLine(chapter);
     }
 
     private void CreateLayer(int c)
@@ -84,33 +83,33 @@ public class Map : MonoBehaviour
         _maxRestInChapter = (_maxLayer[c] - 3) / 2;
         _restCountInChapter = 0;
 
-        nodes[c] = new Node[_maxLayer[c]][];
+        _nodes[c] = new Node[_maxLayer[c]][];
 
-        for (int l = 0; l < nodes[c].Length; l++)
+        for (int l = 0; l < _nodes[c].Length; l++)
         {
             if (l == 0)
             {
-                nodes[c][l] = new Node[1];
+                _nodes[c][l] = new Node[1];
 
-                nodes[c][l][0] = SpawnNode(0, c, _startX, _startY, l, 0);
+                _nodes[c][l][0] = SpawnNode(0, c, _startX, _startY, l, 0);
             }            
             else if (l == _maxLayer[c] - 2)
             {
-                int length = nodes[c][l - 1].Length;
-                nodes[c][l] = new Node[length];
+                int length = _nodes[c][l - 1].Length;
+                _nodes[c][l] = new Node[length];
 
                 for (int i = 0; i < length; i++)
                 {
-                    float xPos = nodes[c][l - 1][i].gameObject.transform.position.x;
+                    float xPos = _nodes[c][l - 1][i].gameObject.transform.position.x;
 
-                    nodes[c][l][i] = SpawnNode(4, c, xPos, _startY * (l + 1), l, i);
+                    _nodes[c][l][i] = SpawnNode(4, c, xPos, _startY * (l + 1), l, i);
                 }
             }
             else if (l == _maxLayer[c] - 1)
             {
-                nodes[c][l] = new Node[1];
+                _nodes[c][l] = new Node[1];
 
-                nodes[c][l][0] = SpawnNode(6, c, _startX, _startY * (l + 1), l, 0);
+                _nodes[c][l][0] = SpawnNode(6, c, _startX, _startY * (l + 1), l, 0);
             }
             else
             {
@@ -126,7 +125,7 @@ public class Map : MonoBehaviour
         int eliteCount = 0;
 
         int nodeCount = Random.Range(2, 6);
-        nodes[c][l] = new Node[nodeCount];
+        _nodes[c][l] = new Node[nodeCount];
 
         _baseX = _maxWidth / 6.0f;
         _baseY = _startY * (l + 1);
@@ -150,7 +149,7 @@ public class Map : MonoBehaviour
 
             int nodeType = allowedTypes[Random.Range(0, allowedTypes.Count)];
 
-            nodes[c][l][i] = SpawnNode(nodeType, c, _baseX + randomXOffset, _baseY + randomYOffset, l, i);
+            _nodes[c][l][i] = SpawnNode(nodeType, c, _baseX + randomXOffset, _baseY + randomYOffset, l, i);
 
             if (nodeType == 2)
             {
@@ -188,36 +187,36 @@ public class Map : MonoBehaviour
     {
         List<(Vector2, Vector2)> edges = new List<(Vector2, Vector2)>();
 
-        for(int l = 0; l < nodes[c].Length - 1; l++)
+        for(int l = 0; l < _nodes[c].Length - 1; l++)
         {
             if(l == 0)
             {
-                for(int i = 0; i < nodes[c][l + 1].Length; i++)
+                for(int i = 0; i < _nodes[c][l + 1].Length; i++)
                 {
-                    nodes[c][l][0].NextNode.Add(nodes[c][l + 1][i]);
+                    _nodes[c][l][0].NextNode.Add(_nodes[c][l + 1][i]);
                 }
             }
             else if (l == _maxLayer[c] - 3)
             {
-                for (int i = 0; i < nodes[c][l].Length; i++)
+                for (int i = 0; i < _nodes[c][l].Length; i++)
                 {
-                    nodes[c][l][i].NextNode.Add(nodes[c][l + 1][i]);
+                    _nodes[c][l][i].NextNode.Add(_nodes[c][l + 1][i]);
                 }
             }
             else if (l == _maxLayer[c] - 2)
             {
-                for(int i = 0; i < nodes[c][l].Length; i++)
+                for(int i = 0; i < _nodes[c][l].Length; i++)
                 {
-                    nodes[c][l][i].NextNode.Add(nodes[c][l + 1][0]);
+                    _nodes[c][l][i].NextNode.Add(_nodes[c][l + 1][0]);
                 }
             }
             else
             {
-                for(int i = 0; i < nodes[c][l].Length; i++)
+                for(int i = 0; i < _nodes[c][l].Length; i++)
                 {
-                    Node currentNode = nodes[c][l][i];
+                    Node currentNode = _nodes[c][l][i];
 
-                    List<Node> sortedNextNodes = nodes[c][l + 1]
+                    List<Node> sortedNextNodes = _nodes[c][l + 1]
                         .Where(n => Vector3.Distance(currentNode.transform.position, n.transform.position) <= _nodeDistance)
                         .OrderBy(n => Vector3.Distance(currentNode.transform.position, n.transform.position))
                         .ToList();
@@ -239,15 +238,15 @@ public class Map : MonoBehaviour
                 }
 
                 // 모든 다음 노드가 최소 1개는 연결되도록 보장
-                for (int j = 0; j < nodes[c][l + 1].Length; j++)
+                for (int j = 0; j < _nodes[c][l + 1].Length; j++)
                 {
-                    Node nextNode = nodes[c][l + 1][j];
+                    Node nextNode = _nodes[c][l + 1][j];
 
                     bool hasConnection = false;
 
-                    for (int i = 0; i < nodes[c][l].Length; i++)
+                    for (int i = 0; i < _nodes[c][l].Length; i++)
                     {
-                        if (nodes[c][l][i].NextNode.Contains(nextNode))
+                        if (_nodes[c][l][i].NextNode.Contains(nextNode))
                         {
                             hasConnection = true;
                             break;
@@ -256,7 +255,7 @@ public class Map : MonoBehaviour
 
                     if (!hasConnection)
                     {
-                        List<Node> sortedCurrentNodes = nodes[c][l]
+                        List<Node> sortedCurrentNodes = _nodes[c][l]
                             .OrderBy(n => Vector3.Distance(nextNode.transform.position, n.transform.position))
                             .ToList();
 
@@ -340,11 +339,11 @@ public class Map : MonoBehaviour
 
     private void CreateLine(int c)
     {
-        for (int l = 0; l < nodes[c].Length - 1; l++)
+        for (int l = 0; l < _nodes[c].Length - 1; l++)
         {
-            for (int i = 0; i < nodes[c][l].Length; i++)
+            for (int i = 0; i < _nodes[c][l].Length; i++)
             {
-                DrawLine(nodes[c][l][i], c);
+                DrawLine(_nodes[c][l][i], c);
             }
         }
     }
@@ -383,15 +382,15 @@ public class Map : MonoBehaviour
 
     private void ClearMap()
     {
-        for(int c = 0; c < nodes.Length; c++)
+        for(int c = 0; c < _nodes.Length; c++)
         {
-            for (int l = 0; l < nodes[c].Length; l++)
+            for (int l = 0; l < _nodes[c].Length; l++)
             {
-                for(int i = 0; i < nodes[c][l].Length; i++)
+                for(int i = 0; i < _nodes[c][l].Length; i++)
                 {
-                    if (nodes[c][l][i] == null) return;
+                    if (_nodes[c][l][i] == null) return;
 
-                    Destroy(nodes[c][l][i].gameObject);
+                    Destroy(_nodes[c][l][i].gameObject);
                 }
             }
         }

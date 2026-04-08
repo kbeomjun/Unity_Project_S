@@ -56,8 +56,9 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    private List<Node> _nextNode = new List<Node>();
+    public NodeState State => _state;
 
+    private List<Node> _nextNode = new List<Node>();
     public List<Node> NextNode => _nextNode;
 
     private Image _icon;
@@ -87,11 +88,9 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _iconBaseScale = GetComponent<RectTransform>().localScale;
 
         _selectCircleImage = _selectCircle.GetComponent<Image>();
-    }
-
-    private void Start()
-    {
         _selectCircle.SetActive(false);
+
+        SetState(NodeState.Locked);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -112,9 +111,9 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (_state != NodeState.HighLited) return;
 
-        SetState(NodeState.Selected);
         _selectCircle.SetActive(true);
         StartCoroutine(DrawCircle());
+        GameManager.Instance.OnClickNode(this);
 
         Debug.Log($"OnClick - {_type.ToString()}, ({_layer}, {_index})");
     }
@@ -136,7 +135,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _selectCircleImage.fillAmount = 1.0f;
     }
 
-    private void SetState(NodeState state)
+    public void SetState(NodeState state)
     {
         _state = state;
 
@@ -162,11 +161,6 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 transform.localScale = Vector3.Lerp(transform.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
                 break;
         }
-    }
-
-    private void Update()
-    {
-        SetState(_state);
     }
 
 }
