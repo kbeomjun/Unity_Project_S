@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
@@ -41,3 +41,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BattleGround
+    uniqueID: 3164986991
+    locked: 0
+  - name: Unit
+    uniqueID: 3355896103
+    locked: 0
+  m_RenderingLayers:
+  - Default

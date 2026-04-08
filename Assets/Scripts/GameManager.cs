@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     {
         _maxChapter = _map.MaxChapter;
 
-        StartGame();
+        //StartGame();
     }
 
     private void StartGame()
