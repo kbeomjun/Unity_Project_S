@@ -36,7 +36,8 @@ public class BattleManager : MonoBehaviour
 
         foreach (Unit unit in _playerUnits)
         {
-            unit.ResetAction();
+            if(_currentTurn > 1) unit.ResetAction();
+
             unit.DecideAction();
         }
 

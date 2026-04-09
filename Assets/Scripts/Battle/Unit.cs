@@ -10,6 +10,7 @@ public enum UnitAction
 public class Unit : MonoBehaviour
 {
     [SerializeField] protected Animator _animator;
+    [SerializeField] protected SpriteRenderer[] _actionSprites;
     [SerializeField] protected Transform _healthBarTr;
     [SerializeField] protected HealthBar _healthBarPrefab;
     [SerializeField] protected Shield _shieldEffect;
@@ -33,13 +34,6 @@ public class Unit : MonoBehaviour
 
     protected bool _isDead = false;
 
-    private void Awake()
-    {
-        _healthBar = Instantiate(_healthBarPrefab, _healthBarTr);
-        _healthBar.transform.localPosition = Vector3.zero;
-        _healthBar.InitHp(_currentHealth, _maxHealth);
-    }
-
     protected void Init(string name, int maxHealth, int attack, int defense)
     {
         _name = name;
@@ -48,6 +42,10 @@ public class Unit : MonoBehaviour
         _attack = attack;
         _currentAttack = attack;
         _defense = defense;
+
+        _healthBar = Instantiate(_healthBarPrefab, _healthBarTr);
+        _healthBar.transform.localPosition = Vector3.zero;
+        _healthBar.InitHp(_currentHealth, _maxHealth);
     }
 
     public virtual void ResetAction()
