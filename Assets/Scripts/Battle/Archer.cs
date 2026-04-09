@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class Archer : Unit
 {
-    private new void Start()
+    private void Start()
     {
         Init("Archer", 70, 50, 10);
-        base.Start();
     }
 
     public override void PerformAction()
@@ -21,7 +20,7 @@ public class Archer : Unit
                 break;
 
             case UnitAction.Skill:
-                UseSkill();
+                UseSkill(_target);
                 break;
         }
     }

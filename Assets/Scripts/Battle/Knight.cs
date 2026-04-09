@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class Knight : Unit
 {
-    private new void Start()
+    private void Start()
     {
-        Init("Knight", 120, 20, 20);
-        base.Start();
+        Init("Knight", 120, 1, 100);
+    }
+
+    public override void DecideAction()
+    {
+        _currentAttack = _attack;
+        _nextAction = (UnitAction)Random.Range(1, 2);
     }
 
     public override void ResetAction()

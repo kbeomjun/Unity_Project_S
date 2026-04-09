@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
     [SerializeField] protected Animator _animator;
     [SerializeField] protected Transform _healthBarTr;
     [SerializeField] protected HealthBar _healthBarPrefab;
+    [SerializeField] protected Shield _shieldEffect;
 
     private HealthBar _healthBar;
 
@@ -32,7 +33,7 @@ public class Unit : MonoBehaviour
 
     protected bool _isDead = false;
 
-    protected void Start()
+    private void Awake()
     {
         _healthBar = Instantiate(_healthBarPrefab, _healthBarTr);
         _healthBar.transform.localPosition = Vector3.zero;
@@ -53,6 +54,7 @@ public class Unit : MonoBehaviour
     {
         _currentDefense = 0;
         _target = null;
+        _healthBar.SetDefense(_currentDefense);
     }
 
     public virtual void DecideAction()
@@ -90,18 +92,30 @@ public class Unit : MonoBehaviour
     public void Hit(int damage)
     {
         Debug.Log($"{gameObject.name} Hit");
-        _currentHealth -= damage;
-        _healthBar.SetHp(_currentHealth, _maxHealth);
 
-        if(_currentHealth <= 0)
+        if(_currentDefense >= damage)
         {
-            _isDead = true;
-            _animator.SetTrigger("Die");
-            //Destroy(gameObject);
+            _currentDefense -= damage;
+            _healthBar.SetDefense(_currentDefense);
         }
         else
         {
-            _animator.SetTrigger("Hit");
+            damage -= _currentDefense;
+            _currentDefense = 0;
+            _currentHealth -= damage;
+            _healthBar.SetDefense(_currentDefense);
+            _healthBar.SetHp(_currentHealth, _maxHealth);
+            
+            if(_currentHealth > 0)
+            {
+                _animator.SetTrigger("Hit");
+            }
+            else
+            {
+                _isDead = true;
+                _animator.SetTrigger("Die");
+                //Destroy(gameObject);
+            }
         }
     }
 
@@ -109,6 +123,8 @@ public class Unit : MonoBehaviour
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += _defense;
+        _shieldEffect.ShieldEffect();
+        _healthBar.SetDefense(_currentDefense);
     }
 
     public virtual void UseSkill()

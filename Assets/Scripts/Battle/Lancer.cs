@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class Lancer : Unit
 {
-    private new void Start()
+    private void Start()
     {
-        Init("Lancer", 100, 30, 15);
-        base.Start();
+        Init("Lancer", 100, 1, 30);
+    }
+
+    public override void DecideAction()
+    {
+        _currentAttack = _attack;
+        _nextAction = (UnitAction)Random.Range(1, 2);
     }
 
     public override void ResetAction()

@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class Monk : Unit
 {
-    private new void Start()
+    private void Start()
     {
         Init("Monk", 50, 5, 5);
-        base.Start();
     }
 
     public override void PerformAction()
