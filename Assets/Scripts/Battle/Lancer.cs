@@ -4,7 +4,7 @@ public class Lancer : Unit
 {
     private void Start()
     {
-        Init("Lancer", 100, 1, 30);
+        Init("Lancer", 100, 50, 1, 30);
     }
 
     public override void ResetAction()

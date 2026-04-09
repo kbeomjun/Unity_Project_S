@@ -4,7 +4,7 @@ public class Archer : Unit
 {
     private void Start()
     {
-        Init("Archer", 70, 50, 10);
+        Init("Archer", 70, 50, 50, 10);
     }
 
     public override void PerformAction()

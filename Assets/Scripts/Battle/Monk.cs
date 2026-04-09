@@ -4,7 +4,7 @@ public class Monk : Unit
 {
     private void Start()
     {
-        Init("Monk", 50, 5, 5);
+        Init("Monk", 50, 50, 5, 5);
     }
 
     public override void PerformAction()

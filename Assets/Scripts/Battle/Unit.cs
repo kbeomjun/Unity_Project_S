@@ -10,42 +10,35 @@ public enum UnitAction
 public class Unit : MonoBehaviour
 {
     [SerializeField] protected Animator _animator;
-    [SerializeField] protected SpriteRenderer[] _actionSprites;
-    [SerializeField] protected Transform _healthBarTr;
-    [SerializeField] protected HealthBar _healthBarPrefab;
-    [SerializeField] protected Shield _shieldEffect;
-
-    private HealthBar _healthBar;
+    [SerializeField] private HealthBar _healthBar;
+    [SerializeField] private Shield _shieldEffect;
+    [SerializeField] private NextAction _nextActionScript;
+    public NextAction NextActionScript => _nextActionScript;
 
     protected string _name;
-
     protected int _maxHealth;
     protected int _currentHealth;
-
     protected int _attack;
     protected int _currentAttack;
-
     protected int _defense;
     protected int _currentDefense = 0;
 
     protected UnitAction _nextAction;
-
     protected Unit _target;
-
     protected bool _isDead = false;
 
-    protected void Init(string name, int maxHealth, int attack, int defense)
+    protected void Init(string name, int maxHealth, int currentHealth, int attack, int defense)
     {
         _name = name;
         _maxHealth = maxHealth;
-        _currentHealth = maxHealth;
+        _currentHealth = currentHealth;
         _attack = attack;
         _currentAttack = attack;
         _defense = defense;
 
-        _healthBar = Instantiate(_healthBarPrefab, _healthBarTr);
-        _healthBar.transform.localPosition = Vector3.zero;
         _healthBar.InitHp(_currentHealth, _maxHealth);
+
+        _nextActionScript.gameObject.SetActive(false);
     }
 
     public virtual void ResetAction()
@@ -58,7 +51,10 @@ public class Unit : MonoBehaviour
     public virtual void DecideAction()
     {
         _currentAttack = _attack;
-        _nextAction = (UnitAction)Random.Range(0, 3);
+        int random = Random.Range(0, 3);
+        _nextAction = (UnitAction)random;
+
+        _nextActionScript.ChangeNextActionIcon(random, _currentAttack, _defense);
     }
 
     public virtual void PerformAction()

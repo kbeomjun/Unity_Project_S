@@ -32,7 +32,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private GameObject _selectCircle;
     private Image _selectCircleImage;
 
-    private Color[] colors =
+    private Color[] _colors =
     {
         new Color32(40, 55, 210, 255),
         new Color32(210, 40, 40, 255),
@@ -51,7 +51,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             _type = value;
             
             _icon.sprite = _images[(int)value];
-            _icon.color = colors[(int)value];
+            _icon.color = _colors[(int)value];
             _iconBaseColor = _icon.color;
         }
     }

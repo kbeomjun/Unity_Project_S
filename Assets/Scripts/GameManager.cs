@@ -1,22 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Map _map;
 
-    public static GameManager Instance { get; private set; }
-
     private int _maxChapter;
     private int _currentChapter;
-
     private int _maxLayer;
     private int _currentLayer;
-
     private Node _currentNode;
 
+    [SerializeField] private List<Unit> _playerUnits = new List<Unit>();
+
+    public static GameManager Instance { get; private set; }
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -24,6 +31,7 @@ public class GameManager : MonoBehaviour
         _maxChapter = _map.MaxChapter;
 
         //StartGame();
+        BattleManager.Instance.StartBattle(_playerUnits);
     }
 
     private void StartGame()
@@ -51,6 +59,31 @@ public class GameManager : MonoBehaviour
             if (i == _currentNode.Index) continue;
 
             _map.Nodes[_currentChapter][_currentLayer][i].SetState(NodeState.Locked);
+        }
+
+        switch (_currentNode.Type)
+        {
+            case NodeType.Start:
+                break;
+
+            case NodeType.Battle:
+                BattleManager.Instance.StartBattle(_playerUnits);
+                break;
+
+            case NodeType.Elite:
+                break;
+
+            case NodeType.Shop:
+                break;
+
+            case NodeType.Rest:
+                break;
+
+            case NodeType.Event:
+                break;
+
+            case NodeType.Boss:
+                break;
         }
 
         OnClearNode();

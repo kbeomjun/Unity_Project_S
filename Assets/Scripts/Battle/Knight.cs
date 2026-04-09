@@ -4,13 +4,16 @@ public class Knight : Unit
 {
     private void Start()
     {
-        Init("Knight", 120, 1, 100);
+        Init("Knight", 120, 20, 1, 100);
     }
 
     public override void DecideAction()
     {
         _currentAttack = _attack;
-        _nextAction = (UnitAction)Random.Range(1, 2);
+        int random = Random.Range(1, 2);
+        _nextAction = (UnitAction)random;
+
+        NextActionScript.ChangeNextActionIcon(random, _currentAttack, _defense);
     }
 
     public override void ResetAction()
