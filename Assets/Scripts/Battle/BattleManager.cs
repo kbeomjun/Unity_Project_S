@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class BattleManager : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class BattleManager : MonoBehaviour
     private Unit[] _playerUnits = new Unit[4];
     private Unit[] _enemyUnits = new Unit[4];
 
+    private PlayerInputActions _input;
+    private Unit _selectedUnit;
+
     private int _currentTurn = 0;
     private bool _isBattle = false;
 
@@ -37,6 +41,8 @@ public class BattleManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        _input = new PlayerInputActions();
     }
 
     private void Start()
@@ -65,7 +71,9 @@ public class BattleManager : MonoBehaviour
             _enemyUnits[i].Init(new UnitData(_enemyUnitData[random2]));
         }
 
-        Invoke("StartPlayerTurn", 0.2f);
+
+
+        //Invoke("StartPlayerTurn", 0.2f);
     }
 
     public void StartPlayerTurn()
@@ -278,6 +286,63 @@ public class BattleManager : MonoBehaviour
         if (validIndexes.Count == 0) return -1;
         
         return validIndexes[Random.Range(0, validIndexes.Count)];
+    }
+
+    private void OnEnable()
+    {
+        _input.Enable();
+
+        _input.Player.Click.started += OnClick;
+        _input.Player.Click.canceled += OnRelease;
+    }
+
+    private void OnDisable()
+    {
+        _input.Player.Click.started -= OnClick;
+        _input.Player.Click.canceled -= OnRelease;
+
+        _input.Disable();
+    }
+
+    private void OnClick(InputAction.CallbackContext ctx)
+    {
+        if (_currentTurn > 0) return; // 배치 단계만
+
+        Vector2 mousePos = _input.Player.Position.ReadValue<Vector2>();
+
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            Unit unit = hit.collider.GetComponent<Unit>();
+
+            if (unit != null && _playerUnits.Contains(unit))
+            {
+                _selectedUnit = unit;
+            }
+        }
+    }
+
+    private void OnRelease(InputAction.CallbackContext ctx)
+    {
+        _selectedUnit = null;
+    }
+
+    private void Update()
+    {
+        if (_selectedUnit == null) return;
+
+        Vector2 mousePos = _input.Player.Position.ReadValue<Vector2>();
+
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            Vector3 pos = hit.point;
+            pos.z = 0;
+
+            _selectedUnit.transform.position = pos;
+        }
     }
 
 }
