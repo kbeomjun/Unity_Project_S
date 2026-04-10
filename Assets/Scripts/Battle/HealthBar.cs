@@ -45,8 +45,10 @@ public class HealthBar : MonoBehaviour
     {
         float speed = 1.0f;
 
-        // _fill는 바로 적용
+        // _fill, 숫자 바로 적용
         _fill.fillAmount = targetFill;
+        _displayHp = targetHp;
+        _healthText.text = targetHp.ToString();
 
         float startFill = _fillBackGround.fillAmount; // 백그라운드 현재값
         float time = 0f;
@@ -63,10 +65,6 @@ public class HealthBar : MonoBehaviour
 
         // 마지막 보정
         _fillBackGround.fillAmount = targetFill;
-
-        // 숫자 바로 변경
-        _displayHp = targetHp;
-        _healthText.text = targetHp.ToString();
     }
 
     public void SetDefense(int defense)

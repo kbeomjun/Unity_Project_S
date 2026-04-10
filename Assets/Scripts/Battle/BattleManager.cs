@@ -17,7 +17,7 @@ public class BattleManager : MonoBehaviour
         new UnitData("Knight", 10, 10, 10, 10, UnitType.Knight),
         new UnitData("Lancer", 10, 10, 10, 10, UnitType.Lancer),
         new UnitData("Archer", 10, 10, 10, 10, UnitType.Archer),
-        new UnitData("Monk", 10, 10, 20, 10, UnitType.Monk)
+        new UnitData("Monk", 1000, 1000, 10, 10, UnitType.Monk)
     };
 
     private Unit[] _playerUnits = new Unit[4];
@@ -55,14 +55,14 @@ public class BattleManager : MonoBehaviour
             _playerUnits[i].Init(playerUnitDatas[i]);
         }
 
-        int random = 4;//Random.Range(1, 3);
+        int random = Random.Range(1, 3);
 
         for (int i = 0; i < random; i++)
         {
-            int random2 = Random.Range(3, 4);
+            int random2 = Random.Range(1, 2);
             _enemyUnits[i] = Instantiate(_enemyUnitPrefabs[random2], _enemySlots[i]);
             _enemyUnits[i].transform.localPosition = Vector3.zero;
-            _enemyUnits[i].Init(_enemyUnitData[random2]);
+            _enemyUnits[i].Init(new UnitData(_enemyUnitData[random2]));
         }
 
         Invoke("StartPlayerTurn", 0.2f);
@@ -146,13 +146,16 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    IEnumerator UnitTurnProcess(Unit[] units)
+    private IEnumerator UnitTurnProcess(Unit[] units)
     {
-        foreach (Unit unit in units)
+        List<Unit> turnList = units.Where(u => u != null).ToList();
+
+        foreach (Unit unit in turnList)
         {
             if (unit == null) continue;
-            
+
             unit.PerformAction();
+
             yield return new WaitForSeconds(1.0f);
         }
     }
@@ -239,15 +242,16 @@ public class BattleManager : MonoBehaviour
         Unit[] targets = _playerUnits.Contains(unit) ? _enemyUnits : _playerUnits;
 
         int index = GetIndex(targets, 0, 2);
-        if ((targets[0] is Knight && targets[0].IsSkillUsing) && (targets[1] is Knight && targets[1].IsSkillUsing))
+        if ((targets[0] != null && targets[0].UnitData.Type == UnitType.Knight && targets[0].IsSkillUsing) 
+            && (targets[1] != null && targets[1].UnitData.Type == UnitType.Knight && targets[1].IsSkillUsing))
         {
 
         }
-        else if ((targets[0] is Knight && targets[0].IsSkillUsing))
+        else if (targets[0] != null && targets[0].UnitData.Type == UnitType.Knight && targets[0].IsSkillUsing)
         {
             index = 0;
         }
-        else if ((targets[1] is Knight && targets[1].IsSkillUsing))
+        else if (targets[1] != null && targets[1].UnitData.Type == UnitType.Knight && targets[1].IsSkillUsing)
         {
             index = 1;
         }

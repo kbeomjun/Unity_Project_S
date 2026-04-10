@@ -12,10 +12,13 @@ public class Unit : MonoBehaviour
     [SerializeField] protected Animator _animator;
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private Shield _shieldEffect;
+    [SerializeField] private Heal _healEffect;
     [SerializeField] private NextAction _nextActionScript;
     public NextAction NextActionScript => _nextActionScript;
 
     protected UnitData _unitData;
+    public UnitData UnitData => _unitData;
+
     protected int _currentAttack;
     protected int _currentDefense = 0;
 
@@ -76,19 +79,24 @@ public class Unit : MonoBehaviour
         Debug.Log($"{gameObject.name} Attack {_target.gameObject.name}");
         _animator.SetTrigger("Attack");
     }
-    
-    public void TargetHit()
+
+    public void HitTarget()
     {
         _target.Hit(_currentAttack);
+
+        if (_target._unitData.Type == UnitType.Lancer && _target._isSkillUsing)
+        {
+            Hit(_currentAttack / 2);
+        }
     }
 
     public void Hit(int damage)
     {
-        Debug.Log($"{gameObject.name} Hit");
+        Debug.Log($"{gameObject.name} Hit {damage}");
 
         if (_unitData.Type == UnitType.Knight && _isSkillUsing) damage /= 2;
 
-        if(_currentDefense >= damage)
+        if (_currentDefense >= damage)
         {
             _currentDefense -= damage;
             _healthBar.SetDefense(_currentDefense);
@@ -98,6 +106,7 @@ public class Unit : MonoBehaviour
             damage -= _currentDefense;
             _currentDefense = 0;
             _unitData.CurrentHealth -= damage;
+            
             _healthBar.SetDefense(_currentDefense);
             _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
             
@@ -108,6 +117,7 @@ public class Unit : MonoBehaviour
             else
             {
                 _isDead = true;
+                _unitData.CurrentHealth = 0;
                 _animator.SetTrigger("Die");
             }
         }
@@ -134,6 +144,25 @@ public class Unit : MonoBehaviour
         _currentDefense += defense;
         _shieldEffect.ShieldEffect();
         _healthBar.SetDefense(_currentDefense);
+    }
+
+    public void HealTarget()
+    {
+        _target.Heal(10);
+    }
+
+    public void Heal(int percentage)
+    {
+        Debug.Log($"{gameObject.name} Heal");
+        _unitData.CurrentHealth += (_unitData.MaxHealth * percentage) / 100;
+
+        if (_unitData.CurrentHealth > _unitData.MaxHealth)
+        {
+            _unitData.CurrentHealth = _unitData.MaxHealth;
+        }
+        
+        _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
+        _healEffect.HealEffect();
     }
 
     public virtual void UseSkill()

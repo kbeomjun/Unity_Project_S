@@ -5,7 +5,7 @@ public class Archer : Unit
     public override void DecideAction()
     {
         _currentAttack = _unitData.Attack;
-        int random = Random.Range(1, 2);
+        int random = Random.Range(2, 3);
         _nextAction = (UnitAction)random;
 
         NextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);
@@ -27,6 +27,14 @@ public class Archer : Unit
                 UseSkill(_target);
                 break;
         }
+    }
+
+    public override void UseSkill(Unit target)
+    {
+        _target = BattleManager.Instance.GetRandomEnemyTarget(this);
+        _currentAttack *= 2;
+        Debug.Log($"{gameObject.name} UseSkill {_currentAttack} {_target.gameObject.name}");
+        _animator.SetTrigger("Skill");
     }
 
 }

@@ -4,13 +4,19 @@ public class UnitAnimationEventReceiver : MonoBehaviour
 {
     [SerializeField] private Unit _unit;
 
-    public void TargetHit()
+    public void HitTarget()
     {
-        _unit.TargetHit();
+        _unit.HitTarget();
     }
 
     public void AfterDie()
     {
         _unit.AfterDie();
     }
+
+    public void HealTarget()
+    {
+        _unit.HealTarget();
+    }
+
 }

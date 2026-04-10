@@ -15,12 +15,14 @@ public class Lancer : Unit
     {
         base.ResetAction();
         _animator.SetBool("IsSkillUsing", false);
+        _isSkillUsing = false;
     }
 
     public override void UseSkill()
     {
         base.UseSkill();
         _animator.SetBool("IsSkillUsing", true);
+        _isSkillUsing = true;
     }
 
 }

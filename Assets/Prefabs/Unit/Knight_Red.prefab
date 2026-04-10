@@ -190,6 +190,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7112434953166170232}
+  - {fileID: 4504652121320240438}
   m_Father: {fileID: 6728343636676870879}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6354434854212570191
@@ -243,6 +244,7 @@ MonoBehaviour:
   _animator: {fileID: 1620342946596336681}
   _healthBar: {fileID: 5265217710761324312}
   _shieldEffect: {fileID: 7821361801577461221}
+  _healEffect: {fileID: 3924901119916023831}
   _nextActionScript: {fileID: 850088587871921814}
 --- !u!1 &6839295273134450520
 GameObject:
@@ -466,6 +468,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6deb976b376eaa44b7497fbba2eb92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shield
+--- !u!1001 &3308404341564023032
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7443983352680073495}
+    m_Modifications:
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911018818358705186, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+      propertyPath: m_Name
+      value: HealEffect
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+--- !u!114 &3924901119916023831 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1986611895593337071, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+  m_PrefabInstance: {fileID: 3308404341564023032}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219d1af7db20e3e42a3d3f3012eebaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Heal
+--- !u!4 &4504652121320240438 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
+  m_PrefabInstance: {fileID: 3308404341564023032}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5922989733012237442
 PrefabInstance:
   m_ObjectHideFlags: 0

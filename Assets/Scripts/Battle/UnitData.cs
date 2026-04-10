@@ -28,4 +28,14 @@ public class UnitData
         Type = type;
     }
 
+    public UnitData(UnitData data)
+    {
+        Name = data.Name;
+        MaxHealth = data.MaxHealth;
+        CurrentHealth = data.CurrentHealth;
+        Attack = data.Attack;
+        Defense = data.Defense;
+        Type = data.Type;
+    }
+
 }
