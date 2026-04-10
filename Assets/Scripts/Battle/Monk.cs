@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class Monk : Unit
 {
-    private void Start()
+    public override void DecideAction()
     {
-        Init("Monk", 50, 50, 5, 5);
+        _currentAttack = _unitData.Attack;
+        int random = Random.Range(0, 1);
+        _nextAction = (UnitAction)random;
+
+        NextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);
     }
 
     public override void PerformAction()

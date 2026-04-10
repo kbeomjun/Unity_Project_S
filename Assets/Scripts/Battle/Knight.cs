@@ -2,30 +2,29 @@ using UnityEngine;
 
 public class Knight : Unit
 {
-    private void Start()
-    {
-        Init("Knight", 120, 20, 1, 100);
-    }
-
     public override void DecideAction()
     {
-        _currentAttack = _attack;
-        int random = Random.Range(1, 2);
+        _currentAttack = _unitData.Attack;
+        int random = Random.Range(2, 3);
         _nextAction = (UnitAction)random;
 
-        NextActionScript.ChangeNextActionIcon(random, _currentAttack, _defense);
+        NextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);
     }
 
     public override void ResetAction()
     {
         base.ResetAction();
         _animator.SetBool("IsSkillUsing", false);
+        _isSkillUsing = false;
     }
 
     public override void UseSkill()
     {
         base.UseSkill();
         _animator.SetBool("IsSkillUsing", true);
+        _isSkillUsing = true;
+
+        Defense(30);
     }
 
 }

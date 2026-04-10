@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class Archer : Unit
 {
-    private void Start()
+    public override void DecideAction()
     {
-        Init("Archer", 70, 50, 50, 10);
+        _currentAttack = _unitData.Attack;
+        int random = Random.Range(1, 2);
+        _nextAction = (UnitAction)random;
+
+        NextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);
     }
 
     public override void PerformAction()

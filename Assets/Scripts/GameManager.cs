@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     private int _currentLayer;
     private Node _currentNode;
 
-    [SerializeField] private List<Unit> _playerUnits = new List<Unit>();
+    [SerializeField] List<Unit> _playerUnits = new List<Unit>();
+    private List<UnitData> _playerUnitDatas = new List<UnitData>();
 
     public static GameManager Instance { get; private set; }
     private void Awake()
@@ -31,7 +32,28 @@ public class GameManager : MonoBehaviour
         _maxChapter = _map.MaxChapter;
 
         //StartGame();
-        BattleManager.Instance.StartBattle(_playerUnits);
+
+        foreach(Unit unit in _playerUnits)
+        {
+            if(unit is Knight)
+            {
+                _playerUnitDatas.Add(new UnitData("Knight", 120, 100, 10, 50, UnitType.Knight));
+            } 
+            else if(unit is Lancer)
+            {
+                _playerUnitDatas.Add(new UnitData("Lancer", 100, 75, 20, 30, UnitType.Lancer));
+            }
+            else if (unit is Archer)
+            {
+                _playerUnitDatas.Add(new UnitData("Archer", 70, 70, 50, 10, UnitType.Archer));
+            }
+            else if (unit is Monk)
+            {
+                _playerUnitDatas.Add(new UnitData("Monk", 50, 50, 5, 5, UnitType.Monk));
+            }
+        }
+
+        BattleManager.Instance.StartBattle(_playerUnitDatas);
     }
 
     private void StartGame()
@@ -67,7 +89,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case NodeType.Battle:
-                BattleManager.Instance.StartBattle(_playerUnits);
+                BattleManager.Instance.StartBattle(_playerUnitDatas);
                 break;
 
             case NodeType.Elite:
@@ -111,6 +133,11 @@ public class GameManager : MonoBehaviour
 
             StartChapter();
         }
+    }
+
+    private void AddUnit()
+    {
+
     }
 
 }

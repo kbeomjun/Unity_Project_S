@@ -15,28 +15,23 @@ public class Unit : MonoBehaviour
     [SerializeField] private NextAction _nextActionScript;
     public NextAction NextActionScript => _nextActionScript;
 
-    protected string _name;
-    protected int _maxHealth;
-    protected int _currentHealth;
-    protected int _attack;
+    protected UnitData _unitData;
     protected int _currentAttack;
-    protected int _defense;
     protected int _currentDefense = 0;
 
     protected UnitAction _nextAction;
     protected Unit _target;
-    protected bool _isDead = false;
 
-    protected void Init(string name, int maxHealth, int currentHealth, int attack, int defense)
+    private bool _isDead = false;
+    protected bool _isSkillUsing = false;
+    public bool IsSkillUsing => _isSkillUsing;
+
+    public void Init(UnitData unitData)
     {
-        _name = name;
-        _maxHealth = maxHealth;
-        _currentHealth = currentHealth;
-        _attack = attack;
-        _currentAttack = attack;
-        _defense = defense;
+        _unitData = unitData;
+        _currentAttack = _unitData.Attack;
 
-        _healthBar.InitHp(_currentHealth, _maxHealth);
+        _healthBar.InitHp(_unitData.CurrentHealth, _unitData.MaxHealth);
 
         _nextActionScript.gameObject.SetActive(false);
     }
@@ -50,11 +45,11 @@ public class Unit : MonoBehaviour
 
     public virtual void DecideAction()
     {
-        _currentAttack = _attack;
+        _currentAttack = _unitData.Attack;
         int random = Random.Range(0, 3);
         _nextAction = (UnitAction)random;
 
-        _nextActionScript.ChangeNextActionIcon(random, _currentAttack, _defense);
+        _nextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);
     }
 
     public virtual void PerformAction()
@@ -80,12 +75,18 @@ public class Unit : MonoBehaviour
         _target = BattleManager.Instance.GetRandomEnemyTarget(this);
         Debug.Log($"{gameObject.name} Attack {_target.gameObject.name}");
         _animator.SetTrigger("Attack");
+    }
+    
+    public void TargetHit()
+    {
         _target.Hit(_currentAttack);
     }
 
     public void Hit(int damage)
     {
         Debug.Log($"{gameObject.name} Hit");
+
+        if (_unitData.Type == UnitType.Knight && _isSkillUsing) damage /= 2;
 
         if(_currentDefense >= damage)
         {
@@ -96,27 +97,41 @@ public class Unit : MonoBehaviour
         {
             damage -= _currentDefense;
             _currentDefense = 0;
-            _currentHealth -= damage;
+            _unitData.CurrentHealth -= damage;
             _healthBar.SetDefense(_currentDefense);
-            _healthBar.SetHp(_currentHealth, _maxHealth);
+            _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
             
-            if(_currentHealth > 0)
+            if(_unitData.CurrentHealth > 0)
             {
-                _animator.SetTrigger("Hit");
+                if(!_isSkillUsing) _animator.SetTrigger("Hit");
             }
             else
             {
                 _isDead = true;
                 _animator.SetTrigger("Die");
-                //Destroy(gameObject);
             }
         }
+    }
+
+    public void AfterDie()
+    {
+        BattleManager.Instance.RemoveUnit(this);
+        BattleManager.Instance.Check(this);
+        Destroy(gameObject);
     }
 
     public void Defense()
     {
         Debug.Log($"{gameObject.name} Defense");
-        _currentDefense += _defense;
+        _currentDefense += _unitData.Defense;
+        _shieldEffect.ShieldEffect();
+        _healthBar.SetDefense(_currentDefense);
+    }
+
+    public void Defense(int defense)
+    {
+        Debug.Log($"{gameObject.name} Defense");
+        _currentDefense += defense;
         _shieldEffect.ShieldEffect();
         _healthBar.SetDefense(_currentDefense);
     }

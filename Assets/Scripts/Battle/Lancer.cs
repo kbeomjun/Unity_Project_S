@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class Lancer : Unit
 {
-    private void Start()
+    public override void DecideAction()
     {
-        Init("Lancer", 100, 50, 1, 30);
+        _currentAttack = _unitData.Attack;
+        int random = Random.Range(2, 3);
+        _nextAction = (UnitAction)random;
+
+        NextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);
     }
 
     public override void ResetAction()
