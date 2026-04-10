@@ -306,26 +306,64 @@ public class BattleManager : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
-        if (_currentTurn > 0) return; // 배치 단계만
+        if (_currentTurn > 0) return;
 
         Vector2 mousePos = _input.Player.Position.ReadValue<Vector2>();
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        worldPos.z = 0;
 
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            Unit unit = hit.collider.GetComponent<Unit>();
-
-            if (unit != null && _playerUnits.Contains(unit))
-            {
-                _selectedUnit = unit;
-            }
-        }
+        _selectedUnit = GetNearestUnit(worldPos, _playerUnits);
     }
 
     private void OnRelease(InputAction.CallbackContext ctx)
     {
+        if (_selectedUnit == null) return;
+
+        Transform nearestSlot = GetNearestSlot(_selectedUnit.transform.position);
+
+        StartCoroutine(MoveToSlot(_selectedUnit, nearestSlot));
+
         _selectedUnit = null;
+    }
+    
+    private Unit GetNearestUnit(Vector3 worldPos, Unit[] units)
+    {
+        Unit closest = null;
+        float minDist = float.MaxValue;
+
+        foreach (Unit unit in units)
+        {
+            if (unit == null) continue;
+
+            float dist = Vector3.Distance(worldPos, unit.transform.position);
+
+            if (dist < minDist && dist < 1.0f)
+            {
+                minDist = dist;
+                closest = unit;
+            }
+        }
+
+        return closest;
+    }
+
+    private Transform GetNearestSlot(Vector3 worldPos)
+    {
+        Transform closest = null;
+        float minDist = float.MaxValue;
+
+        foreach (Transform slot in _playerSlots)
+        {
+            float dist = Vector3.Distance(worldPos, slot.position);
+
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = slot;
+            }
+        }
+
+        return closest;
     }
 
     private void Update()
@@ -333,16 +371,10 @@ public class BattleManager : MonoBehaviour
         if (_selectedUnit == null) return;
 
         Vector2 mousePos = _input.Player.Position.ReadValue<Vector2>();
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        worldPos.z = 0;
 
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            Vector3 pos = hit.point;
-            pos.z = 0;
-
-            _selectedUnit.transform.position = pos;
-        }
+        _selectedUnit.transform.position = worldPos;
     }
 
 }
