@@ -21,7 +21,7 @@ public class Unit : MonoBehaviour
     public UnitData UnitData => _unitData;
 
     protected int _currentAttack;
-    protected int _currentDefense = 0;
+    private int _currentDefense = 0;
 
     protected UnitAction _nextAction;
     protected Unit _target;
@@ -77,7 +77,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void Attack()
+    protected void Attack()
     {
         _target = BattleManager.Instance.GetRandomEnemyTarget(this);
         Debug.Log($"{gameObject.name} Attack {_target.gameObject.name}");
@@ -94,7 +94,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void Hit(int damage)
+    private void Hit(int damage)
     {
         Debug.Log($"{gameObject.name} Hit {damage}");
 
@@ -133,7 +133,7 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Defense()
+    protected void Defense()
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += _unitData.Defense;
@@ -141,7 +141,7 @@ public class Unit : MonoBehaviour
         _healthBar.SetDefense(_currentDefense);
     }
 
-    public void Defense(int defense)
+    protected void Defense(int defense)
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += defense;
@@ -154,7 +154,7 @@ public class Unit : MonoBehaviour
         _target.Heal(10);
     }
 
-    public void Heal(int percentage)
+    private void Heal(int percentage)
     {
         Debug.Log($"{gameObject.name} Heal");
         _unitData.CurrentHealth += (_unitData.MaxHealth * percentage) / 100;

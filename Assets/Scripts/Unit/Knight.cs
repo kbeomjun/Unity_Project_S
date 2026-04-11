@@ -23,7 +23,6 @@ public class Knight : Unit
         base.UseSkill();
         _animator.SetBool("IsSkillUsing", true);
         _isSkillUsing = true;
-
         Defense(30);
     }
 
