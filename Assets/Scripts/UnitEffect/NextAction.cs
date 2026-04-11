@@ -11,7 +11,7 @@ public class NextAction : MonoBehaviour
     private Color[] _colors =
     {
         new Color32(210, 40, 40, 255),
-        new Color32(102, 255, 102, 255),
+        new Color32(255, 255, 255, 255),
         new Color32(40, 55, 210, 255),
     };
 

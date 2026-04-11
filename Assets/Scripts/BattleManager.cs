@@ -15,6 +15,7 @@ public enum BattleState
 public class BattleManager : MonoBehaviour
 {
     [SerializeField] private Transform[] _playerSlots;
+    [SerializeField] private SlotGround[] _playerSlotGrounds;
     [SerializeField] private Transform[] _enemySlots;
     [SerializeField] private Unit[] _playerUnitPrefabs;
     [SerializeField] private Unit[] _enemyUnitPrefabs;
@@ -37,6 +38,7 @@ public class BattleManager : MonoBehaviour
     
     private PlayerInputActions _input;
     private Unit _selectedUnit = null;
+    private SlotGround _selectedSlotGround = null;
     private Vector3 _mousePos = Vector3.zero;
     private Vector3 _screenPos = Vector3.zero;
     private Vector3 _worldPos = Vector3.zero;
@@ -55,17 +57,19 @@ public class BattleManager : MonoBehaviour
         }
 
         _input = new PlayerInputActions();
-    }
 
-    private void Start()
-    {
-
+        for (int i = 0; i < _playerSlotGrounds.Length; i++)
+            _playerSlotGrounds[i].SlotIndex = i;
     }
 
     public void StartBattle(List<UnitData> playerUnitDatas)
     {
+        _currentTurn = 0;
         _state = BattleState.Prepare;
         _endPrepareButton.gameObject.SetActive(true);
+
+        foreach (SlotGround slotGround in _playerSlotGrounds)
+            slotGround.gameObject.SetActive(true);
 
         for (int i = 0; i < playerUnitDatas.Count; i++)
         {
@@ -95,19 +99,24 @@ public class BattleManager : MonoBehaviour
             _enemyUnits[i].UnitData.SlotIndex = i;
             _enemyUnits[i].transform.localPosition = Vector3.zero;
         }
-
-        // 마우스 조작을 통한 배치 기능
-
     }
 
     public void EndPrepare()
     {
-        _state = BattleState.Battle;
+        if (_playerUnits[0] == null && _playerUnits[1] == null)
+        {
+            Debug.Log($"앞열 유닛 없음 전투 시작 불가");
+            return;
+        }
 
+        _state = BattleState.Battle;
         _endPrepareButton.gameObject.SetActive(false);
         _endTurnButton.gameObject.SetActive(true);
+        
+        foreach (SlotGround slotGround in _playerSlotGrounds)
+            slotGround.gameObject.SetActive(false);
 
-        //Invoke("StartPlayerTurn", 0.2f);
+        Invoke("StartPlayerTurn", 0.1f);
     }
 
     public void StartPlayerTurn()
@@ -344,9 +353,46 @@ public class BattleManager : MonoBehaviour
     {
         if (_selectedUnit == null) return;
         Debug.Log($"OnRelease");
-        _selectedUnit.transform.position = _playerSlots[_selectedUnit.UnitData.SlotIndex].position;
-        _selectedUnit = null;
+
+        if(_selectedUnit != null && _selectedSlotGround != null)
+        {
+            int index1 = _selectedUnit.UnitData.SlotIndex;
+            int index2 = _selectedSlotGround.SlotIndex;
+
+            if (_playerUnits[index2] == null)
+            {
+                _playerUnits[index2] = _playerUnits[index1];
+                _playerUnits[index1] = null;
+
+                _playerUnits[index2].UnitData.SlotIndex = index2;
+                _playerUnits[index2].transform.position = _playerSlots[index2].position;
+            }
+            else
+            {
+                Unit tempUnit = _playerUnits[index1];
+                _playerUnits[index1] = _playerUnits[index2];
+                _playerUnits[index2] = tempUnit;
+
+                _playerUnits[index1].UnitData.SlotIndex = index1;
+                _playerUnits[index1].transform.position = _playerSlots[index1].position;
+
+                _playerUnits[index2].UnitData.SlotIndex = index2;
+                _playerUnits[index2].transform.position = _playerSlots[index2].position;
+            }
+        }
+        else
+        {
+            _selectedUnit.transform.position = _playerSlots[_selectedUnit.UnitData.SlotIndex].position;
+        }
+
+        _endPrepareButton.enabled = true;
         _isDrag = false;
+        _selectedUnit = null;
+        if(_selectedSlotGround != null)
+        {
+            _selectedSlotGround.SetHighlight(false);
+            _selectedSlotGround = null;
+        }
     }
 
     private void MouseProcess()
@@ -356,23 +402,49 @@ public class BattleManager : MonoBehaviour
         _worldPos = Camera.main.ScreenToWorldPoint(_screenPos);
         _worldPos.z = 0.0f;
 
-        foreach(Unit unit in _playerUnits)
+        if (!_isDrag)
         {
-            if (unit == null) continue;
+            int count = 0;
 
-            if(Vector3.Distance(unit.transform.position, _worldPos) <= 0.6f)
+            foreach(Unit unit in _playerUnits)
             {
-                _selectedUnit = unit;
-                _selectedUnit.SetHighlight(true);
-                break;
+                if (unit == null) continue;
+
+                if(Vector3.Distance(unit.transform.position, _worldPos) <= 0.6f)
+                {
+                    unit.SetHighlight(true);
+                    _selectedUnit = unit;
+                    count++;
+                }
+                else
+                {
+                    unit.SetHighlight(false);
+                }
             }
 
-            unit.SetHighlight(false);
+            if (count == 0) _selectedUnit = null;
         }
 
-        if (_isDrag)
+        if (_isDrag && _selectedUnit != null)
         {
+            _endPrepareButton.enabled = false;
             _selectedUnit.transform.position = _worldPos;
+
+            foreach(SlotGround slotGround in _playerSlotGrounds)
+            {
+                if(Vector3.Distance(slotGround.transform.position, _worldPos) <= 0.6f)
+                {
+                    if (slotGround.SlotIndex != _selectedUnit.UnitData.SlotIndex)
+                    {
+                        slotGround.SetHighlight(true);
+                        _selectedSlotGround = slotGround;
+                    }
+                }
+                else
+                {
+                    slotGround.SetHighlight(false);
+                }
+            }
         }
     }
 

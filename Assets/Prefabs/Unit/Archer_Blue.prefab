@@ -86,6 +86,7 @@ MonoBehaviour:
   _shieldEffect: {fileID: 2954603206345917788}
   _healEffect: {fileID: 6104587594567836708}
   _nextActionScript: {fileID: 4483473216555304075}
+  _outlineMaterial: {fileID: 0}
 --- !u!1 &2765429837184574410
 GameObject:
   m_ObjectHideFlags: 0
