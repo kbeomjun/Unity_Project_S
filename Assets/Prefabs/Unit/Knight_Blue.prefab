@@ -92,7 +92,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 276d3c9ff9a289949869cadff7017240, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -241,6 +241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8703457ecb847874c83ba96807bffb80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Knight
+  _spriteRenderer: {fileID: 5798578148100308870}
   _animator: {fileID: 7382737296447927570}
   _healthBar: {fileID: 1284134601044667736}
   _shieldEffect: {fileID: 2218411864052614612}

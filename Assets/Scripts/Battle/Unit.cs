@@ -9,6 +9,7 @@ public enum UnitAction
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] protected Animator _animator;
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private Shield _shieldEffect;
@@ -29,11 +30,14 @@ public class Unit : MonoBehaviour
     protected bool _isSkillUsing = false;
     public bool IsSkillUsing => _isSkillUsing;
 
+    private Material _outlineMaterial;
+
     public void Init(UnitData unitData)
     {
         _unitData = unitData;
         _currentAttack = _unitData.Attack;
 
+        _outlineMaterial = _spriteRenderer.material;
         _healthBar.InitHp(_unitData.CurrentHealth, _unitData.MaxHealth);
 
         _nextActionScript.gameObject.SetActive(false);
@@ -107,9 +111,6 @@ public class Unit : MonoBehaviour
             _currentDefense = 0;
             _unitData.CurrentHealth -= damage;
             
-            _healthBar.SetDefense(_currentDefense);
-            _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
-            
             if(_unitData.CurrentHealth > 0)
             {
                 if(!_isSkillUsing) _animator.SetTrigger("Hit");
@@ -120,13 +121,15 @@ public class Unit : MonoBehaviour
                 _unitData.CurrentHealth = 0;
                 _animator.SetTrigger("Die");
             }
+
+            _healthBar.SetDefense(_currentDefense);
+            _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
         }
     }
 
     public void AfterDie()
     {
         BattleManager.Instance.RemoveUnit(this);
-        BattleManager.Instance.Check(this);
         Destroy(gameObject);
     }
 
@@ -175,6 +178,11 @@ public class Unit : MonoBehaviour
         _target = BattleManager.Instance.GetRandomTeamTarget(this);
         Debug.Log($"{gameObject.name} UseSkill {_target.gameObject.name}");
         _animator.SetTrigger("Skill");
+    }
+
+    public void SetHighlight(bool onOff)
+    {
+        _outlineMaterial.SetFloat("_OutlineSize", onOff ? 1.5f : 0f);
     }
 
 }

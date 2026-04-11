@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bbf1f5fd558cc14ca4ef8fcdb91ddf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lancer
+  _spriteRenderer: {fileID: 5162159627313479434}
   _animator: {fileID: 8227885086285883084}
   _healthBar: {fileID: 9180120450249655196}
   _shieldEffect: {fileID: 4814397205814551369}
@@ -145,7 +146,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 276d3c9ff9a289949869cadff7017240, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

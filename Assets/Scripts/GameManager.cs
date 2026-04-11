@@ -37,19 +37,19 @@ public class GameManager : MonoBehaviour
         {
             if(unit is Knight)
             {
-                _playerUnitDatas.Add(new UnitData("Knight", 120, 1, 10, 50, UnitType.Knight));
+                _playerUnitDatas.Add(new UnitData("Knight", 120, 10, 10, 50, UnitType.Knight));
             } 
             else if(unit is Lancer)
             {
-                _playerUnitDatas.Add(new UnitData("Lancer", 100, 75, 20, 30, UnitType.Lancer));
+                _playerUnitDatas.Add(new UnitData("Lancer", 100, 10, 20, 30, UnitType.Lancer));
             }
             else if (unit is Archer)
             {
-                _playerUnitDatas.Add(new UnitData("Archer", 70, 70, 50, 10, UnitType.Archer));
+                _playerUnitDatas.Add(new UnitData("Archer", 70, 10, 50, 10, UnitType.Archer));
             }
             else if (unit is Monk)
             {
-                _playerUnitDatas.Add(new UnitData("Monk", 50, 1, 5, 5, UnitType.Monk));
+                _playerUnitDatas.Add(new UnitData("Monk", 50, 10, 5, 5, UnitType.Monk));
             }
         }
 

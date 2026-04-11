@@ -15,6 +15,7 @@ public class UnitData
     public int CurrentHealth { get; set; }
     public int Attack { get; set; }
     public int Defense { get; set; }
+    public int SlotIndex { get; set; }
     
     public UnitType Type { get; set; }
 
@@ -26,6 +27,7 @@ public class UnitData
         Attack = attack;
         Defense = defense;
         Type = type;
+        SlotIndex = -1;
     }
 
     public UnitData(UnitData data)
@@ -36,6 +38,7 @@ public class UnitData
         Attack = data.Attack;
         Defense = data.Defense;
         Type = data.Type;
+        SlotIndex = -1;
     }
 
 }

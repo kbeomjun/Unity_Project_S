@@ -5,30 +5,42 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
+public enum BattleState
+{
+    Prepare,
+    Battle,
+    End
+}    
+
 public class BattleManager : MonoBehaviour
 {
     [SerializeField] private Transform[] _playerSlots;
     [SerializeField] private Transform[] _enemySlots;
     [SerializeField] private Unit[] _playerUnitPrefabs;
     [SerializeField] private Unit[] _enemyUnitPrefabs;
+    [SerializeField] private Button _endPrepareButton;
     [SerializeField] private Button _endTurnButton;
 
     private UnitData[] _enemyUnitData = new UnitData[4]
     {
-        new UnitData("Knight", 10, 10, 10, 10, UnitType.Knight),
-        new UnitData("Lancer", 10, 10, 10, 10, UnitType.Lancer),
-        new UnitData("Archer", 10, 10, 10, 10, UnitType.Archer),
-        new UnitData("Monk", 1000, 1000, 10, 10, UnitType.Monk)
+        new UnitData("Knight", 120, 10, 10, 10, UnitType.Knight),
+        new UnitData("Lancer", 100, 10, 10, 10, UnitType.Lancer),
+        new UnitData("Archer", 70, 10, 10, 10, UnitType.Archer),
+        new UnitData("Monk", 50, 10, 10, 10, UnitType.Monk)
     };
 
     private Unit[] _playerUnits = new Unit[4];
     private Unit[] _enemyUnits = new Unit[4];
 
-    private PlayerInputActions _input;
-    private Unit _selectedUnit;
-
     private int _currentTurn = 0;
-    private bool _isBattle = false;
+    private BattleState _state;
+    
+    private PlayerInputActions _input;
+    private Unit _selectedUnit = null;
+    private Vector3 _mousePos = Vector3.zero;
+    private Vector3 _screenPos = Vector3.zero;
+    private Vector3 _worldPos = Vector3.zero;
+    private bool _isDrag = false;
 
     public static BattleManager Instance { get; private set; }
     private void Awake()
@@ -52,33 +64,55 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle(List<UnitData> playerUnitDatas)
     {
-        _isBattle = true;
+        _state = BattleState.Prepare;
+        _endPrepareButton.gameObject.SetActive(true);
 
         for (int i = 0; i < playerUnitDatas.Count; i++)
         {
-            _playerUnits[i] = Instantiate(_playerUnitPrefabs[(int)playerUnitDatas[i].Type], _playerSlots[i]);
-            _playerUnits[i].transform.localPosition = Vector3.zero;
-            _playerUnits[i].Init(playerUnitDatas[i]);
+            if (playerUnitDatas[i].SlotIndex == -1)
+            {
+                _playerUnits[i] = Instantiate(_playerUnitPrefabs[(int)playerUnitDatas[i].Type], _playerSlots[i]);
+                _playerUnits[i].Init(playerUnitDatas[i]);
+                _playerUnits[i].UnitData.SlotIndex = i;
+                _playerUnits[i].transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                _playerUnits[playerUnitDatas[i].SlotIndex] 
+                    = Instantiate(_playerUnitPrefabs[(int)playerUnitDatas[i].Type], _playerSlots[playerUnitDatas[i].SlotIndex]);
+                _playerUnits[playerUnitDatas[i].SlotIndex].Init(playerUnitDatas[i]);
+                _playerUnits[playerUnitDatas[i].SlotIndex].transform.localPosition = Vector3.zero;
+            }
         }
 
-        int random = Random.Range(1, 3);
+        int random = Random.Range(4, 5);
 
         for (int i = 0; i < random; i++)
         {
-            int random2 = Random.Range(1, 2);
+            int random2 = Random.Range(0, 1);
             _enemyUnits[i] = Instantiate(_enemyUnitPrefabs[random2], _enemySlots[i]);
-            _enemyUnits[i].transform.localPosition = Vector3.zero;
             _enemyUnits[i].Init(new UnitData(_enemyUnitData[random2]));
+            _enemyUnits[i].UnitData.SlotIndex = i;
+            _enemyUnits[i].transform.localPosition = Vector3.zero;
         }
 
+        // 마우스 조작을 통한 배치 기능
 
+    }
+
+    public void EndPrepare()
+    {
+        _state = BattleState.Battle;
+
+        _endPrepareButton.gameObject.SetActive(false);
+        _endTurnButton.gameObject.SetActive(true);
 
         //Invoke("StartPlayerTurn", 0.2f);
     }
 
     public void StartPlayerTurn()
     {
-        if (!_isBattle) return;
+        if (_state != BattleState.Battle) return;
 
         _currentTurn++;
         Debug.Log($"PlayerTurn{_currentTurn} Start");
@@ -108,7 +142,7 @@ public class BattleManager : MonoBehaviour
 
     public void EndPlayerTurn()
     {
-        if (!_isBattle) return;
+        if (_state != BattleState.Battle) return;
 
         Debug.Log($"PlayerTurn{_currentTurn} End");
         _endTurnButton.enabled = false;
@@ -129,7 +163,6 @@ public class BattleManager : MonoBehaviour
         foreach (Unit unit in _enemyUnits)
         {
             if (unit == null) continue;
-
             unit.DecideAction();
         }
 
@@ -138,7 +171,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartEnemyTurn()
     {
-        if (!_isBattle) return;
+        if (_state != BattleState.Battle) return;
 
         Debug.Log($"EnemyTurn{_currentTurn} Start");
 
@@ -147,8 +180,6 @@ public class BattleManager : MonoBehaviour
             foreach (Unit unit in _enemyUnits)
             {
                 if (unit == null) continue;
-
-                Debug.Log("EnemyUnit ResetDefense");
                 unit.ResetAction();
             }
         }
@@ -161,7 +192,6 @@ public class BattleManager : MonoBehaviour
         foreach (Unit unit in turnList)
         {
             if (unit == null) continue;
-
             unit.PerformAction();
 
             yield return new WaitForSeconds(1.0f);
@@ -170,28 +200,27 @@ public class BattleManager : MonoBehaviour
 
     public void RemoveUnit(Unit unit)
     {
-        int index = -1;
         if (_playerUnits.Contains(unit))
         {
-            index = System.Array.IndexOf(_playerUnits, unit);
-            _playerUnits[index] = null;
+            _playerUnits[unit.UnitData.SlotIndex] = null;
+            Check(true);
         }
         else
         {
-            index = System.Array.IndexOf(_enemyUnits, unit);
-            _enemyUnits[index] = null;
+            _enemyUnits[unit.UnitData.SlotIndex] = null;
+            Check(false);
         }
     }
 
-    public void Check(Unit unit)
+    public void Check(bool flag)
     {
         int index = -1;
-        if (_playerUnits.Contains(unit))
+        if (flag)
         {
             if (_playerUnits[0] == null && _playerUnits[1] == null && _playerUnits[2] == null && _playerUnits[3] == null)
             {
                 Debug.Log("Game Over");
-                _isBattle = false;
+                _state = BattleState.End;
                 StopAllCoroutines();
                 _endTurnButton.enabled = false;
             }
@@ -199,6 +228,7 @@ public class BattleManager : MonoBehaviour
             {
                 index = GetIndex(_playerUnits, 2, 4);
                 _playerUnits[index - 2] = _playerUnits[index];
+                _playerUnits[index - 2].UnitData.SlotIndex = index - 2;
                 StartCoroutine(MoveToSlot(_playerUnits[index - 2], _playerSlots[index - 2]));
                 _playerUnits[index] = null;
             }
@@ -208,7 +238,7 @@ public class BattleManager : MonoBehaviour
             if (_enemyUnits[0] == null && _enemyUnits[1] == null && _enemyUnits[2] == null && _enemyUnits[3] == null)
             {
                 Debug.Log("Stage Clear");
-                _isBattle = false;
+                _state = BattleState.End;
                 StopAllCoroutines();
                 _endTurnButton.enabled = false;
             }
@@ -216,6 +246,7 @@ public class BattleManager : MonoBehaviour
             {
                 index = GetIndex(_enemyUnits, 2, 4);
                 _enemyUnits[index - 2] = _enemyUnits[index];
+                _enemyUnits[index - 2].UnitData.SlotIndex = index - 2;
                 StartCoroutine(MoveToSlot(_enemyUnits[index - 2], _enemySlots[index - 2]));
                 _enemyUnits[index] = null;
             }
@@ -236,8 +267,8 @@ public class BattleManager : MonoBehaviour
         {
             time += Time.deltaTime;
             float tValue = time / duration;
-
             t.position = Vector3.Lerp(startPos, endPos, tValue);
+
             yield return null;
         }
 
@@ -291,7 +322,6 @@ public class BattleManager : MonoBehaviour
     private void OnEnable()
     {
         _input.Enable();
-
         _input.Player.Click.started += OnClick;
         _input.Player.Click.canceled += OnRelease;
     }
@@ -300,81 +330,60 @@ public class BattleManager : MonoBehaviour
     {
         _input.Player.Click.started -= OnClick;
         _input.Player.Click.canceled -= OnRelease;
-
         _input.Disable();
     }
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
-        if (_currentTurn > 0) return;
-
-        Vector2 mousePos = _input.Player.Position.ReadValue<Vector2>();
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        worldPos.z = 0;
-
-        _selectedUnit = GetNearestUnit(worldPos, _playerUnits);
+        if (_selectedUnit == null) return;
+        Debug.Log($"OnClick");
+        _isDrag = true;
     }
 
     private void OnRelease(InputAction.CallbackContext ctx)
     {
         if (_selectedUnit == null) return;
-
-        Transform nearestSlot = GetNearestSlot(_selectedUnit.transform.position);
-
-        StartCoroutine(MoveToSlot(_selectedUnit, nearestSlot));
-
+        Debug.Log($"OnRelease");
+        _selectedUnit.transform.position = _playerSlots[_selectedUnit.UnitData.SlotIndex].position;
         _selectedUnit = null;
+        _isDrag = false;
     }
-    
-    private Unit GetNearestUnit(Vector3 worldPos, Unit[] units)
-    {
-        Unit closest = null;
-        float minDist = float.MaxValue;
 
-        foreach (Unit unit in units)
+    private void MouseProcess()
+    {
+        _mousePos = _input.Player.Position.ReadValue<Vector2>();
+        _screenPos = new Vector3(_mousePos.x, _mousePos.y, 8.0f);
+        _worldPos = Camera.main.ScreenToWorldPoint(_screenPos);
+        _worldPos.z = 0.0f;
+
+        foreach(Unit unit in _playerUnits)
         {
             if (unit == null) continue;
 
-            float dist = Vector3.Distance(worldPos, unit.transform.position);
-
-            if (dist < minDist && dist < 1.0f)
+            if(Vector3.Distance(unit.transform.position, _worldPos) <= 0.6f)
             {
-                minDist = dist;
-                closest = unit;
+                _selectedUnit = unit;
+                _selectedUnit.SetHighlight(true);
+                break;
             }
+
+            unit.SetHighlight(false);
         }
 
-        return closest;
-    }
-
-    private Transform GetNearestSlot(Vector3 worldPos)
-    {
-        Transform closest = null;
-        float minDist = float.MaxValue;
-
-        foreach (Transform slot in _playerSlots)
+        if (_isDrag)
         {
-            float dist = Vector3.Distance(worldPos, slot.position);
-
-            if (dist < minDist)
-            {
-                minDist = dist;
-                closest = slot;
-            }
+            _selectedUnit.transform.position = _worldPos;
         }
-
-        return closest;
     }
 
     private void Update()
     {
-        if (_selectedUnit == null) return;
-
-        Vector2 mousePos = _input.Player.Position.ReadValue<Vector2>();
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        worldPos.z = 0;
-
-        _selectedUnit.transform.position = worldPos;
+        switch (_state)
+        {
+            case BattleState.Prepare:
+                MouseProcess();
+                break;
+        }
     }
 
 }
