@@ -130,7 +130,7 @@ public class BattleManager : MonoBehaviour
         _endPrepareButton.gameObject.SetActive(false);
         _endTurnButton.gameObject.SetActive(true);
         _handArea.gameObject.SetActive(true);
-        CardManager.Instance.Init(_playerCards);
+        CardManager.Instance.Init(_playerCards, _playerUnits, _enemyUnits);
 
         foreach (SlotGround slotGround in _playerSlotGrounds)
             slotGround.gameObject.SetActive(false);

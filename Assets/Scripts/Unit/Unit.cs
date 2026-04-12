@@ -25,7 +25,6 @@ public class Unit : MonoBehaviour
     protected UnitAction _nextAction;
     protected Unit _target;
 
-    private bool _isDead = false;
     protected bool _isSkillUsing = false;
     public bool IsSkillUsing => _isSkillUsing;
 
@@ -116,7 +115,6 @@ public class Unit : MonoBehaviour
             }
             else
             {
-                _isDead = true;
                 _unitData.CurrentHealth = 0;
                 _animator.SetTrigger("Die");
             }

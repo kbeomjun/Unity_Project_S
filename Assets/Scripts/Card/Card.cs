@@ -7,7 +7,6 @@ public enum CardState
     Idle,
     Hover,
     Selected,
-    Dragging,
     Targeting
 }
 
@@ -24,16 +23,22 @@ public class Card : MonoBehaviour
     private RectTransform _rect;
     public RectTransform Rect => _rect;
 
-    private Vector2 _originPos;
+    private Vector3 _originPosition;
     private Vector3 _originScale;
 
-    public Vector2 OriginPos => _originPos;
+    public Vector3 OriginPosition => _originPosition;
 
-    private float _hoverY = 50f;
+    private float _hoverY = 40f;
     private float _hoverScale = 1.2f;
+    private float _selectedScale = 1.4f;
     private float _speed = 10f;
 
     private CardState _state = CardState.Idle;
+    public CardState State
+    {
+        get => _state;
+        set => _state = value;
+    }
 
     private void Awake()
     {
@@ -48,52 +53,36 @@ public class Card : MonoBehaviour
         _costText.text = _cardData.Cost.ToString();
         _descriptionText.text = _cardData.Description;
         
-        _originPos = _rect.anchoredPosition;
+        _originPosition = _rect.position;
+        _originPosition.z = 0.0f;
         _originScale = _rect.localScale;
-    }
-
-    public void SetHighlight(bool onOff)
-    {
-        if (_state == CardState.Dragging) return;
-
-        if (onOff)
-        {
-            if (_state == CardState.Idle)
-                _state = CardState.Hover;
-        }
-        else
-        {
-            if (_state == CardState.Hover)
-                _state = CardState.Idle;
-        }
     }
 
     private void Update()
     {
-        Vector2 targetPos = _originPos;
-        Vector3 targetScale = _originScale;
+        Vector3 hoverOffset = _originPosition + new Vector3(0.0f, _hoverY, 0.0f);
 
         switch (_state)
         {
             case CardState.Idle:
+                _rect.position = Vector3.Lerp(_rect.position, _originPosition, _speed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale, _speed * Time.deltaTime);
                 break;
 
             case CardState.Hover:
-                targetPos += new Vector2(0, _hoverY);
-                targetScale = _originScale * _hoverScale;
+                _rect.position = Vector3.Lerp(_rect.position, hoverOffset, _speed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
                 break;
 
             case CardState.Selected:
-                targetPos += new Vector2(0, _hoverY);
-                targetScale = _originScale * _hoverScale;
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _selectedScale, _speed * Time.deltaTime);
                 break;
 
-            case CardState.Dragging:
+            case CardState.Targeting:
+                _rect.position = Vector3.Lerp(_rect.position, hoverOffset, _speed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _selectedScale, _speed * Time.deltaTime);
                 break;
         }
-
-        _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, targetPos, Time.deltaTime * _speed);
-        _rect.localScale = Vector3.Lerp(_rect.localScale, targetScale, Time.deltaTime * _speed);
     }
 
 }

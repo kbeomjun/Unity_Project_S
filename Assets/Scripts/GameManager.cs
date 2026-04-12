@@ -58,7 +58,8 @@ public class GameManager : MonoBehaviour
 
         foreach (Card card in _playerCards)
         {
-            _playerCardDatas.Add(new CardData("Defense", 1, 5, $"Add <color=#FF5555>{5}</color> Defense To Selected Unit", true, CardType.Buff));
+            _playerCardDatas.Add(new CardData("Defense", 1, 5, $"Add <color=#FF5555>{5}</color> Defense To Selected Unit", 
+                                                true, true, CardType.Buff));
         }
 
         BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
