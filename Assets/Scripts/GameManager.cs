@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<Unit> _playerUnits = new List<Unit>();
     private List<UnitData> _playerUnitDatas = new List<UnitData>();
 
+    [SerializeField] List<Card> _playerCards = new List<Card>();
+    private List<CardData> _playerCardDatas = new List<CardData>();
+
     public static GameManager Instance { get; private set; }
     private void Awake()
     {
@@ -53,7 +56,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        BattleManager.Instance.StartBattle(_playerUnitDatas);
+        foreach (Card card in _playerCards)
+        {
+            _playerCardDatas.Add(new CardData("Defense", 1, 5, $"Add <color=#FF5555>{5}</color> Defense To Selected Unit", true, CardType.Buff));
+        }
+
+        BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
     }
 
     private void StartGame()
@@ -89,7 +97,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case NodeType.Battle:
-                BattleManager.Instance.StartBattle(_playerUnitDatas);
+                BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
                 break;
 
             case NodeType.Elite:
@@ -133,11 +141,6 @@ public class GameManager : MonoBehaviour
 
             StartChapter();
         }
-    }
-
-    private void AddUnit()
-    {
-
     }
 
 }
