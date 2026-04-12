@@ -5,7 +5,7 @@ public class Lancer : Unit
     public override void DecideAction()
     {
         _currentAttack = _unitData.Attack;
-        int random = Random.Range(2, 3);
+        int random = Random.Range(1, 2);
         _nextAction = (UnitAction)random;
 
         NextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);

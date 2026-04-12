@@ -51,8 +51,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 5162159627313479434}
   _animator: {fileID: 8227885086285883084}
   _healthBar: {fileID: 9180120450249655196}
-  _shieldEffect: {fileID: 4814397205814551369}
-  _healEffect: {fileID: 4245543097570891733}
+  _unitEffect: {fileID: 4814397205814551369}
   _nextActionScript: {fileID: 5298959453295926065}
 --- !u!1 &2523922595723371390
 GameObject:
@@ -244,7 +243,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5543740061040410324}
-  - {fileID: 3607527401140191988}
   m_Father: {fileID: 4646727061205000826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8847124836210650936
@@ -279,79 +277,6 @@ Transform:
   - {fileID: 8930913316616958289}
   m_Father: {fileID: 4646727061205000826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2412502278305683258
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 710770496729428094}
-    m_Modifications:
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8911018818358705186, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-      propertyPath: m_Name
-      value: HealEffect
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
---- !u!4 &3607527401140191988 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1399050500485682638, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-  m_PrefabInstance: {fileID: 2412502278305683258}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4245543097570891733 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1986611895593337071, guid: 8dea2e1b2d7d8ae469a7fa9ceef6f842, type: 3}
-  m_PrefabInstance: {fileID: 2412502278305683258}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 219d1af7db20e3e42a3d3f3012eebaf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Heal
 --- !u!1001 &3612084345858976773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -362,7 +287,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3573900810208330456, guid: e226127340ed25b42be87f17f6e577c1, type: 3}
       propertyPath: m_Name
-      value: ShieldEffect
+      value: UnitEffect
       objectReference: {fileID: 0}
     - target: {fileID: 9137770269971452625, guid: e226127340ed25b42be87f17f6e577c1, type: 3}
       propertyPath: m_LocalPosition.x

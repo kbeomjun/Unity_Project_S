@@ -256,7 +256,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 200}
-  m_SizeDelta: {x: 256, y: 128}
+  m_SizeDelta: {x: 300, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &226456766
 MonoBehaviour:
@@ -486,9 +486,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'End
-
-    Turn'
+  m_text: End Turn
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -1348,7 +1346,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "End \nPrepare"
+  m_text: End Prepare
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -1933,6 +1931,8 @@ MonoBehaviour:
   _playerUnits:
   - {fileID: 731993277148249294, guid: b22a1027fc5e0c843b2de575516dd041, type: 3}
   - {fileID: 4021216087757598612, guid: 6172485570945924ca8efe231fd1dea3, type: 3}
+  - {fileID: 352411704827830978, guid: 25988a890d59b614c8a565f83de7368b, type: 3}
+  - {fileID: 6621683844414708312, guid: ee201eb24de069142a5ef106240e99ab, type: 3}
 --- !u!114 &1667663374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2111,7 +2111,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 750, y: 300}
-  m_SizeDelta: {x: 256, y: 128}
+  m_SizeDelta: {x: 300, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1922572608
 MonoBehaviour:

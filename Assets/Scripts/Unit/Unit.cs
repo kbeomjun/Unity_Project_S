@@ -12,8 +12,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] protected Animator _animator;
     [SerializeField] private HealthBar _healthBar;
-    [SerializeField] private Shield _shieldEffect;
-    [SerializeField] private Heal _healEffect;
+    [SerializeField] private UnitEffect _unitEffect;
     [SerializeField] private NextAction _nextActionScript;
     public NextAction NextActionScript => _nextActionScript;
 
@@ -137,7 +136,7 @@ public class Unit : MonoBehaviour
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += _unitData.Defense;
-        _shieldEffect.ShieldEffect();
+        _unitEffect.ShieldEffect();
         _healthBar.SetDefense(_currentDefense);
     }
 
@@ -145,7 +144,7 @@ public class Unit : MonoBehaviour
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += defense;
-        _shieldEffect.ShieldEffect();
+        _unitEffect.ShieldEffect();
         _healthBar.SetDefense(_currentDefense);
     }
 
@@ -165,7 +164,7 @@ public class Unit : MonoBehaviour
         }
         
         _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
-        _healEffect.HealEffect();
+        _unitEffect.HealEffect();
     }
 
     public virtual void UseSkill()
