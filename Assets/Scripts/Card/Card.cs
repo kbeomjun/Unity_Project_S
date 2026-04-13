@@ -23,10 +23,11 @@ public class Card : MonoBehaviour
     private RectTransform _rect;
     public RectTransform Rect => _rect;
 
-    private Vector3 _originPosition;
+    private Vector2 _originPosition;
     private Vector3 _originScale;
 
-    public Vector3 OriginPosition => _originPosition;
+    private float _height = 0.0f;
+    public float Height => _height;
 
     private float _hoverY = 40f;
     private float _hoverScale = 1.2f;
@@ -43,6 +44,7 @@ public class Card : MonoBehaviour
     private void Awake()
     {
         _rect = GetComponent<RectTransform>();
+        _height = _rect.rect.height;
     }
 
     public void Init(CardData cardData)
@@ -52,25 +54,24 @@ public class Card : MonoBehaviour
         _nameText.text = _cardData.Name;
         _costText.text = _cardData.Cost.ToString();
         _descriptionText.text = _cardData.Description;
-        
-        _originPosition = _rect.position;
-        _originPosition.z = 0.0f;
+
+        _originPosition = _rect.anchoredPosition;
         _originScale = _rect.localScale;
     }
 
     private void Update()
     {
-        Vector3 hoverOffset = _originPosition + new Vector3(0.0f, _hoverY, 0.0f);
+        Vector2 hoverOffset = _originPosition + new Vector2(0.0f, _hoverY);
 
         switch (_state)
         {
             case CardState.Idle:
-                _rect.position = Vector3.Lerp(_rect.position, _originPosition, _speed * Time.deltaTime);
+                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale, _speed * Time.deltaTime);
                 break;
 
             case CardState.Hover:
-                _rect.position = Vector3.Lerp(_rect.position, hoverOffset, _speed * Time.deltaTime);
+                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, hoverOffset, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
                 break;
 
@@ -79,7 +80,7 @@ public class Card : MonoBehaviour
                 break;
 
             case CardState.Targeting:
-                _rect.position = Vector3.Lerp(_rect.position, hoverOffset, _speed * Time.deltaTime);
+                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, hoverOffset, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _selectedScale, _speed * Time.deltaTime);
                 break;
         }
