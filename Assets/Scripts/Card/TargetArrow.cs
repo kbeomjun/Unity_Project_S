@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TargetArrow : MonoBehaviour
 {
@@ -7,9 +8,21 @@ public class TargetArrow : MonoBehaviour
 
     private RectTransform _rect;
 
+    private Image _headImage;
+    private Image _bodyImage;
+
+    private Color[] _colors = new Color[]
+    {
+        new Color32(210, 40, 40, 255),
+        new Color32(18, 156, 34, 255)
+    };
+
     private void Awake()
     {
         _rect = GetComponent<RectTransform>();
+        _headImage = _head.GetComponent<Image>();
+        _bodyImage = _body.GetComponent<Image>();
+        SetArrowColor(false);
     }
 
     public void UpdateArrow(Vector2 start, Vector2 end)
@@ -32,6 +45,20 @@ public class TargetArrow : MonoBehaviour
         _body.sizeDelta = new Vector2(dist, _body.sizeDelta.y);
 
         _head.anchoredPosition = new Vector2(dist, 0f);
+    }
+
+    public void SetArrowColor(bool onOff)
+    {
+        if (onOff)
+        {
+            _headImage.color = _colors[1];
+            _bodyImage.color = _colors[1];
+        }
+        else
+        {
+            _headImage.color = _colors[0];
+            _bodyImage.color = _colors[0];
+        }
     }
 
     public void Show()

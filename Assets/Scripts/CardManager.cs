@@ -159,6 +159,7 @@ public class CardManager : MonoBehaviour
                     unit.SetHighlight(true);
                     _selectedUnit = unit;
                     count++;
+                    _targetArrow.SetArrowColor(true);
                 }
                 else
                 {
@@ -166,7 +167,11 @@ public class CardManager : MonoBehaviour
                 }
             }
 
-            if (count == 0) _selectedUnit = null;
+            if (count == 0) 
+            { 
+                _selectedUnit = null;
+                _targetArrow.SetArrowColor(false);
+            }
         }
     }
 
