@@ -19,8 +19,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Transform[] _enemySlots;
     [SerializeField] private Unit[] _playerUnitPrefabs;
     [SerializeField] private Unit[] _enemyUnitPrefabs;
-    [SerializeField] private Transform _handArea;
-    [SerializeField] private Card _cardPrefab;
+    [SerializeField] private GameObject _CardView;
+    
     [SerializeField] private Button _endPrepareButton;
     [SerializeField] private Button _endTurnButton;
 
@@ -35,9 +35,11 @@ public class BattleManager : MonoBehaviour
     private Unit[] _playerUnits = new Unit[4];
     private Unit[] _enemyUnits = new Unit[4];
 
-    private List<Card> _playerCards = new List<Card>();
+    public Unit[] PlayerUnits => _playerUnits;
+    public Unit[] EnemyUnits => _enemyUnits;
 
     private int _currentTurn = 0;
+    private int _drawCardNum = 5;
     private BattleState _state;
     
     private PlayerInputActions _input;
@@ -69,9 +71,10 @@ public class BattleManager : MonoBehaviour
     public void StartBattle(List<UnitData> playerUnitDatas, List<CardData> playerCardDatas)
     {
         _currentTurn = 0;
+        _drawCardNum = 5;
         _state = BattleState.Prepare;
         _endPrepareButton.gameObject.SetActive(true);
-        _handArea.gameObject.SetActive(false);
+        _CardView.SetActive(false);
 
         foreach (SlotGround slotGround in _playerSlotGrounds)
             slotGround.gameObject.SetActive(true);
@@ -105,17 +108,7 @@ public class BattleManager : MonoBehaviour
             _enemyUnits[i].transform.localPosition = Vector3.zero;
         }
 
-        foreach (CardData cardData in playerCardDatas)
-        {
-            Card card = Instantiate(_cardPrefab);
-            RectTransform rect = card.GetComponent<RectTransform>();
-
-            rect.SetParent(_handArea, false);
-            rect.anchoredPosition = Vector2.zero;
-
-            card.Init(cardData);
-            _playerCards.Add(card);
-        }
+        CardManager.Instance.Init(playerCardDatas);
     }
 
     public void EndPrepare()
@@ -129,8 +122,7 @@ public class BattleManager : MonoBehaviour
         _state = BattleState.Battle;
         _endPrepareButton.gameObject.SetActive(false);
         _endTurnButton.gameObject.SetActive(true);
-        _handArea.gameObject.SetActive(true);
-        CardManager.Instance.Init(_playerCards, _playerUnits, _enemyUnits);
+        _CardView.SetActive(true);
 
         foreach (SlotGround slotGround in _playerSlotGrounds)
             slotGround.gameObject.SetActive(false);
@@ -145,6 +137,7 @@ public class BattleManager : MonoBehaviour
         _currentTurn++;
         Debug.Log($"PlayerTurn{_currentTurn} Start");
 
+        CardManager.Instance.DrawCard(_drawCardNum);
         _endTurnButton.enabled = true;
 
         foreach (Unit unit in _playerUnits)

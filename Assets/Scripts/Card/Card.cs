@@ -7,7 +7,9 @@ public enum CardState
     Idle,
     Hover,
     Selected,
-    Targeting
+    Targeting,
+    Draw,
+    Discard
 }
 
 public class Card : MonoBehaviour
@@ -26,15 +28,21 @@ public class Card : MonoBehaviour
     private Vector2 _originPosition;
     private Vector3 _originScale;
 
+    public Vector2 OriginPosition
+    {
+        get => _originPosition;
+        set => _originPosition = value;
+    }
+
     private float _height = 0.0f;
     public float Height => _height;
 
-    private float _hoverY = 40f;
+    private float _hoverY = 40.0f;
     private float _hoverScale = 1.2f;
     private float _selectedScale = 1.4f;
-    private float _speed = 10f;
+    private float _speed = 5.0f;
 
-    private CardState _state = CardState.Idle;
+    private CardState _state = CardState.Draw;
     public CardState State
     {
         get => _state;
@@ -57,6 +65,7 @@ public class Card : MonoBehaviour
 
         _originPosition = _rect.anchoredPosition;
         _originScale = _rect.localScale;
+        _state = CardState.Draw;
     }
 
     private void Update()
@@ -82,6 +91,12 @@ public class Card : MonoBehaviour
             case CardState.Targeting:
                 _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, hoverOffset, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _selectedScale, _speed * Time.deltaTime);
+                break;
+
+            case CardState.Draw:
+                break;
+
+            case CardState.Discard:
                 break;
         }
     }

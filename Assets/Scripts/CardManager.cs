@@ -4,15 +4,19 @@ using UnityEngine.InputSystem;
 
 public class CardManager : MonoBehaviour
 {
-    [SerializeField] TargetArrow _targetArrow;
-    [SerializeField] RectTransform _canvasRect;
+    [SerializeField] private Card _cardPrefab;
+    [SerializeField] private Transform _drawPileArea;
+    [SerializeField] private Transform _handArea;
+    [SerializeField] private Transform _discardPileArea;
+    [SerializeField] private TargetArrow _targetArrow;
+    [SerializeField] private RectTransform _canvasRect;
 
-    private List<Card> _drawPile = new List<Card>();
-    private List<Card> _hand = new List<Card>();
-    private List<Card> _discardPile = new List<Card>();
+    private List<Card> _drawPileCards = new List<Card>();
+    private List<Card> _handCards = new List<Card>();
+    private List<Card> _discardPileCards = new List<Card>();
 
-    private Unit[] _playerUnits = new Unit[4];
-    private Unit[] _enemyUnits = new Unit[4];
+    private Vector2 _drawPileOffset = new Vector2(-50.0f, 0.0f);
+    private Vector2 _discardPileOffset = new Vector2(50.0f, 0.0f);
 
     private PlayerInputActions _input;
     private Card _selectedCard = null;
@@ -35,11 +39,56 @@ public class CardManager : MonoBehaviour
         _thresholdY = Screen.height * 0.4f;
     }
 
-    public void Init(List<Card> cards, Unit[] playerUnits, Unit[] enemyUnits)
+    public void Init(List<CardData> playerCardDatas)
     {
-        _hand = cards;
-        _playerUnits = playerUnits;
-        _enemyUnits = enemyUnits;
+        foreach (CardData cardData in playerCardDatas)
+        {
+            Card card = Instantiate(_cardPrefab);
+            RectTransform rect = card.GetComponent<RectTransform>();
+
+            rect.SetParent(_drawPileArea, false);
+            rect.anchoredPosition = _drawPileOffset;
+
+            card.Init(cardData);
+            _drawPileCards.Add(card);
+        }
+    }
+
+    public void DrawCard(int num)
+    {
+        for(int i = 0; i < num; i++)
+        {
+            Card card = _drawPileCards[0];
+            RectTransform rect = card.GetComponent<RectTransform>();
+
+            card.State = CardState.Idle;
+            rect.SetParent(_handArea, false);
+            rect.anchoredPosition = Vector2.zero;
+            _handCards.Add(card);
+
+            _drawPileCards.Remove(card);
+        }
+    }
+
+    private void Arrange()
+    {
+        if (_handCards.Count <= 0) return;
+        
+        int count = _handCards.Count;
+        float spacing = 150f; 
+        float startX = -(count - 1) * 0.5f * spacing;
+
+        for (int i = 0; i < count; i++)
+        {
+            Card card = _handCards[i];
+
+            float x = startX + i * spacing;
+            float y = 0f;
+
+            Vector2 targetPos = new Vector2(x, y);
+
+            card.OriginPosition = targetPos;
+        }
     }
 
     private void OnEnable()
@@ -108,21 +157,32 @@ public class CardManager : MonoBehaviour
         {
             int count = 0;
 
-            foreach (Card card in _hand)
+            for (int i = _handCards.Count - 1; i >= 0; i--)
             {
+                Card card = _handCards[i];
+
                 if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, _screenMousePos, null))
                 {
                     _selectedCard = card;
-                    _selectedCard.State = CardState.Hover;
+                    card.State = CardState.Hover;
                     count++;
+
+                    for (int j = 0; j < _handCards.Count; j++)
+                    {
+                        if (j != i) _handCards[j].State = CardState.Idle;
+                    }
+
+                    break;
                 }
-                else
+            }
+
+            if (count == 0)
+            {
+                foreach (var card in _handCards)
                 {
                     card.State = CardState.Idle;
                 }
             }
-
-            if (count == 0) _selectedCard = null;
         }
 
         if (_isDrag && _selectedCard != null)
@@ -146,7 +206,7 @@ public class CardManager : MonoBehaviour
             _targetArrow.UpdateArrow(_selectedCard.Rect.anchoredPosition + new Vector2(0.0f, _selectedCard.Height * 0.4f), 
                                         _uiMousePos + new Vector2(0.0f, _selectedCard.Height * 1.5f));
 
-            Unit[] targetUnits = _selectedCard.CardData.TargetType ? _playerUnits : _enemyUnits;
+            Unit[] targetUnits = _selectedCard.CardData.TargetType ? BattleManager.Instance.PlayerUnits : BattleManager.Instance.EnemyUnits;
 
             int count = 0;
 
@@ -178,6 +238,7 @@ public class CardManager : MonoBehaviour
     private void LateUpdate()
     {
         MouseProcess();
+        Arrange();
     }
 
 }
