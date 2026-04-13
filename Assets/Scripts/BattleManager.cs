@@ -136,9 +136,9 @@ public class BattleManager : MonoBehaviour
 
         _currentTurn++;
         Debug.Log($"PlayerTurn{_currentTurn} Start");
-
-        CardManager.Instance.DrawCard(_drawCardNum);
         _endTurnButton.enabled = true;
+
+        StartCoroutine(DrawCard(_drawCardNum));
 
         foreach (Unit unit in _playerUnits)
         {
@@ -161,12 +161,23 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private IEnumerator DrawCard(int num)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            yield return StartCoroutine(CardManager.Instance.DrawCardRoutine());
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
     public void EndPlayerTurn()
     {
         if (_state != BattleState.Battle) return;
 
         Debug.Log($"PlayerTurn{_currentTurn} End");
         _endTurnButton.enabled = false;
+
+        CardManager.Instance.DiscardHandCards();
 
         StartCoroutine(PlayerToEnemyFlow());
     }

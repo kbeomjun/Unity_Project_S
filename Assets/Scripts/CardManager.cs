@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,9 +6,7 @@ using UnityEngine.InputSystem;
 public class CardManager : MonoBehaviour
 {
     [SerializeField] private Card _cardPrefab;
-    [SerializeField] private Transform _drawPileArea;
     [SerializeField] private Transform _handArea;
-    [SerializeField] private Transform _discardPileArea;
     [SerializeField] private TargetArrow _targetArrow;
     [SerializeField] private RectTransform _canvasRect;
 
@@ -15,8 +14,11 @@ public class CardManager : MonoBehaviour
     private List<Card> _handCards = new List<Card>();
     private List<Card> _discardPileCards = new List<Card>();
 
-    private Vector2 _drawPileOffset = new Vector2(-50.0f, 0.0f);
-    private Vector2 _discardPileOffset = new Vector2(50.0f, 0.0f);
+    private Vector2 _drawPileOffset = Vector2.zero;
+    private Vector2 _discardPileOffset = Vector2.zero;
+
+    private float _spacing = 150.0f;
+    private float _startX = 0.0f;
 
     private PlayerInputActions _input;
     private Card _selectedCard = null;
@@ -37,6 +39,9 @@ public class CardManager : MonoBehaviour
 
         _input = new PlayerInputActions();
         _thresholdY = Screen.height * 0.4f;
+
+        _drawPileOffset = new Vector2(-Screen.width, 0.0f);
+        _discardPileOffset = new Vector2(Screen.width, 0.0f);
     }
 
     public void Init(List<CardData> playerCardDatas)
@@ -46,7 +51,7 @@ public class CardManager : MonoBehaviour
             Card card = Instantiate(_cardPrefab);
             RectTransform rect = card.GetComponent<RectTransform>();
 
-            rect.SetParent(_drawPileArea, false);
+            rect.SetParent(_handArea, false);
             rect.anchoredPosition = _drawPileOffset;
 
             card.Init(cardData);
@@ -54,40 +59,62 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    public void DrawCard(int num)
+    public IEnumerator DrawCardRoutine()
     {
-        for(int i = 0; i < num; i++)
+        if (_drawPileCards.Count <= 0)
         {
-            Card card = _drawPileCards[0];
-            RectTransform rect = card.GetComponent<RectTransform>();
+            if (_discardPileCards.Count <= 0)
+                yield break;
 
-            card.State = CardState.Idle;
-            rect.SetParent(_handArea, false);
-            rect.anchoredPosition = Vector2.zero;
-            _handCards.Add(card);
-
-            _drawPileCards.Remove(card);
+            yield return StartCoroutine(Shuffle());
         }
+
+        Card card = _drawPileCards[0];
+        card.State = CardState.Idle;
+        card.transform.SetAsLastSibling();
+        _handCards.Add(card);
+        _drawPileCards.Remove(card);
+    }
+
+    private IEnumerator Shuffle()
+    {
+        while(_discardPileCards.Count > 0)
+        {
+            int index = Random.Range(0, _discardPileCards.Count);
+            Card card = _discardPileCards[index];
+            card.State = CardState.Draw;
+            card.OriginPosition = _drawPileOffset;
+            _drawPileCards.Add(card);
+            _discardPileCards.Remove(card);
+
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    public void DiscardHandCards()
+    {
+        foreach(Card card in _handCards)
+        {
+            card.State = CardState.Discard;
+            card.OriginPosition = _discardPileOffset;
+            _discardPileCards.Add(card);
+        }
+
+        _handCards.Clear();
     }
 
     private void Arrange()
     {
-        if (_handCards.Count <= 0) return;
-        
         int count = _handCards.Count;
-        float spacing = 150f; 
-        float startX = -(count - 1) * 0.5f * spacing;
+        if (count <= 0) return;
+        
+        _startX = -(count - 1) * 0.5f * _spacing;
 
         for (int i = 0; i < count; i++)
         {
             Card card = _handCards[i];
-
-            float x = startX + i * spacing;
-            float y = 0f;
-
-            Vector2 targetPos = new Vector2(x, y);
-
-            card.OriginPosition = targetPos;
+            float x = _startX + i * _spacing;
+            card.OriginPosition = new Vector2(x, 0.0f);
         }
     }
 
@@ -120,16 +147,25 @@ public class CardManager : MonoBehaviour
         if (_selectedCard.State == CardState.Selected && !_selectedCard.CardData.NeedTarget && _screenMousePos.y >= _thresholdY)
         {
             Debug.Log("NonTargeting Card Used");
+            _selectedCard.State = CardState.Discard;
+            _selectedCard.OriginPosition = _discardPileOffset;
+            _discardPileCards.Add(_selectedCard);
+            _handCards.Remove(_selectedCard);
         }
-
-        if (_selectedCard.State == CardState.Targeting && _selectedUnit != null && _screenMousePos.y >= _thresholdY)
+        else if (_selectedCard.State == CardState.Targeting && _selectedUnit != null && _screenMousePos.y >= _thresholdY)
         {
             Debug.Log("Targeting Card Used");
+            _selectedCard.State = CardState.Discard;
+            _selectedCard.OriginPosition = _discardPileOffset;
+            _discardPileCards.Add(_selectedCard);
+            _handCards.Remove(_selectedCard);
+        }
+        else
+        {
+            _selectedCard.State = CardState.Idle;
         }
 
         _isDrag = false;
-
-        _selectedCard.State = CardState.Idle;
         _selectedCard = null;
 
         if (_selectedUnit != null)
@@ -178,7 +214,9 @@ public class CardManager : MonoBehaviour
 
             if (count == 0)
             {
-                foreach (var card in _handCards)
+                _selectedCard = null;
+
+                foreach (Card card in _handCards)
                 {
                     card.State = CardState.Idle;
                 }

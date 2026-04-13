@@ -40,6 +40,10 @@ public class Card : MonoBehaviour
     private float _hoverY = 40.0f;
     private float _hoverScale = 1.2f;
     private float _selectedScale = 1.4f;
+    private float _discardScale = 0.2f;
+    private float _currentZAngle = 0.0f;
+    private float _targetZAngle = 0.0f;
+    private float _newZAngle = 0.0f;
     private float _speed = 5.0f;
 
     private CardState _state = CardState.Draw;
@@ -77,6 +81,10 @@ public class Card : MonoBehaviour
             case CardState.Idle:
                 _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale, _speed * Time.deltaTime);
+                _currentZAngle = _rect.eulerAngles.z;
+                _targetZAngle = 0.0f;
+                _newZAngle = Mathf.LerpAngle(_currentZAngle, _targetZAngle, _speed * Time.deltaTime);
+                _rect.rotation = Quaternion.Euler(0, 0, _newZAngle);
                 break;
 
             case CardState.Hover:
@@ -94,9 +102,21 @@ public class Card : MonoBehaviour
                 break;
 
             case CardState.Draw:
+                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _discardScale, _speed * 2.0f * Time.deltaTime);
+                _currentZAngle = _rect.eulerAngles.z;
+                _targetZAngle = 90.0f;
+                _newZAngle = Mathf.LerpAngle(_currentZAngle, _targetZAngle, _speed * Time.deltaTime);
+                _rect.rotation = Quaternion.Euler(0, 0, _newZAngle);
                 break;
 
             case CardState.Discard:
+                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _discardScale, _speed * 2.0f * Time.deltaTime);
+                _currentZAngle = _rect.eulerAngles.z;
+                _targetZAngle = -90.0f;
+                _newZAngle = Mathf.LerpAngle(_currentZAngle, _targetZAngle, _speed * Time.deltaTime);
+                _rect.rotation = Quaternion.Euler(0, 0, _newZAngle);
                 break;
         }
     }
