@@ -2,29 +2,33 @@ using UnityEngine;
 
 public enum CardType
 {
-    Buff,
-    Debuff
+    ChangeAction,
+    Attack,
+    Defense
 }
 
 public class CardData
 {
     public string Name { get; set; }
     public int Cost { get; set; }
-    public int Value { get; set; }
     public string Description { get; set; }
     public bool NeedTarget { get; set; }
     public bool TargetType { get; set; }
+    public ICardEffect Effect { get; set; }
+    public Sprite Image { get; set; }
 
     public CardType Type { get; set; }
 
-    public CardData(string name, int cost, int value, string description, bool needTarget, bool targetType, CardType type)
+    public CardData(string name, int cost, string description, bool needTarget, bool targetType, 
+                    ICardEffect effect, Sprite image, CardType type)
     {
         Name = name;
         Cost = cost;
-        Value = value;
         Description = description;
         NeedTarget = needTarget;
         TargetType = targetType;
+        Effect = effect;
+        Image = image;
         Type = type;
     }
 
@@ -32,10 +36,11 @@ public class CardData
     {
         Name = data.Name;
         Cost = data.Cost;
-        Value = data.Value;
         Description = data.Description;
         NeedTarget = data.NeedTarget;
         TargetType = data.TargetType;
+        Effect = data.Effect;
+        Image = data.Image;
         Type = data.Type;
     }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<Unit> _playerUnits = new List<Unit>();
     private List<UnitData> _playerUnitDatas = new List<UnitData>();
 
-    [SerializeField] List<Card> _playerCards = new List<Card>();
+    [SerializeField] List<Sprite> _cardImages = new List<Sprite>();
     private List<CardData> _playerCardDatas = new List<CardData>();
 
     public static GameManager Instance { get; private set; }
@@ -56,10 +57,37 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        foreach (Card card in _playerCards)
         {
-            _playerCardDatas.Add(new CardData("Defense", 1, 5, $"Add <color=#FF5555>{5}</color> Defense To Selected Unit", 
-                                                true, true, CardType.Buff));
+            _playerCardDatas.Add(
+                new CardData("ChangeAction", 1, 0, $"Change Unit's NextAction: <color=#FF5555>Attack</color>",
+                                true, true, new ChangeActionEffect(UnitAction.Attack),
+                                _cardImages[(int)CardType.ChangeAction], CardType.ChangeAction)
+            );
+
+            _playerCardDatas.Add(
+                new CardData("ChangeAction", 1, $"Change Unit's NextAction: <color=#FF5555>Defense</color>",
+                                true, true, new ChangeActionEffect(UnitAction.Defense),
+                                _cardImages[(int)CardType.ChangeAction], CardType.ChangeAction)
+            );
+
+            _playerCardDatas.Add(
+                new CardData("ChangeAction", 1, $"Change Unit's NextAction: <color=#FF5555>Skill</color>",
+                                true, true, new ChangeActionEffect(UnitAction.Skill),
+                                _cardImages[(int)CardType.ChangeAction], CardType.ChangeAction)
+            );
+
+            _playerCardDatas.Add(
+                new CardData("Attack", 1, $"Add <color=#FF5555>10</color> Attack To Unit",
+                                true, true, new AttackEffect(10),
+                                _cardImages[(int)CardType.Attack], CardType.Attack)
+            );
+            
+            _playerCardDatas.Add(
+                new CardData("Defense", 1, $"Add <color=#FF5555>10</color> Defense To Unit",
+                                true, true, new DefenseEffect(10),
+                                _cardImages[(int)CardType.Defense], CardType.Defense)
+            );
+
         }
 
         BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);

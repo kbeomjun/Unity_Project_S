@@ -130,7 +130,7 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
-    protected void Defense()
+    public void Defense()
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += _unitData.Defense;
@@ -138,7 +138,7 @@ public class Unit : MonoBehaviour
         _healthBar.SetDefense(_currentDefense);
     }
 
-    protected void Defense(int defense)
+    public void Defense(int defense)
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += defense;
@@ -163,6 +163,18 @@ public class Unit : MonoBehaviour
         
         _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
         _unitEffect.HealEffect();
+    }
+
+    public void SetNextAction(UnitAction action)
+    {
+        _nextAction = action;
+        _nextActionScript.ChangeNextActionIcon((int)_nextAction, _currentAttack, _unitData.Defense);
+    }
+
+    public void AddAttack(int attack)
+    {
+        _currentAttack += attack;
+        _nextActionScript.SetNextActionNumberText(_currentAttack);
     }
 
     public virtual void UseSkill()

@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class CardManager : MonoBehaviour
 {
     [SerializeField] private Card _cardPrefab;
     [SerializeField] private Transform _handArea;
-    [SerializeField] private TargetArrow _targetArrow;
+    [SerializeField] private TMP_Text _drawPileText;
+    [SerializeField] private TMP_Text _discardPileText;
     [SerializeField] private RectTransform _canvasRect;
+    [SerializeField] private TargetArrow _targetArrow;
 
     private List<Card> _drawPileCards = new List<Card>();
     private List<Card> _handCards = new List<Card>();
@@ -55,8 +58,11 @@ public class CardManager : MonoBehaviour
             rect.anchoredPosition = _drawPileOffset;
 
             card.Init(cardData);
-            _drawPileCards.Add(card);
+            _discardPileCards.Add(card);
         }
+
+        StartCoroutine(Shuffle());
+        SetPileText();
     }
 
     public IEnumerator DrawCardRoutine()
@@ -74,6 +80,8 @@ public class CardManager : MonoBehaviour
         card.transform.SetAsLastSibling();
         _handCards.Add(card);
         _drawPileCards.Remove(card);
+
+        SetPileText();
     }
 
     private IEnumerator Shuffle()
@@ -87,8 +95,10 @@ public class CardManager : MonoBehaviour
             _drawPileCards.Add(card);
             _discardPileCards.Remove(card);
 
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.1f);
         }
+
+        SetPileText();
     }
 
     public void DiscardHandCards()
@@ -101,6 +111,8 @@ public class CardManager : MonoBehaviour
         }
 
         _handCards.Clear();
+
+        SetPileText();
     }
 
     private void Arrange()
@@ -113,9 +125,16 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Card card = _handCards[i];
+            card.OriginIndex = i;
             float x = _startX + i * _spacing;
             card.OriginPosition = new Vector2(x, 0.0f);
         }
+    }
+
+    private void SetPileText()
+    {
+        _drawPileText.text = _drawPileCards.Count.ToString();
+        _discardPileText.text = _discardPileCards.Count.ToString();
     }
 
     private void OnEnable()
@@ -147,22 +166,29 @@ public class CardManager : MonoBehaviour
         if (_selectedCard.State == CardState.Selected && !_selectedCard.CardData.NeedTarget && _screenMousePos.y >= _thresholdY)
         {
             Debug.Log("NonTargeting Card Used");
+            _selectedCard.CardData.Effect.Execute(_selectedUnit);
+
             _selectedCard.State = CardState.Discard;
             _selectedCard.OriginPosition = _discardPileOffset;
             _discardPileCards.Add(_selectedCard);
             _handCards.Remove(_selectedCard);
+            SetPileText();
         }
         else if (_selectedCard.State == CardState.Targeting && _selectedUnit != null && _screenMousePos.y >= _thresholdY)
         {
             Debug.Log("Targeting Card Used");
+            _selectedCard.CardData.Effect.Execute(_selectedUnit);
+
             _selectedCard.State = CardState.Discard;
             _selectedCard.OriginPosition = _discardPileOffset;
             _discardPileCards.Add(_selectedCard);
             _handCards.Remove(_selectedCard);
+            SetPileText();
         }
         else
         {
             _selectedCard.State = CardState.Idle;
+            _selectedCard.transform.SetSiblingIndex(_selectedCard.OriginIndex);
         }
 
         _isDrag = false;
@@ -201,11 +227,16 @@ public class CardManager : MonoBehaviour
                 {
                     _selectedCard = card;
                     card.State = CardState.Hover;
+                    card.transform.SetAsLastSibling();
                     count++;
 
                     for (int j = 0; j < _handCards.Count; j++)
                     {
-                        if (j != i) _handCards[j].State = CardState.Idle;
+                        if (j != i) 
+                        {
+                            _handCards[j].State = CardState.Idle;
+                            _handCards[j].transform.SetSiblingIndex(_handCards[j].OriginIndex);
+                        } 
                     }
 
                     break;
@@ -219,6 +250,7 @@ public class CardManager : MonoBehaviour
                 foreach (Card card in _handCards)
                 {
                     card.State = CardState.Idle;
+                    card.transform.SetSiblingIndex(card.OriginIndex);
                 }
             }
         }
@@ -228,13 +260,17 @@ public class CardManager : MonoBehaviour
             if (_selectedCard.State != CardState.Targeting)
             {
                 _selectedCard.State = CardState.Selected;
+                _selectedCard.transform.SetAsLastSibling();
                 _selectedCard.Rect.anchoredPosition = _uiMousePos + new Vector2(0.0f, _selectedCard.Height * 1.5f);
             }
 
             if (_screenMousePos.y >= _thresholdY)
             {
                 if (_selectedCard.CardData.NeedTarget)
+                {
                     _selectedCard.State = CardState.Targeting;
+                    _selectedCard.transform.SetAsLastSibling();
+                }
             }
         }
 

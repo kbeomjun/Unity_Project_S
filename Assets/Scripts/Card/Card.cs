@@ -27,19 +27,25 @@ public class Card : MonoBehaviour
 
     private Vector2 _originPosition;
     private Vector3 _originScale;
+    private int _originIndex = -1;
 
     public Vector2 OriginPosition
     {
         get => _originPosition;
         set => _originPosition = value;
     }
+    public int OriginIndex
+    {
+        get => _originIndex;
+        set => _originIndex = value;
+    }
 
     private float _height = 0.0f;
     public float Height => _height;
 
     private float _hoverY = 40.0f;
-    private float _hoverScale = 1.2f;
-    private float _selectedScale = 1.4f;
+    private float _hoverScale = 1.3f;
+    private float _selectedScale = 1.6f;
     private float _discardScale = 0.2f;
     private float _currentZAngle = 0.0f;
     private float _targetZAngle = 0.0f;
@@ -66,6 +72,7 @@ public class Card : MonoBehaviour
         _nameText.text = _cardData.Name;
         _costText.text = _cardData.Cost.ToString();
         _descriptionText.text = _cardData.Description;
+        _iconImage.sprite = _cardData.Image;
 
         _originPosition = _rect.anchoredPosition;
         _originScale = _rect.localScale;

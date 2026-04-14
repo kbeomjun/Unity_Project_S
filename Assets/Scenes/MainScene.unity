@@ -896,7 +896,7 @@ GameObject:
   - component: {fileID: 506577092}
   - component: {fileID: 506577091}
   m_Layer: 5
-  m_Name: DiscardPileButton
+  m_Name: DiscardPileText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1427,7 +1427,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -110, y: 180}
+  m_AnchoredPosition: {x: -100, y: 180}
   m_SizeDelta: {x: 62, y: 82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &766878387
@@ -2305,7 +2305,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 110, y: 180}
+  m_AnchoredPosition: {x: 100, y: 180}
   m_SizeDelta: {x: 62, y: 82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1422411053
@@ -2521,12 +2521,10 @@ MonoBehaviour:
   - {fileID: 4021216087757598612, guid: 6172485570945924ca8efe231fd1dea3, type: 3}
   - {fileID: 352411704827830978, guid: 25988a890d59b614c8a565f83de7368b, type: 3}
   - {fileID: 6621683844414708312, guid: ee201eb24de069142a5ef106240e99ab, type: 3}
-  _playerCards:
-  - {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
-  - {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
-  - {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
-  - {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
-  - {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
+  _cardImages:
+  - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
+  - {fileID: 21300000, guid: 8b3a4dabc5be92e479b69c1eaf0ea9df, type: 3}
+  - {fileID: 21300000, guid: 0038c07c43785c04faa15ecb8093fe89, type: 3}
 --- !u!114 &1667663374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2581,8 +2579,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardInputManager
   _cardPrefab: {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
   _handArea: {fileID: 1184276595}
-  _targetArrow: {fileID: 776698472}
+  _drawPileText: {fileID: 2094228009}
+  _discardPileText: {fileID: 506577091}
   _canvasRect: {fileID: 397832734}
+  _targetArrow: {fileID: 776698472}
 --- !u!1 &1719039981
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,4 +37,9 @@ public class NextAction : MonoBehaviour
         _nextActionNumberText.color = _colors[random];
     }
 
+    public void SetNextActionNumberText(int num)
+    {
+        _nextActionNumberText.text = num.ToString();
+    }
+
 }
