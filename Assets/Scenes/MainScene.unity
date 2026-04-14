@@ -2659,15 +2659,6 @@ MonoBehaviour:
   - {fileID: 4021216087757598612, guid: 6172485570945924ca8efe231fd1dea3, type: 3}
   - {fileID: 352411704827830978, guid: 25988a890d59b614c8a565f83de7368b, type: 3}
   - {fileID: 6621683844414708312, guid: ee201eb24de069142a5ef106240e99ab, type: 3}
-  _cardImages:
-  - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
-  - {fileID: 21300000, guid: 8b3a4dabc5be92e479b69c1eaf0ea9df, type: 3}
-  - {fileID: 21300000, guid: 0038c07c43785c04faa15ecb8093fe89, type: 3}
-  - {fileID: 21300000, guid: 01989fe6af71d95478db566107a76de8, type: 3}
-  - {fileID: 21300000, guid: 7f71768ede4f5614d9fee8cd9cd6cbb5, type: 3}
-  - {fileID: 21300000, guid: 0d367a35462be424abefc74b7b8dcd4d, type: 3}
-  - {fileID: 21300000, guid: dd9553335d5e8ac4f8cd1bf7715b004f, type: 3}
-  - {fileID: 21300000, guid: dbff2fdea1155ce40840f937864dcdde, type: 3}
 --- !u!114 &1667663374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2695,16 +2686,6 @@ MonoBehaviour:
   - {fileID: 225450374}
   - {fileID: 365437769}
   - {fileID: 1187040675}
-  _playerUnitPrefabs:
-  - {fileID: 731993277148249294, guid: b22a1027fc5e0c843b2de575516dd041, type: 3}
-  - {fileID: 352411704827830978, guid: 25988a890d59b614c8a565f83de7368b, type: 3}
-  - {fileID: 4021216087757598612, guid: 6172485570945924ca8efe231fd1dea3, type: 3}
-  - {fileID: 6621683844414708312, guid: ee201eb24de069142a5ef106240e99ab, type: 3}
-  _enemyUnitPrefabs:
-  - {fileID: 4255661013312670712, guid: 80ee8927445a7bd4b8279c5abe129b4b, type: 3}
-  - {fileID: 4259618837807430659, guid: 131925450d02d194e8f0dbaac2b9613d, type: 3}
-  - {fileID: 6012671971255946176, guid: 31d1a4d0e1543474485951954b36a1cc, type: 3}
-  - {fileID: 7415239439242457113, guid: 491631197c0f8bd408440f65ac59e173, type: 3}
   _cardView: {fileID: 2070254267}
   _costText: {fileID: 22927687}
   _endPrepareButton: {fileID: 226456766}
@@ -2721,7 +2702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b556ad202ebf58447a79ba422d7954ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardInputManager
-  _cardPrefab: {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
   _handArea: {fileID: 1184276595}
   _drawPileText: {fileID: 2094228009}
   _discardPileText: {fileID: 506577091}
@@ -2751,6 +2731,8 @@ MonoBehaviour:
   - {fileID: 7415239439242457113, guid: 491631197c0f8bd408440f65ac59e173, type: 3}
   CardPrefab: {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
   CardImages:
+  - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
+  - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
   - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
   - {fileID: 21300000, guid: 8b3a4dabc5be92e479b69c1eaf0ea9df, type: 3}
   - {fileID: 21300000, guid: 0038c07c43785c04faa15ecb8093fe89, type: 3}
