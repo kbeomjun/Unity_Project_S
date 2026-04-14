@@ -25,6 +25,7 @@ public class CardManager : MonoBehaviour
     private PlayerInputActions _input;
     private Card _selectedCard = null;
     private Unit _selectedUnit = null;
+    public Unit SelectedUnit => _selectedUnit;
 
     private Vector2 _uiMousePos = Vector2.zero;
     private Vector2 _screenMousePos = Vector2.zero;
@@ -169,7 +170,7 @@ public class CardManager : MonoBehaviour
             if (flag)
             {
                 Debug.Log("NonTargeting Card Used");
-                _selectedCard.CardData.Effect.Execute(_selectedUnit);
+                _selectedCard.Execute();
                 _selectedCard.State = CardState.Discard;
                 _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);
@@ -189,7 +190,7 @@ public class CardManager : MonoBehaviour
             if (flag)
             {
                 Debug.Log("Targeting Card Used");
-                _selectedCard.CardData.Effect.Execute(_selectedUnit);
+                _selectedCard.Execute();
                 _selectedCard.State = CardState.Discard;
                 _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);

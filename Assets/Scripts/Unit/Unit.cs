@@ -53,8 +53,6 @@ public class Unit : MonoBehaviour
         _currentAttack = _unitData.Attack;
         int random = Random.Range(0, 3);
         _nextAction = (UnitAction)random;
-
-        _nextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);
     }
 
     public virtual void PerformAction()
@@ -66,7 +64,7 @@ public class Unit : MonoBehaviour
                 break;
 
             case UnitAction.Defense:
-                Defense();
+                AddDefense();
                 break;
 
             case UnitAction.Skill:
@@ -130,7 +128,7 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Defense()
+    public void AddDefense()
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += _unitData.Defense;
@@ -138,7 +136,7 @@ public class Unit : MonoBehaviour
         _healthBar.SetDefense(_currentDefense);
     }
 
-    public void Defense(int defense)
+    public void AddDefense(int defense)
     {
         Debug.Log($"{gameObject.name} Defense");
         _currentDefense += defense;
@@ -148,10 +146,10 @@ public class Unit : MonoBehaviour
 
     public void HealTarget()
     {
-        _target.Heal(10);
+        _target.HealByPercentage(10);
     }
 
-    public void Heal(int percentage)
+    public void HealByPercentage(int percentage)
     {
         Debug.Log($"{gameObject.name} Heal");
         _unitData.CurrentHealth += (_unitData.MaxHealth * percentage) / 100;
@@ -168,19 +166,16 @@ public class Unit : MonoBehaviour
     public void SetNextAction(UnitAction action)
     {
         _nextAction = action;
-        _nextActionScript.ChangeNextActionIcon((int)_nextAction, _currentAttack, _unitData.Defense);
     }
 
     public void AddAttack(int attack)
     {
         _currentAttack += attack;
-        _nextActionScript.SetNextActionNumberText(_currentAttack);
     }
 
-    public void ReduceAttack(int percentage)
+    public void ReduceAttackByPercentage(int percentage)
     {
         _currentAttack = (_currentAttack * percentage) / 100;
-        _nextActionScript.SetNextActionNumberText(_currentAttack);
     }
 
     public virtual void UseSkill()
@@ -198,6 +193,11 @@ public class Unit : MonoBehaviour
     public void SetHighlight(bool onOff)
     {
         _outlineMaterial.SetFloat("_OutlineSize", onOff ? 1.5f : 0f);
+    }
+
+    private void Update()
+    {
+        _nextActionScript.ChangeNextActionIcon((int)_nextAction, _currentAttack, _unitData.Defense);
     }
 
 }

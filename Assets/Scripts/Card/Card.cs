@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -68,16 +69,26 @@ public class Card : MonoBehaviour
     public void Init(CardData cardData)
     {
         _cardData = new CardData(cardData);
+        _cardData.Effects = DataManager.Instance.CardEffects[_cardData.Index];
+        _cardData.Image = DataManager.Instance.CardImages[_cardData.Index];
 
         _nameText.text = _cardData.Name;
         _costText.text = _cardData.Cost.ToString();
         _descriptionText.text = _cardData.Description;
-        _cardData.Image = DataManager.Instance.CardImages[(int)_cardData.Type];
         _iconImage.sprite = _cardData.Image;
 
         _originPosition = _rect.anchoredPosition;
         _originScale = _rect.localScale;
         _state = CardState.Draw;
+    }
+
+    public void Execute()
+    {
+        foreach (ICardEffect effect in CardData.Effects)
+        {
+            List<Unit> targets = effect.TargetSelector.SelectTargets(null);
+            effect.Execute(null, targets);
+        }
     }
 
     private void Update()

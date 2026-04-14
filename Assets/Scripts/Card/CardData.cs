@@ -3,14 +3,9 @@ using UnityEngine;
 
 public enum CardType
 {
-    // ¾Æ±º Å¸°Ù
-    ChangeAction, Attack, Defense,
-    // ¾Æ±º ³íÅ¸°Ù
-    FrontDefense, BackAttack, HealAll,
-    // Àû Å¸°Ù
-    ReduceAttack,
-    // Àû ³íÅ¸°Ù
-    ResetAllEnemyAction,
+    Buff,
+    Debuff,
+    Skill
 }
 
 public enum TargetType
@@ -26,20 +21,19 @@ public class CardData
     public int Cost { get; set; }
     public string Description { get; set; }
     public List<ICardEffect> Effects { get; set; }
-    public ICardEffect Effect { get; set; }
-    public Sprite Image { get; set; }
-
     public CardType Type { get; set; }
     public TargetType TargetType { get; set; }
+    public int Index { get; set; }
+    public Sprite Image { get; set; }
 
-    public CardData(string name, int cost, string description, ICardEffect effect, CardType type, TargetType targetType)
+    public CardData(string name, int cost, CardType type, TargetType targetType, int index, string description)
     {
         Name = name;
         Cost = cost;
         Description = description;
-        Effect = effect;
         Type = type;
         TargetType = targetType;
+        Index = index;
         Image = null;
     }
 
@@ -48,9 +42,9 @@ public class CardData
         Name = data.Name;
         Cost = data.Cost;
         Description = data.Description;
-        Effect = data.Effect;
         Type = data.Type;
         TargetType = data.TargetType;
+        Index = data.Index;
         Image = null;
     }
 

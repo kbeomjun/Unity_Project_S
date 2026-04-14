@@ -15,16 +15,16 @@ public class NextAction : MonoBehaviour
         new Color32(40, 55, 210, 255),
     };
 
-    public void ChangeNextActionIcon(int random, int attack, int defense)
+    public void ChangeNextActionIcon(int index, int attack, int defense)
     {
-        _nextActionImage.sprite = _actionImages[random];
+        _nextActionImage.sprite = _actionImages[index];
         _nextActionNumberText.gameObject.SetActive(true);
 
-        if (random == 0)
+        if (index == 0)
         {
             _nextActionNumberText.text = attack.ToString();
         }
-        else if (random == 1)
+        else if (index == 1)
         {
             _nextActionNumberText.text = defense.ToString();
         }
@@ -33,13 +33,8 @@ public class NextAction : MonoBehaviour
             _nextActionNumberText.gameObject.SetActive(false);
         }
 
-        _nextActionImage.color = _colors[random];
-        _nextActionNumberText.color = _colors[random];
-    }
-
-    public void SetNextActionNumberText(int num)
-    {
-        _nextActionNumberText.text = num.ToString();
+        _nextActionImage.color = _colors[index];
+        _nextActionNumberText.color = _colors[index];
     }
 
 }

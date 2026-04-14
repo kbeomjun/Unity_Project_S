@@ -11,7 +11,7 @@ public class Monk : Unit
                 break;
 
             case UnitAction.Defense:
-                Defense();
+                AddDefense();
                 break;
 
             case UnitAction.Skill:
