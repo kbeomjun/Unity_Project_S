@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
         {
             _playerCardDatas.Add(
-                new CardData("ChangeAction", 1, 0, $"Change Unit's NextAction: <color=#FF5555>Attack</color>",
+                new CardData("ChangeAction", 1, $"Change Unit's NextAction: <color=#FF5555>Attack</color>",
                                 true, true, new ChangeActionEffect(UnitAction.Attack),
                                 _cardImages[(int)CardType.ChangeAction], CardType.ChangeAction)
             );
