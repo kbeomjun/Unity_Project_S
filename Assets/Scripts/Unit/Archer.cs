@@ -2,15 +2,6 @@ using UnityEngine;
 
 public class Archer : Unit
 {
-    public override void DecideAction()
-    {
-        _currentAttack = _unitData.Attack;
-        int random = Random.Range(1, 2);
-        _nextAction = (UnitAction)random;
-
-        NextActionScript.ChangeNextActionIcon(random, _currentAttack, _unitData.Defense);
-    }
-
     public override void PerformAction()
     {
         switch (_nextAction)

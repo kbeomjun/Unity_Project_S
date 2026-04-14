@@ -151,7 +151,7 @@ public class Unit : MonoBehaviour
         _target.Heal(10);
     }
 
-    private void Heal(int percentage)
+    public void Heal(int percentage)
     {
         Debug.Log($"{gameObject.name} Heal");
         _unitData.CurrentHealth += (_unitData.MaxHealth * percentage) / 100;
@@ -174,6 +174,12 @@ public class Unit : MonoBehaviour
     public void AddAttack(int attack)
     {
         _currentAttack += attack;
+        _nextActionScript.SetNextActionNumberText(_currentAttack);
+    }
+
+    public void ReduceAttack(int percentage)
+    {
+        _currentAttack = (_currentAttack * percentage) / 100;
         _nextActionScript.SetNextActionNumberText(_currentAttack);
     }
 

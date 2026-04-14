@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public enum BattleState
 {
@@ -19,17 +20,17 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Transform[] _enemySlots;
     [SerializeField] private Unit[] _playerUnitPrefabs;
     [SerializeField] private Unit[] _enemyUnitPrefabs;
-    [SerializeField] private GameObject _CardView;
-    
+    [SerializeField] private GameObject _cardView;
+    [SerializeField] private TMP_Text _costText;
     [SerializeField] private Button _endPrepareButton;
     [SerializeField] private Button _endTurnButton;
 
     private UnitData[] _enemyUnitData = new UnitData[4]
     {
-        new UnitData("Knight", 120, 10, 10, 10, UnitType.Knight),
-        new UnitData("Lancer", 100, 10, 10, 10, UnitType.Lancer),
-        new UnitData("Archer", 70, 10, 10, 10, UnitType.Archer),
-        new UnitData("Monk", 50, 10, 10, 10, UnitType.Monk)
+        new UnitData("Knight", 110, 110, 10, 30, UnitType.Knight),
+        new UnitData("Lancer", 90, 90, 20, 20, UnitType.Lancer),
+        new UnitData("Archer", 70, 70, 30, 10, UnitType.Archer),
+        new UnitData("Monk", 50, 50, 5, 5, UnitType.Monk)
     };
 
     private Unit[] _playerUnits = new Unit[4];
@@ -40,6 +41,8 @@ public class BattleManager : MonoBehaviour
 
     private int _currentTurn = 0;
     private int _drawCardNum = 5;
+    private int _maxCost = 3;
+    private int _currentCost = 0;
     private BattleState _state;
     
     private PlayerInputActions _input;
@@ -72,9 +75,10 @@ public class BattleManager : MonoBehaviour
     {
         _currentTurn = 0;
         _drawCardNum = 5;
+        _maxCost = 3;
         _state = BattleState.Prepare;
         _endPrepareButton.gameObject.SetActive(true);
-        _CardView.SetActive(false);
+        _cardView.SetActive(false);
 
         foreach (SlotGround slotGround in _playerSlotGrounds)
             slotGround.gameObject.SetActive(true);
@@ -97,11 +101,11 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        int random = Random.Range(4, 5);
+        int random = Random.Range(1, 5);
 
         for (int i = 0; i < random; i++)
         {
-            int random2 = Random.Range(0, 1);
+            int random2 = Random.Range(0, 4);
             _enemyUnits[i] = Instantiate(_enemyUnitPrefabs[random2], _enemySlots[i]);
             _enemyUnits[i].Init(new UnitData(_enemyUnitData[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
@@ -122,7 +126,7 @@ public class BattleManager : MonoBehaviour
         _state = BattleState.Battle;
         _endPrepareButton.gameObject.SetActive(false);
         _endTurnButton.gameObject.SetActive(true);
-        _CardView.SetActive(true);
+        _cardView.SetActive(true);
 
         foreach (SlotGround slotGround in _playerSlotGrounds)
             slotGround.gameObject.SetActive(false);
@@ -136,8 +140,10 @@ public class BattleManager : MonoBehaviour
 
         _currentTurn++;
         Debug.Log($"PlayerTurn{_currentTurn} Start");
+        _currentCost = _maxCost;
         _endTurnButton.enabled = true;
 
+        SetCostText();
         StartCoroutine(DrawCard(_drawCardNum));
 
         foreach (Unit unit in _playerUnits)
@@ -159,6 +165,21 @@ public class BattleManager : MonoBehaviour
                 unit.DecideAction();
             }
         }
+    }
+    
+    private void SetCostText()
+    {
+        string costText = $"{_currentCost}/{_maxCost}";
+        _costText.text = costText;
+    }
+
+    public bool UseCard(int cost)
+    {
+        if(cost > _currentCost) return false;
+
+        _currentCost -= cost;
+        SetCostText();
+        return true;
     }
 
     private IEnumerator DrawCard(int num)
@@ -225,7 +246,6 @@ public class BattleManager : MonoBehaviour
         {
             if (unit == null) continue;
             unit.PerformAction();
-
             yield return new WaitForSeconds(1.0f);
         }
     }

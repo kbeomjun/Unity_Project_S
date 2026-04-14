@@ -2,9 +2,14 @@ using UnityEngine;
 
 public enum CardType
 {
-    ChangeAction,
-    Attack,
-    Defense
+    // 酒焙 鸥百
+    ChangeAction, Attack, Defense,
+    // 酒焙 稠鸥百
+    FrontDefense, BackAttack, HealAll,
+    // 利 鸥百
+    ReduceAttack,
+    // 利 稠鸥百
+    ResetAllEnemyAction,
 }
 
 public class CardData

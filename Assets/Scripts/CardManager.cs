@@ -163,27 +163,46 @@ public class CardManager : MonoBehaviour
     {
         if (_selectedCard == null) return;
 
+
         if (_selectedCard.State == CardState.Selected && !_selectedCard.CardData.NeedTarget && _screenMousePos.y >= _thresholdY)
         {
-            Debug.Log("NonTargeting Card Used");
-            _selectedCard.CardData.Effect.Execute(_selectedUnit);
-
-            _selectedCard.State = CardState.Discard;
-            _selectedCard.OriginPosition = _discardPileOffset;
-            _discardPileCards.Add(_selectedCard);
-            _handCards.Remove(_selectedCard);
-            SetPileText();
+            bool flag = BattleManager.Instance.UseCard(_selectedCard.CardData.Cost);
+            
+            if (flag)
+            {
+                Debug.Log("NonTargeting Card Used");
+                _selectedCard.CardData.Effect.Execute(_selectedUnit);
+                _selectedCard.State = CardState.Discard;
+                _selectedCard.OriginPosition = _discardPileOffset;
+                _discardPileCards.Add(_selectedCard);
+                _handCards.Remove(_selectedCard);
+                SetPileText();
+            }
+            else
+            {
+                _selectedCard.State = CardState.Idle;
+                _selectedCard.transform.SetSiblingIndex(_selectedCard.OriginIndex);
+            }
         }
         else if (_selectedCard.State == CardState.Targeting && _selectedUnit != null && _screenMousePos.y >= _thresholdY)
         {
-            Debug.Log("Targeting Card Used");
-            _selectedCard.CardData.Effect.Execute(_selectedUnit);
+            bool flag = BattleManager.Instance.UseCard(_selectedCard.CardData.Cost);
 
-            _selectedCard.State = CardState.Discard;
-            _selectedCard.OriginPosition = _discardPileOffset;
-            _discardPileCards.Add(_selectedCard);
-            _handCards.Remove(_selectedCard);
-            SetPileText();
+            if (flag)
+            {
+                Debug.Log("Targeting Card Used");
+                _selectedCard.CardData.Effect.Execute(_selectedUnit);
+                _selectedCard.State = CardState.Discard;
+                _selectedCard.OriginPosition = _discardPileOffset;
+                _discardPileCards.Add(_selectedCard);
+                _handCards.Remove(_selectedCard);
+                SetPileText();
+            }
+            else
+            {
+                _selectedCard.State = CardState.Idle;
+                _selectedCard.transform.SetSiblingIndex(_selectedCard.OriginIndex);
+            }
         }
         else
         {
@@ -198,7 +217,6 @@ public class CardManager : MonoBehaviour
             _selectedUnit.SetHighlight(false);
 
         _selectedUnit = null;
-
         _targetArrow.Hide();
     }
 

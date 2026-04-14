@@ -43,7 +43,7 @@ public class Card : MonoBehaviour
     private float _height = 0.0f;
     public float Height => _height;
 
-    private float _hoverY = 40.0f;
+    private float _hoverY = 80.0f;
     private float _hoverScale = 1.3f;
     private float _selectedScale = 1.6f;
     private float _discardScale = 0.2f;
