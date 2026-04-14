@@ -18,8 +18,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Transform[] _playerSlots;
     [SerializeField] private SlotGround[] _playerSlotGrounds;
     [SerializeField] private Transform[] _enemySlots;
-    [SerializeField] private Unit[] _playerUnitPrefabs;
-    [SerializeField] private Unit[] _enemyUnitPrefabs;
     [SerializeField] private GameObject _cardView;
     [SerializeField] private TMP_Text _costText;
     [SerializeField] private Button _endPrepareButton;
@@ -41,7 +39,7 @@ public class BattleManager : MonoBehaviour
 
     private int _currentTurn = 0;
     private int _drawCardNum = 5;
-    private int _maxCost = 3;
+    private int _maxCost = 10;
     private int _currentCost = 0;
     private BattleState _state;
     
@@ -75,7 +73,7 @@ public class BattleManager : MonoBehaviour
     {
         _currentTurn = 0;
         _drawCardNum = 5;
-        _maxCost = 3;
+        _maxCost = 10;
         _state = BattleState.Prepare;
         _endPrepareButton.gameObject.SetActive(true);
         _cardView.SetActive(false);
@@ -87,7 +85,7 @@ public class BattleManager : MonoBehaviour
         {
             if (playerUnitDatas[i].SlotIndex == -1)
             {
-                _playerUnits[i] = Instantiate(_playerUnitPrefabs[(int)playerUnitDatas[i].Type], _playerSlots[i]);
+                _playerUnits[i] = Instantiate(DataManager.Instance.PlayerUnitPrefabs[(int)playerUnitDatas[i].Type], _playerSlots[i]);
                 _playerUnits[i].Init(playerUnitDatas[i]);
                 _playerUnits[i].UnitData.SlotIndex = i;
                 _playerUnits[i].transform.localPosition = Vector3.zero;
@@ -95,7 +93,7 @@ public class BattleManager : MonoBehaviour
             else
             {
                 _playerUnits[playerUnitDatas[i].SlotIndex] 
-                    = Instantiate(_playerUnitPrefabs[(int)playerUnitDatas[i].Type], _playerSlots[playerUnitDatas[i].SlotIndex]);
+                    = Instantiate(DataManager.Instance.PlayerUnitPrefabs[(int)playerUnitDatas[i].Type], _playerSlots[playerUnitDatas[i].SlotIndex]);
                 _playerUnits[playerUnitDatas[i].SlotIndex].Init(playerUnitDatas[i]);
                 _playerUnits[playerUnitDatas[i].SlotIndex].transform.localPosition = Vector3.zero;
             }
@@ -106,7 +104,7 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < random; i++)
         {
             int random2 = Random.Range(0, 4);
-            _enemyUnits[i] = Instantiate(_enemyUnitPrefabs[random2], _enemySlots[i]);
+            _enemyUnits[i] = Instantiate(DataManager.Instance.EnemyUnitPrefabs[random2], _enemySlots[i]);
             _enemyUnits[i].Init(new UnitData(_enemyUnitData[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
             _enemyUnits[i].transform.localPosition = Vector3.zero;

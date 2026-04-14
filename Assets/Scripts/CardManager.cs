@@ -6,7 +6,6 @@ using TMPro;
 
 public class CardManager : MonoBehaviour
 {
-    [SerializeField] private Card _cardPrefab;
     [SerializeField] private Transform _handArea;
     [SerializeField] private TMP_Text _drawPileText;
     [SerializeField] private TMP_Text _discardPileText;
@@ -51,7 +50,7 @@ public class CardManager : MonoBehaviour
     {
         foreach (CardData cardData in playerCardDatas)
         {
-            Card card = Instantiate(_cardPrefab);
+            Card card = Instantiate(DataManager.Instance.CardPrefab);
             RectTransform rect = card.GetComponent<RectTransform>();
 
             rect.SetParent(_handArea, false);
@@ -163,8 +162,7 @@ public class CardManager : MonoBehaviour
     {
         if (_selectedCard == null) return;
 
-
-        if (_selectedCard.State == CardState.Selected && !_selectedCard.CardData.NeedTarget && _screenMousePos.y >= _thresholdY)
+        if (_selectedCard.State == CardState.Selected && _screenMousePos.y >= _thresholdY && _selectedCard.CardData.TargetType == TargetType.None)
         {
             bool flag = BattleManager.Instance.UseCard(_selectedCard.CardData.Cost);
             
@@ -284,7 +282,7 @@ public class CardManager : MonoBehaviour
 
             if (_screenMousePos.y >= _thresholdY)
             {
-                if (_selectedCard.CardData.NeedTarget)
+                if (_selectedCard.CardData.TargetType != TargetType.None)
                 {
                     _selectedCard.State = CardState.Targeting;
                     _selectedCard.transform.SetAsLastSibling();
@@ -298,7 +296,16 @@ public class CardManager : MonoBehaviour
             _targetArrow.UpdateArrow(_selectedCard.Rect.anchoredPosition + new Vector2(0.0f, _selectedCard.Height * 0.4f), 
                                         _uiMousePos + new Vector2(0.0f, _selectedCard.Height * 1.5f));
 
-            Unit[] targetUnits = _selectedCard.CardData.TargetType ? BattleManager.Instance.PlayerUnits : BattleManager.Instance.EnemyUnits;
+            Unit[] targetUnits = null;
+
+            if (_selectedCard.CardData.TargetType == TargetType.Ally)
+            {
+                targetUnits = BattleManager.Instance.PlayerUnits;
+            }
+            else if(_selectedCard.CardData.TargetType == TargetType.Enemy)
+            {
+                targetUnits = BattleManager.Instance.EnemyUnits;
+            }
 
             int count = 0;
 

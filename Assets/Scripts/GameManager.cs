@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Map _map;
-    [SerializeField] List<Unit> _playerUnits = new List<Unit>();
-    [SerializeField] List<Sprite> _cardImages = new List<Sprite>();
+    [SerializeField] private List<Unit> _playerUnits = new List<Unit>();
 
     private int _maxChapter;
     private int _currentChapter;
@@ -56,67 +54,16 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        {
-            _playerCardDatas.Add(
-                new CardData("ChangeAction", 1, $"Change unit's next action: <color=#FF5555>Attack</color>",
-                                true, true, new ChangeActionEffect(UnitAction.Attack),
-                                _cardImages[(int)CardType.ChangeAction], CardType.ChangeAction)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("ChangeAction", 1, $"Change unit's next action: <color=#FF5555>Defense</color>",
-                                true, true, new ChangeActionEffect(UnitAction.Defense),
-                                _cardImages[(int)CardType.ChangeAction], CardType.ChangeAction)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("ChangeAction", 1, $"Change unit's next action: <color=#FF5555>Skill</color>",
-                                true, true, new ChangeActionEffect(UnitAction.Skill),
-                                _cardImages[(int)CardType.ChangeAction], CardType.ChangeAction)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("Attack", 1, $"Add <color=#FF5555>10</color> attack to my unit this turn",
-                                true, true, new AttackEffect(10),
-                                _cardImages[(int)CardType.Attack], CardType.Attack)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("Defense", 1, $"Add <color=#FF5555>10</color> defense to my unit this turn",
-                                true, true, new DefenseEffect(10),
-                                _cardImages[(int)CardType.Defense], CardType.Defense)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("FrontDefense", 2, $"Add <color=#FF5555>10</color> defense to my units in front line this turn",
-                                false, false, new FrontDefenseEffect(10),
-                                _cardImages[(int)CardType.FrontDefense], CardType.FrontDefense)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("BackAttack", 2, $"Add <color=#FF5555>10</color> attack to my units in back line this turn",
-                                false, false, new BackAttackEffect(10),
-                                _cardImages[(int)CardType.BackAttack], CardType.BackAttack)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("HealAll", 3, $"Restore all my units <color=#FF5555>10</color>% of their maximum health",
-                                false, false, new HealAllEffect(10),
-                                _cardImages[(int)CardType.HealAll], CardType.HealAll)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("ReduceAttack", 2, $"Reduce the attack power of enemy unit by <color=#FF5555>50</color>%",
-                                true, false, new ReduceAttackEffect(50),
-                                _cardImages[(int)CardType.ReduceAttack], CardType.ReduceAttack)
-            );
-
-            _playerCardDatas.Add(
-                new CardData("ResetAllEnemyAction", 2, $"Reset all next actions of enemy units",
-                                false, false, new ResetAllEnemyActionEffect(),
-                                _cardImages[(int)CardType.ResetAllEnemyAction], CardType.ResetAllEnemyAction)
-            );
-        }
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[0]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[1]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[2]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[3]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[4]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[5]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[6]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[7]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[8]);
+        _playerCardDatas.Add(DataManager.Instance.CardDatas[9]);
 
         BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
     }

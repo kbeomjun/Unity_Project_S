@@ -72,6 +72,7 @@ public class Card : MonoBehaviour
         _nameText.text = _cardData.Name;
         _costText.text = _cardData.Cost.ToString();
         _descriptionText.text = _cardData.Description;
+        _cardData.Image = DataManager.Instance.CardImages[(int)_cardData.Type];
         _iconImage.sprite = _cardData.Image;
 
         _originPosition = _rect.anchoredPosition;
