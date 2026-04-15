@@ -30,12 +30,12 @@ public class DataManager : MonoBehaviour
         ),
         new Skill(
             new List<IEffect>{
-                new AddAttackEffect(30, new RandomAttackSelector())
+                new ApplyStatusSelfEffect(new AttackBuffStatus(1.0f, 1), new RandomAttackSelector())
             }
         ),
         new Skill(
             new List<IEffect>{
-                new HealByPercentageEffect(10, new RandomAllySelector(1))
+                new HealEffect(new RandomTeamSelector(1))
             }
         )
     };
@@ -84,8 +84,8 @@ public class DataManager : MonoBehaviour
         new List<IEffect>{ new AddDefenseEffect(10, new SingleTargetSelector()) },
         new List<IEffect>{ new AddDefenseEffect(10, new FrontAllySelector()) },
         new List<IEffect>{ new AddAttackEffect(10, new BackAllySelector()) },
-        new List<IEffect>{ new HealByPercentageEffect(10, new AllAllySelector()) },
-        new List<IEffect>{ new ReduceAttackByPercentageEffect(50, new SingleTargetSelector()) },
+        new List<IEffect>{ new HealByPercentageEffect(0.1f, new AllAllySelector()) },
+        new List<IEffect>{ new ApplyStatusEffect(new AttackReductionStatus(0.5f, 1), new SingleTargetSelector()) },
         new List<IEffect>{ new ResetActionEffect(new AllEnemySelector()) }
     };
 

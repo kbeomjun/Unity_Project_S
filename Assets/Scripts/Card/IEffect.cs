@@ -87,12 +87,30 @@ public class AddDefenseEffect : IEffect
     }
 }
 
+public class HealEffect : IEffect
+{
+    public ITargetSelector TargetSelector { get; set; }
+
+    public HealEffect(ITargetSelector selector)
+    {
+        TargetSelector = selector;
+    }
+
+    public void Execute(Unit caster, List<Unit> targets)
+    {
+        foreach (Unit target in targets)
+        {
+            caster.Heal(target);
+        }
+    }
+}
+
 public class HealByPercentageEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
-    private int _percentage;
+    private float _percentage;
 
-    public HealByPercentageEffect(int percentage, ITargetSelector selector)
+    public HealByPercentageEffect(float percentage, ITargetSelector selector)
     {
         _percentage = percentage;
         TargetSelector = selector;
@@ -103,26 +121,6 @@ public class HealByPercentageEffect : IEffect
         foreach (Unit target in targets)
         {
             target.HealByPercentage(_percentage);
-        }
-    }
-}
-
-public class ReduceAttackByPercentageEffect : IEffect
-{
-    public ITargetSelector TargetSelector { get; set; }
-    private int _percentage;
-
-    public ReduceAttackByPercentageEffect(int percentage, ITargetSelector selector)
-    {
-        _percentage = percentage;
-        TargetSelector = selector;
-    }
-
-    public void Execute(Unit caster, List<Unit> targets)
-    {
-        foreach (Unit target in targets)
-        {
-            target.ReduceAttackByPercentage(_percentage);
         }
     }
 }
@@ -141,6 +139,28 @@ public class ResetActionEffect : IEffect
         foreach (Unit target in targets)
         {
             target.DecideAction();
+        }
+    }
+}
+
+public class ApplyStatusSelfEffect : IEffect
+{
+    public ITargetSelector TargetSelector { get; set; }
+
+    private IStatusEffect _status;
+
+    public ApplyStatusSelfEffect(IStatusEffect status, ITargetSelector selector)
+    {
+        _status = status;
+        TargetSelector = selector;
+    }
+
+    public void Execute(Unit caster, List<Unit> targets)
+    {
+        foreach (Unit target in targets)
+        {
+            caster.Target = target;
+            caster.ApplyStatus(_status);
         }
     }
 }

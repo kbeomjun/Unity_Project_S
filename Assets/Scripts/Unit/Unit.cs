@@ -20,28 +20,40 @@ public class Unit : MonoBehaviour
     protected UnitData _unitData;
     public UnitData UnitData => _unitData;
 
-    protected int _currentAttack;
+    protected int _currentAttack = 0;
     private int _currentDefense = 0;
-    private float _damageMultiplier = 1.0f;
-    private int _damageReflection = 0;
+    private float _hitdamageMultiplier = 1.0f;
+    private int _hitdamageReflection = 0;
+    private float _attackdamageMultiplier = 1.0f;
+    private int _totalAttack = 0;
+    private int _totalDefense = 0;
 
-    public float DamageMultiplier
+    public float HitDamageMultiplier
     {
-        get => _damageMultiplier;
-        set => _damageMultiplier = value;
+        get => _hitdamageMultiplier;
+        set => _hitdamageMultiplier = value;
     }
-    public int DamageReflection
+    public int HitDamageReflection
     {
-        get => _damageReflection;
-        set => _damageReflection = value;
+        get => _hitdamageReflection;
+        set => _hitdamageReflection = value;
+    }
+    public float AttackDamageMultiplier
+    {
+        get => _attackdamageMultiplier;
+        set => _attackdamageMultiplier = value;
     }
 
     protected UnitAction _currentAction;
     protected UnitAction _nextAction;
-    protected Unit _target;
+    protected Unit _target = null;
 
-    protected bool _isSkillUsing = false;
-    public bool IsSkillUsing => _isSkillUsing;
+    public UnitAction CurrentAction => _currentAction;
+    public Unit Target
+    {
+        get => _target;
+        set => _target = value;
+    }
 
     private List<IStatusEffect> _statuses = new List<IStatusEffect>();
 
@@ -100,7 +112,7 @@ public class Unit : MonoBehaviour
     public virtual void DecideAction()
     {
         _currentAttack = _unitData.Attack;
-        int random = Random.Range(0, 3);
+        int random = Random.Range(2, 3);
         _nextAction = (UnitAction)random;
     }
 
@@ -143,19 +155,18 @@ public class Unit : MonoBehaviour
     public void Attack(Unit target)
     {
         _target = target;
-        Debug.Log($"{gameObject.name} Attack {_target.gameObject.name}");
         _animator.SetTrigger("Attack");
     }
 
     public void HitTarget()
     {
-        _target.Hit(_currentAttack);
-        Hit(_target.DamageReflection);
+        _target.Hit(_totalAttack);
+        Hit(_target.HitDamageReflection);
     }
 
     private void Hit(int damage)
     {
-        damage = (int)(damage * _damageMultiplier);
+        damage = (int)(damage * _hitdamageMultiplier);
 
         Debug.Log($"{gameObject.name} Hit {damage}");
 
@@ -172,17 +183,22 @@ public class Unit : MonoBehaviour
             
             if(_unitData.CurrentHealth > 0)
             {
-                if(!_isSkillUsing) _animator.SetTrigger("Hit");
+                if(_currentAction != UnitAction.Skill) _animator.SetTrigger("Hit");
             }
             else
             {
                 _unitData.CurrentHealth = 0;
-                _animator.SetTrigger("Die");
+                Die();
             }
 
             _healthBar.SetDefense(_currentDefense);
             _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
         }
+    }
+
+    public virtual void Die()
+    {
+        _animator.SetTrigger("Die");
     }
 
     public void AfterDie()
@@ -193,21 +209,25 @@ public class Unit : MonoBehaviour
 
     public void Defense()
     {
-        Debug.Log($"{gameObject.name} Defense");
         _currentDefense += _unitData.Defense;
         _unitEffect.ShieldEffect();
         _healthBar.SetDefense(_currentDefense);
     }
 
-    public void HealTarget()
+    public void Heal(Unit target)
     {
-        _target.HealByPercentage(10);
+        _target = target;
+        _animator.SetTrigger("Skill");
     }
 
-    public void HealByPercentage(int percentage)
+    public void HealTarget()
     {
-        Debug.Log($"{gameObject.name} Heal");
-        _unitData.CurrentHealth += (_unitData.MaxHealth * percentage) / 100;
+        _target.HealByPercentage(0.1f);
+    }
+
+    public void HealByPercentage(float percentage)
+    {
+        _unitData.CurrentHealth += (int)(_unitData.MaxHealth * percentage);
 
         if (_unitData.CurrentHealth > _unitData.MaxHealth)
         {
@@ -230,15 +250,9 @@ public class Unit : MonoBehaviour
 
     public void AddDefense(int defense)
     {
-        Debug.Log($"{gameObject.name} Defense");
         _currentDefense += defense;
         _unitEffect.ShieldEffect();
         _healthBar.SetDefense(_currentDefense);
-    }
-
-    public void ReduceAttackByPercentage(int percentage)
-    {
-        _currentAttack = (_currentAttack * percentage) / 100;
     }
 
     public virtual void UseSkill()
@@ -253,7 +267,9 @@ public class Unit : MonoBehaviour
 
     private void Update()
     {
-        _nextActionScript.ChangeNextActionIcon((int)_nextAction, _currentAttack, _unitData.Defense);
+        _totalAttack = (int)(_currentAttack * _attackdamageMultiplier);
+        _totalDefense = (int)(_unitData.Defense);
+        _nextActionScript.UpdateNextActionIcon((int)_nextAction, _totalAttack, _totalDefense);
     }
 
 }

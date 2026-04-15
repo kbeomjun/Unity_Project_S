@@ -13,7 +13,6 @@ public class RandomAttackSelector : ITargetSelector
     {
         List<Unit> units = BattleManager.Instance.PlayerUnits.Contains(caster) ? 
                             BattleManager.Instance.EnemyUnits.ToList() : BattleManager.Instance.PlayerUnits.ToList();
-
         List<Unit> frontUnits = new List<Unit>();
 
         foreach (Unit unit in units)
@@ -23,12 +22,39 @@ public class RandomAttackSelector : ITargetSelector
 
         foreach (Unit unit in frontUnits)
         {
-            if (unit.UnitData.Type == UnitType.Knight && unit.IsSkillUsing) return new List<Unit> { unit };
+            if (unit.UnitData.Type == UnitType.Knight && unit.CurrentAction == UnitAction.Skill) return new List<Unit> { unit };
         }
 
         int index = Random.Range(0, frontUnits.Count);
 
         return new List<Unit> { frontUnits[index] };
+    }
+}
+
+public class RandomTeamSelector : ITargetSelector
+{
+    private int _count;
+
+    public RandomTeamSelector(int count)
+    {
+        _count = count;
+    }
+
+    public List<Unit> SelectTargets(Unit caster)
+    {
+        List<Unit> units = BattleManager.Instance.PlayerUnits.Contains(caster) ?
+                            BattleManager.Instance.PlayerUnits.ToList() : BattleManager.Instance.EnemyUnits.ToList();
+        List<Unit> result = new List<Unit>();
+
+        for (int i = 0; i < _count && units.Count > 0; i++)
+        {
+            int index = Random.Range(0, units.Count);
+            if (units[index] == null) continue;
+            result.Add(units[index]);
+            units.RemoveAt(index);
+        }
+
+        return result;
     }
 }
 
@@ -112,9 +138,8 @@ public class RandomAllySelector : ITargetSelector
 
         for (int i = 0; i < _count && allies.Count > 0; i++)
         {
-            if (allies == null) continue;
-
             int index = Random.Range(0, allies.Count);
+            if (allies[index] == null) continue;
             result.Add(allies[index]);
             allies.RemoveAt(index);
         }
@@ -187,9 +212,8 @@ public class RandomEnemySelector : ITargetSelector
 
         for (int i = 0; i < _count && enemies.Count > 0; i++)
         {
-            if (enemies == null) continue;
-
             int index = Random.Range(0, enemies.Count);
+            if (enemies[index] == null) continue;
             result.Add(enemies[index]);
             enemies.RemoveAt(index);
         }

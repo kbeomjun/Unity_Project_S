@@ -15,7 +15,7 @@ public class NextAction : MonoBehaviour
         new Color32(40, 55, 210, 255),
     };
 
-    public void ChangeNextActionIcon(int index, int attack, int defense)
+    public void UpdateNextActionIcon(int index, int attack, int defense)
     {
         _nextActionImage.sprite = _actionImages[index];
         _nextActionNumberText.gameObject.SetActive(true);

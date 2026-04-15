@@ -6,20 +6,17 @@ public class Knight : Unit
     {
         base.ResetAction();
         _animator.SetBool("IsSkillUsing", false);
-        _isSkillUsing = false;
+    }
+
+    public override void Die()
+    {
+        _animator.SetBool("IsSkillUsing", false);
+        _animator.SetTrigger("Die");
     }
 
     public override void UseSkill()
     {
         _animator.SetBool("IsSkillUsing", true);
-        _isSkillUsing = true;
-    }
-
-    public override void DecideAction()
-    {
-        _currentAttack = _unitData.Attack;
-        int random = Random.Range(0, 1);
-        _nextAction = (UnitAction)random;
     }
 
 }

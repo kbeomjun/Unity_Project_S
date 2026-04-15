@@ -24,12 +24,12 @@ public class DamageReductionStatus : IStatusEffect
 
     public void OnApply(Unit target)
     {
-        target.DamageMultiplier *= (1 - _reduction);
+        target.HitDamageMultiplier *= (1 - _reduction);
     }
 
     public void OnRemove(Unit target)
     {
-        target.DamageMultiplier /= (1 - _reduction);
+        target.HitDamageMultiplier /= (1 - _reduction);
     }
 
     public void OnTurnStart(Unit target)
@@ -53,15 +53,73 @@ public class DamageReflectionStatus : IStatusEffect
 
     public void OnApply(Unit target)
     {
-        target.DamageReflection += _reflection;
+        target.HitDamageReflection += _reflection;
     }
 
     public void OnRemove(Unit target)
     {
-        target.DamageReflection -= _reflection;
+        target.HitDamageReflection -= _reflection;
     }
 
     public void OnTurnStart(Unit target) 
+    {
+        Duration--;
+    }
+
+    public void OnTurnEnd(Unit target) { }
+}
+
+public class AttackBuffStatus : IStatusEffect
+{
+    private float _increase;
+    public int Duration { get; set; }
+
+    public AttackBuffStatus(float increase, int duration)
+    {
+        _increase = increase;
+        Duration = duration;
+    }
+
+    public void OnApply(Unit target)
+    {
+        target.AttackDamageMultiplier *= (1 + _increase);
+    }
+
+    public void OnRemove(Unit target)
+    {
+        target.AttackDamageMultiplier /= (1 + _increase);
+    }
+
+    public void OnTurnStart(Unit target)
+    {
+        Duration--;
+    }
+
+    public void OnTurnEnd(Unit target) { }
+}
+
+public class AttackReductionStatus : IStatusEffect
+{
+    private float _reduction;
+    public int Duration { get; set; }
+
+    public AttackReductionStatus(float reduction, int duration)
+    {
+        _reduction = reduction;
+        Duration = duration;
+    }
+
+    public void OnApply(Unit target)
+    {
+        target.AttackDamageMultiplier *= (1 - _reduction);
+    }
+
+    public void OnRemove(Unit target)
+    {
+        target.AttackDamageMultiplier /= (1 - _reduction);
+    }
+
+    public void OnTurnStart(Unit target)
     {
         Duration--;
     }

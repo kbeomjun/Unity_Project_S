@@ -2655,9 +2655,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _map: {fileID: 673251878}
   _playerUnits:
-  - {fileID: 352411704827830978, guid: 25988a890d59b614c8a565f83de7368b, type: 3}
-  - {fileID: 352411704827830978, guid: 25988a890d59b614c8a565f83de7368b, type: 3}
-  - {fileID: 352411704827830978, guid: 25988a890d59b614c8a565f83de7368b, type: 3}
+  - {fileID: 6621683844414708312, guid: ee201eb24de069142a5ef106240e99ab, type: 3}
+  - {fileID: 6621683844414708312, guid: ee201eb24de069142a5ef106240e99ab, type: 3}
 --- !u!114 &1667663374
 MonoBehaviour:
   m_ObjectHideFlags: 0

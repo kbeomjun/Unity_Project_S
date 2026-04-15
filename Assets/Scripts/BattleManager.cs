@@ -95,7 +95,7 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < random; i++)
         {
-            int random2 = Random.Range(0, 1);
+            int random2 = Random.Range(3, 4);
             _enemyUnits[i] = Instantiate(DataManager.Instance.EnemyUnitPrefabs[random2], _enemySlots[i]);
             _enemyUnits[i].Init(new UnitData(DataManager.Instance.UnitData[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
@@ -214,7 +214,7 @@ public class BattleManager : MonoBehaviour
         foreach (Unit unit in _enemyUnits)
         {
             if (unit == null) continue;
-            unit.OnTurnEnd();
+            unit.OnTurnStart();
             unit.DecideAction();
         }
 
@@ -232,7 +232,7 @@ public class BattleManager : MonoBehaviour
             foreach (Unit unit in _enemyUnits)
             {
                 if (unit == null) continue;
-                unit.OnTurnStart();
+                unit.OnTurnEnd();
                 unit.ResetAction();
             }
         }
@@ -326,35 +326,6 @@ public class BattleManager : MonoBehaviour
 
         t.SetParent(targetSlot);
         t.localPosition = Vector3.zero;
-    }
-
-    public Unit GetRandomEnemyTarget(Unit unit)
-    {
-        Unit[] targets = _playerUnits.Contains(unit) ? _enemyUnits : _playerUnits;
-
-        int index = GetIndex(targets, 0, 2);
-        if ((targets[0] != null && targets[0].UnitData.Type == UnitType.Knight && targets[0].IsSkillUsing) 
-            && (targets[1] != null && targets[1].UnitData.Type == UnitType.Knight && targets[1].IsSkillUsing))
-        {
-
-        }
-        else if (targets[0] != null && targets[0].UnitData.Type == UnitType.Knight && targets[0].IsSkillUsing)
-        {
-            index = 0;
-        }
-        else if (targets[1] != null && targets[1].UnitData.Type == UnitType.Knight && targets[1].IsSkillUsing)
-        {
-            index = 1;
-        }
-
-        return index != -1 ? targets[index] : null;
-    }
-
-    public Unit GetRandomTeamTarget(Unit unit)
-    {
-        Unit[] targets = _playerUnits.Contains(unit) ? _playerUnits : _enemyUnits;
-        int index = GetIndex(targets, 0, 4);
-        return index != -1 ? targets[index] : null;
     }
 
     public int GetIndex(Unit[] targets, int start, int end)

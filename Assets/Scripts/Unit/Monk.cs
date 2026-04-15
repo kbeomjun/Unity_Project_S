@@ -4,7 +4,7 @@ public class Monk : Unit
 {
     public override void UseSkill()
     {
-        _animator.SetTrigger("Skill");
+        //_animator.SetTrigger("Skill");
     }
 
 }
