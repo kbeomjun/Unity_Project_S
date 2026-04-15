@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISkill
+public interface IUnitAction
 {
     void Execute(Unit caster);
 }
 
-public class Attack : ISkill
+public class Attack : IUnitAction
 {
     private List<IEffect> _effects;
 
@@ -25,7 +25,7 @@ public class Attack : ISkill
     }
 }
 
-public class Defense : ISkill
+public class Defense : IUnitAction
 {
     private List<IEffect> _effects;
 
@@ -44,7 +44,7 @@ public class Defense : ISkill
     }
 }
 
-public class Skill : ISkill
+public class Skill : IUnitAction
 {
     private List<IEffect> _effects;
 
@@ -55,6 +55,7 @@ public class Skill : ISkill
 
     public void Execute(Unit caster)
     {
+
         foreach (IEffect effect in _effects)
         {
             List<Unit> targets = effect.TargetSelector.SelectTargets(caster);

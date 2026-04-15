@@ -13,9 +13,9 @@ public class DataManager : MonoBehaviour
         new UnitData("Archer", 70, 70, 30, 10, UnitType.Archer),
         new UnitData("Monk", 50, 50, 5, 5, UnitType.Monk)
     };
-    public ISkill UnitAttack = new Attack(new List<IEffect> { new AttackEffect(new RandomAttackSelector())});
-    public ISkill UnitDefense = new Defense(new List<IEffect> { new AddDefenseEffect(-1, new SelfTargetSelector())});
-    public ISkill[] UnitSkills = new ISkill[]
+    public IUnitAction UnitAttack = new Attack(new List<IEffect> { new AttackEffect(new RandomAttackSelector())});
+    public IUnitAction UnitDefense = new Defense(new List<IEffect> { new AddDefenseEffect(-1, new SelfTargetSelector())});
+    public IUnitAction[] UnitSkills = new IUnitAction[]
     {
         new Skill(
             new List<IEffect>{ 

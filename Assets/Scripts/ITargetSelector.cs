@@ -46,12 +46,14 @@ public class RandomTeamSelector : ITargetSelector
                             BattleManager.Instance.PlayerUnits.ToList() : BattleManager.Instance.EnemyUnits.ToList();
         List<Unit> result = new List<Unit>();
 
-        for (int i = 0; i < _count && units.Count > 0; i++)
+        int count = 0;
+        while(count < _count)
         {
             int index = Random.Range(0, units.Count);
             if (units[index] == null) continue;
             result.Add(units[index]);
             units.RemoveAt(index);
+            count++;
         }
 
         return result;
@@ -136,12 +138,14 @@ public class RandomAllySelector : ITargetSelector
         List<Unit> allies = BattleManager.Instance.PlayerUnits.ToList();
         List<Unit> result = new List<Unit>();
 
-        for (int i = 0; i < _count && allies.Count > 0; i++)
+        int count = 0;
+        while (count < _count)
         {
             int index = Random.Range(0, allies.Count);
             if (allies[index] == null) continue;
             result.Add(allies[index]);
             allies.RemoveAt(index);
+            count++;
         }
 
         return result;
@@ -210,12 +214,14 @@ public class RandomEnemySelector : ITargetSelector
         List<Unit> enemies = BattleManager.Instance.EnemyUnits.ToList();
         List<Unit> result = new List<Unit>();
 
-        for (int i = 0; i < _count && enemies.Count > 0; i++)
+        int count = 0;
+        while (count < _count)
         {
             int index = Random.Range(0, enemies.Count);
             if (enemies[index] == null) continue;
             result.Add(enemies[index]);
             enemies.RemoveAt(index);
+            count++;
         }
 
         return result;

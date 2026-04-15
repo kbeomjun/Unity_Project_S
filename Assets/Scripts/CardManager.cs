@@ -22,6 +22,12 @@ public class CardManager : MonoBehaviour
     private float _spacing = 150.0f;
     private float _startX = 0.0f;
 
+    private bool _isDrawing = false;
+    private bool _endTurnRequested = false;
+
+    public bool IsDrawing => _isDrawing;
+    public bool EndTurnRequested => _endTurnRequested;
+
     private PlayerInputActions _input;
     private Card _selectedCard = null;
     private Unit _selectedUnit = null;
@@ -62,7 +68,30 @@ public class CardManager : MonoBehaviour
         }
 
         StartCoroutine(Shuffle());
-        SetPileText();
+    }
+
+    public IEnumerator DrawCards(int num)
+    {
+        _isDrawing = true;
+
+        for (int i = 0; i < num; i++)
+        {
+            yield return StartCoroutine(DrawCardRoutine());
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        _isDrawing = false;
+
+        if (_endTurnRequested)
+        {
+            _endTurnRequested = false;
+            BattleManager.Instance.EndPlayerTurn();
+        }
+    }
+
+    public void RequestEndTurn()
+    {
+        _endTurnRequested = true;
     }
 
     public IEnumerator DrawCardRoutine()
@@ -80,8 +109,6 @@ public class CardManager : MonoBehaviour
         card.transform.SetAsLastSibling();
         _handCards.Add(card);
         _drawPileCards.Remove(card);
-
-        SetPileText();
     }
 
     private IEnumerator Shuffle()
@@ -97,8 +124,6 @@ public class CardManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
-
-        SetPileText();
     }
 
     public void DiscardHandCards()
@@ -111,8 +136,6 @@ public class CardManager : MonoBehaviour
         }
 
         _handCards.Clear();
-
-        SetPileText();
     }
 
     private void Arrange()
@@ -175,7 +198,7 @@ public class CardManager : MonoBehaviour
                 _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);
                 _handCards.Remove(_selectedCard);
-                SetPileText();
+                
             }
             else
             {
@@ -195,7 +218,6 @@ public class CardManager : MonoBehaviour
                 _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);
                 _handCards.Remove(_selectedCard);
-                SetPileText();
             }
             else
             {
@@ -339,6 +361,7 @@ public class CardManager : MonoBehaviour
     {
         MouseProcess();
         Arrange();
+        SetPileText();
     }
 
 }

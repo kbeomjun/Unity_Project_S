@@ -91,7 +91,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        int random = Random.Range(4, 5);
+        int random = Random.Range(3, 4);
 
         for (int i = 0; i < random; i++)
         {
@@ -132,9 +132,8 @@ public class BattleManager : MonoBehaviour
         Debug.Log($"PlayerTurn{_currentTurn} Start");
         _currentCost = _maxCost;
         _endTurnButton.enabled = true;
-
-        SetCostText();
-        StartCoroutine(DrawCard(_drawCardNum));
+        
+        StartCoroutine(CardManager.Instance.DrawCards(_drawCardNum));
 
         foreach (Unit unit in _playerUnits)
         {
@@ -170,7 +169,6 @@ public class BattleManager : MonoBehaviour
         if(cost > _currentCost) return false;
 
         _currentCost -= cost;
-        SetCostText();
         return true;
     }
 
@@ -181,6 +179,17 @@ public class BattleManager : MonoBehaviour
             yield return StartCoroutine(CardManager.Instance.DrawCardRoutine());
             yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    public void OnEndTurn()
+    {
+        if (CardManager.Instance.IsDrawing)
+        {
+            CardManager.Instance.RequestEndTurn();
+            return;
+        }
+
+        EndPlayerTurn();
     }
 
     public void EndPlayerTurn()
@@ -471,6 +480,7 @@ public class BattleManager : MonoBehaviour
                 break;
 
             case BattleState.Battle:
+                SetCostText();
                 break;
 
             case BattleState.End:
