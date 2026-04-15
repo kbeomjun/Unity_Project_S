@@ -82,9 +82,9 @@ public class Card : MonoBehaviour
         _state = CardState.Draw;
     }
 
-    public void Execute()
+    public void Use()
     {
-        foreach (ICardEffect effect in CardData.Effects)
+        foreach (IEffect effect in CardData.Effects)
         {
             List<Unit> targets = effect.TargetSelector.SelectTargets(null);
             effect.Execute(null, targets);

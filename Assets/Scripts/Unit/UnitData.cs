@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum UnitType
@@ -16,7 +17,10 @@ public class UnitData
     public int Attack { get; set; }
     public int Defense { get; set; }
     public int SlotIndex { get; set; }
-    
+    public ISkill AttackAction;
+    public ISkill DefenseAction;
+    public ISkill SkillAction;
+
     public UnitType Type { get; set; }
 
     public UnitData(string name, int maxHealth, int currentHealth, int attack, int defense, UnitType type)

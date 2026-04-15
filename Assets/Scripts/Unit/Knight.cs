@@ -11,10 +11,15 @@ public class Knight : Unit
 
     public override void UseSkill()
     {
-        base.UseSkill();
         _animator.SetBool("IsSkillUsing", true);
         _isSkillUsing = true;
-        AddDefense(30);
+    }
+
+    public override void DecideAction()
+    {
+        _currentAttack = _unitData.Attack;
+        int random = Random.Range(0, 1);
+        _nextAction = (UnitAction)random;
     }
 
 }

@@ -7,6 +7,39 @@ public interface ITargetSelector
     List<Unit> SelectTargets(Unit caster);
 }
 
+public class RandomAttackSelector : ITargetSelector
+{
+    public List<Unit> SelectTargets(Unit caster)
+    {
+        List<Unit> units = BattleManager.Instance.PlayerUnits.Contains(caster) ? 
+                            BattleManager.Instance.EnemyUnits.ToList() : BattleManager.Instance.PlayerUnits.ToList();
+
+        List<Unit> frontUnits = new List<Unit>();
+
+        foreach (Unit unit in units)
+        {
+            if (unit != null && unit.UnitData.SlotIndex < 2) frontUnits.Add(unit);
+        }
+
+        foreach (Unit unit in frontUnits)
+        {
+            if (unit.UnitData.Type == UnitType.Knight && unit.IsSkillUsing) return new List<Unit> { unit };
+        }
+
+        int index = Random.Range(0, frontUnits.Count);
+
+        return new List<Unit> { frontUnits[index] };
+    }
+}
+
+public class SelfTargetSelector : ITargetSelector
+{
+    public List<Unit> SelectTargets(Unit caster)
+    {
+        return new List<Unit> { caster };
+    }
+}
+
 public class SingleTargetSelector : ITargetSelector
 {
     public List<Unit> SelectTargets(Unit caster)
@@ -60,6 +93,33 @@ public class BackAllySelector : ITargetSelector
         }
 
         return allies;
+    }
+}
+
+public class RandomAllySelector : ITargetSelector
+{
+    private int _count;
+
+    public RandomAllySelector(int count)
+    {
+        _count = count;
+    }
+
+    public List<Unit> SelectTargets(Unit caster)
+    {
+        List<Unit> allies = BattleManager.Instance.PlayerUnits.ToList();
+        List<Unit> result = new List<Unit>();
+
+        for (int i = 0; i < _count && allies.Count > 0; i++)
+        {
+            if (allies == null) continue;
+
+            int index = Random.Range(0, allies.Count);
+            result.Add(allies[index]);
+            allies.RemoveAt(index);
+        }
+
+        return result;
     }
 }
 

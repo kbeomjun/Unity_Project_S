@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICardEffect
+public interface IEffect
 {
     ITargetSelector TargetSelector { get; }
 
     void Execute(Unit caster, List<Unit> targets);
 }
 
-public class ChangeActionEffect : ICardEffect
+public class ChangeActionEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
     private UnitAction _action;
@@ -28,7 +28,25 @@ public class ChangeActionEffect : ICardEffect
     }
 }
 
-public class AddAttackEffect : ICardEffect
+public class AttackEffect : IEffect
+{
+    public ITargetSelector TargetSelector { get; set; }
+
+    public AttackEffect(ITargetSelector selector)
+    {
+        TargetSelector = selector;
+    }
+
+    public void Execute(Unit caster, List<Unit> targets)
+    {
+        foreach (Unit target in targets)
+        {
+            caster.Attack(target);
+        }
+    }
+}
+
+public class AddAttackEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
     private int _attack;
@@ -48,7 +66,7 @@ public class AddAttackEffect : ICardEffect
     }
 }
 
-public class AddDefenseEffect : ICardEffect
+public class AddDefenseEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
     private int _defense;
@@ -63,12 +81,13 @@ public class AddDefenseEffect : ICardEffect
     {
         foreach (Unit target in targets)
         {
-            target.AddDefense(_defense);
+            if (_defense == -1) target.Defense();
+            else target.AddDefense(_defense);
         }
     }
 }
 
-public class HealByPercentageEffect : ICardEffect
+public class HealByPercentageEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
     private int _percentage;
@@ -88,7 +107,7 @@ public class HealByPercentageEffect : ICardEffect
     }
 }
 
-public class ReduceAttackByPercentageEffect : ICardEffect
+public class ReduceAttackByPercentageEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
     private int _percentage;
@@ -108,7 +127,7 @@ public class ReduceAttackByPercentageEffect : ICardEffect
     }
 }
 
-public class ResetActionEffect : ICardEffect
+public class ResetActionEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
 
@@ -122,6 +141,27 @@ public class ResetActionEffect : ICardEffect
         foreach (Unit target in targets)
         {
             target.DecideAction();
+        }
+    }
+}
+
+public class ApplyStatusEffect : IEffect
+{
+    public ITargetSelector TargetSelector { get; set; }
+
+    private IStatusEffect _status;
+
+    public ApplyStatusEffect(IStatusEffect status, ITargetSelector selector)
+    {
+        _status = status;
+        TargetSelector = selector;
+    }
+
+    public void Execute(Unit caster, List<Unit> targets)
+    {
+        foreach (Unit target in targets)
+        {
+            target.ApplyStatus(_status);
         }
     }
 }

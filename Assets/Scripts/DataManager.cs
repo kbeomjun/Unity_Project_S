@@ -13,6 +13,32 @@ public class DataManager : MonoBehaviour
         new UnitData("Archer", 70, 70, 30, 10, UnitType.Archer),
         new UnitData("Monk", 50, 50, 5, 5, UnitType.Monk)
     };
+    public ISkill UnitAttack = new Attack(new List<IEffect> { new AttackEffect(new RandomAttackSelector())});
+    public ISkill UnitDefense = new Defense(new List<IEffect> { new AddDefenseEffect(-1, new SelfTargetSelector())});
+    public ISkill[] UnitSkills = new ISkill[]
+    {
+        new Skill(
+            new List<IEffect>{ 
+                new AddDefenseEffect(30, new SelfTargetSelector()), 
+                new ApplyStatusEffect(new DamageReductionStatus(0.5f, 1), new SelfTargetSelector())
+            }
+        ),
+        new Skill(
+            new List<IEffect>{
+                new ApplyStatusEffect(new DamageReflectionStatus(10, 1), new SelfTargetSelector())
+            }
+        ),
+        new Skill(
+            new List<IEffect>{
+                new AddAttackEffect(30, new RandomAttackSelector())
+            }
+        ),
+        new Skill(
+            new List<IEffect>{
+                new HealByPercentageEffect(10, new RandomAllySelector(1))
+            }
+        )
+    };
 
     // Card
     [SerializeField] public Card CardPrefab;
@@ -49,19 +75,18 @@ public class DataManager : MonoBehaviour
         new CardData("ResetAllEnemyAction", 2, CardType.Skill, TargetType.None, 9, 
                         $"Reset all next actions of enemy units")
     };
-
-    public List<ICardEffect>[] CardEffects = new List<ICardEffect>[]
+    public List<IEffect>[] CardEffects = new List<IEffect>[]
     {
-        new List<ICardEffect>{ new ChangeActionEffect(UnitAction.Attack, new SingleTargetSelector()) },
-        new List<ICardEffect>{ new ChangeActionEffect(UnitAction.Defense, new SingleTargetSelector()) },
-        new List<ICardEffect>{ new ChangeActionEffect(UnitAction.Skill, new SingleTargetSelector()) },
-        new List<ICardEffect>{ new AddAttackEffect(10, new SingleTargetSelector()) },
-        new List<ICardEffect>{ new AddDefenseEffect(10, new SingleTargetSelector()) },
-        new List<ICardEffect>{ new AddDefenseEffect(10, new FrontAllySelector()) },
-        new List<ICardEffect>{ new AddAttackEffect(10, new BackAllySelector()) },
-        new List<ICardEffect>{ new HealByPercentageEffect(10, new AllAllySelector()) },
-        new List<ICardEffect>{ new ReduceAttackByPercentageEffect(50, new SingleTargetSelector()) },
-        new List<ICardEffect>{ new ResetActionEffect(new AllEnemySelector()) }
+        new List<IEffect>{ new ChangeActionEffect(UnitAction.Attack, new SingleTargetSelector()) },
+        new List<IEffect>{ new ChangeActionEffect(UnitAction.Defense, new SingleTargetSelector()) },
+        new List<IEffect>{ new ChangeActionEffect(UnitAction.Skill, new SingleTargetSelector()) },
+        new List<IEffect>{ new AddAttackEffect(10, new SingleTargetSelector()) },
+        new List<IEffect>{ new AddDefenseEffect(10, new SingleTargetSelector()) },
+        new List<IEffect>{ new AddDefenseEffect(10, new FrontAllySelector()) },
+        new List<IEffect>{ new AddAttackEffect(10, new BackAllySelector()) },
+        new List<IEffect>{ new HealByPercentageEffect(10, new AllAllySelector()) },
+        new List<IEffect>{ new ReduceAttackByPercentageEffect(50, new SingleTargetSelector()) },
+        new List<IEffect>{ new ResetActionEffect(new AllEnemySelector()) }
     };
 
     public static DataManager Instance { get; private set; }

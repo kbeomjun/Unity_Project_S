@@ -170,7 +170,7 @@ public class CardManager : MonoBehaviour
             if (flag)
             {
                 Debug.Log("NonTargeting Card Used");
-                _selectedCard.Execute();
+                _selectedCard.Use();
                 _selectedCard.State = CardState.Discard;
                 _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);
@@ -190,7 +190,7 @@ public class CardManager : MonoBehaviour
             if (flag)
             {
                 Debug.Log("Targeting Card Used");
-                _selectedCard.Execute();
+                _selectedCard.Use();
                 _selectedCard.State = CardState.Discard;
                 _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);

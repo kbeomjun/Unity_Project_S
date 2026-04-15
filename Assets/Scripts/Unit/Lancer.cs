@@ -11,9 +11,15 @@ public class Lancer : Unit
 
     public override void UseSkill()
     {
-        base.UseSkill();
         _animator.SetBool("IsSkillUsing", true);
         _isSkillUsing = true;
+    }
+
+    public override void DecideAction()
+    {
+        _currentAttack = _unitData.Attack;
+        int random = Random.Range(2, 3);
+        _nextAction = (UnitAction)random;
     }
 
 }

@@ -23,14 +23,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Button _endPrepareButton;
     [SerializeField] private Button _endTurnButton;
 
-    private UnitData[] _enemyUnitData = new UnitData[4]
-    {
-        new UnitData("Knight", 110, 110, 10, 30, UnitType.Knight),
-        new UnitData("Lancer", 90, 90, 20, 20, UnitType.Lancer),
-        new UnitData("Archer", 70, 70, 30, 10, UnitType.Archer),
-        new UnitData("Monk", 50, 50, 5, 5, UnitType.Monk)
-    };
-
     private Unit[] _playerUnits = new Unit[4];
     private Unit[] _enemyUnits = new Unit[4];
 
@@ -72,7 +64,7 @@ public class BattleManager : MonoBehaviour
     public void StartBattle(List<UnitData> playerUnitDatas, List<CardData> playerCardDatas)
     {
         _currentTurn = 0;
-        _drawCardNum = 5;
+        _drawCardNum = 10;
         _maxCost = 10;
         _state = BattleState.Prepare;
         _endPrepareButton.gameObject.SetActive(true);
@@ -99,13 +91,13 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        int random = Random.Range(1, 5);
+        int random = Random.Range(4, 5);
 
         for (int i = 0; i < random; i++)
         {
-            int random2 = Random.Range(0, 4);
+            int random2 = Random.Range(0, 1);
             _enemyUnits[i] = Instantiate(DataManager.Instance.EnemyUnitPrefabs[random2], _enemySlots[i]);
-            _enemyUnits[i].Init(new UnitData(_enemyUnitData[random2]));
+            _enemyUnits[i].Init(new UnitData(DataManager.Instance.UnitData[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
             _enemyUnits[i].transform.localPosition = Vector3.zero;
         }
@@ -150,6 +142,7 @@ public class BattleManager : MonoBehaviour
 
             if (_currentTurn <= 1) unit.NextActionScript.gameObject.SetActive(true);
             if (_currentTurn > 1) unit.ResetAction();
+            unit.OnTurnStart();
             unit.DecideAction();
         }
 
@@ -160,6 +153,7 @@ public class BattleManager : MonoBehaviour
                 if (unit == null) continue;
 
                 unit.NextActionScript.gameObject.SetActive(true);
+                unit.OnTurnStart();
                 unit.DecideAction();
             }
         }
@@ -196,6 +190,12 @@ public class BattleManager : MonoBehaviour
         Debug.Log($"PlayerTurn{_currentTurn} End");
         _endTurnButton.enabled = false;
 
+        foreach (Unit unit in _playerUnits)
+        {
+            if (unit == null) continue;
+            unit.OnTurnEnd();
+        }
+
         CardManager.Instance.DiscardHandCards();
 
         StartCoroutine(PlayerToEnemyFlow());
@@ -214,6 +214,7 @@ public class BattleManager : MonoBehaviour
         foreach (Unit unit in _enemyUnits)
         {
             if (unit == null) continue;
+            unit.OnTurnEnd();
             unit.DecideAction();
         }
 
@@ -231,6 +232,7 @@ public class BattleManager : MonoBehaviour
             foreach (Unit unit in _enemyUnits)
             {
                 if (unit == null) continue;
+                unit.OnTurnStart();
                 unit.ResetAction();
             }
         }
