@@ -20,11 +20,11 @@ public class Card : MonoBehaviour
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private Image _iconImage;
 
-    private CardData _cardData;
-    public CardData CardData => _cardData;
-
     private RectTransform _rect;
     public RectTransform Rect => _rect;
+    
+    private CardData _cardData;
+    public CardData CardData => _cardData;
 
     private Vector2 _originPosition;
     private Vector3 _originScale;
@@ -34,6 +34,11 @@ public class Card : MonoBehaviour
     {
         get => _originPosition;
         set => _originPosition = value;
+    }
+    public Vector3 OriginScale
+    {
+        get => _originScale;
+        set => _originScale = value;
     }
     public int OriginIndex
     {

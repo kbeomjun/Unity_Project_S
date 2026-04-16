@@ -4,7 +4,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Map _map;
-    [SerializeField] private List<Unit> _playerUnits = new List<Unit>();
 
     private int _maxChapter;
     private int _currentChapter;
@@ -14,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     private List<UnitData> _playerUnitDatas = new List<UnitData>();
     private List<CardData> _playerCardDatas = new List<CardData>();
+    
+    public List<UnitData> PlayerUnitDatas => _playerUnitDatas;
+    public int CurrentCoin { get; set; }
 
     public static GameManager Instance { get; private set; }
     private void Awake()
@@ -34,36 +36,21 @@ public class GameManager : MonoBehaviour
 
         //StartGame();
 
-        foreach(Unit unit in _playerUnits)
-        {
-            if(unit is Knight)
-            {
-                _playerUnitDatas.Add(new UnitData("Knight", 110, 60, 10, 30, UnitType.Knight));
-            } 
-            else if(unit is Lancer)
-            {
-                _playerUnitDatas.Add(new UnitData("Lancer", 90, 45, 20, 20, UnitType.Lancer));
-            }
-            else if (unit is Archer)
-            {
-                _playerUnitDatas.Add(new UnitData("Archer", 70, 60, 30, 10, UnitType.Archer));
-            }
-            else if (unit is Monk)
-            {
-                _playerUnitDatas.Add(new UnitData("Monk", 50, 40, 5, 5, UnitType.Monk));
-            }
-        }
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[0]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[1]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[2]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[3]));
 
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[0]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[1]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[2]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[3]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[4]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[5]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[6]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[7]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[8]);
-        _playerCardDatas.Add(DataManager.Instance.CardDatas[9]);
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[1]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[2]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[3]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[4]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[5]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[6]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[7]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
         //BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
 
@@ -159,6 +146,21 @@ public class GameManager : MonoBehaviour
         {
 
         }
+    }
+
+    public void AddCoin(int coin)
+    {
+        CurrentCoin += coin;
+    }
+
+    public void AddUnit(int unitType)
+    {
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[unitType]));
+    }
+
+    public void AddCard(CardData data)
+    {
+        _playerCardDatas.Add(new CardData(data));
     }
 
 }

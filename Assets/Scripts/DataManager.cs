@@ -89,6 +89,10 @@ public class DataManager : MonoBehaviour
         new List<IEffect>{ new ResetActionEffect(new AllEnemySelector()) }
     };
 
+    //Reward
+    [SerializeField] public Sprite[] RewardItemSprites;
+    [SerializeField] public Sprite[] UnitSprites;
+
     public static DataManager Instance { get; private set; }
     private void Awake()
     {

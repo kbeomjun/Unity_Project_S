@@ -44,7 +44,14 @@ public class CardManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         _input = new PlayerInputActions();
         _thresholdY = Screen.height * 0.4f;

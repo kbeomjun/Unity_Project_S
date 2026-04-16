@@ -362,4 +362,5 @@ MonoBehaviour:
   _button: {fileID: 481026476339700773}
   _rect: {fileID: 2991633657839918317}
   _icon: {fileID: 7744398824208865625}
+  _iconRect: {fileID: 6267341579611822140}
   _text: {fileID: 8924371428460879970}
