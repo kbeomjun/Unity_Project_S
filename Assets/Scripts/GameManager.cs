@@ -65,7 +65,9 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(DataManager.Instance.CardDatas[8]);
         _playerCardDatas.Add(DataManager.Instance.CardDatas[9]);
 
-        BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
+        //BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
+
+        OnBattleEnd(true);
     }
 
     private void StartGame()
@@ -144,6 +146,18 @@ public class GameManager : MonoBehaviour
             }
 
             StartChapter();
+        }
+    }
+
+    public void OnBattleEnd(bool isWin)
+    {
+        if (isWin)
+        {
+            RewardManager.Instance.ShowRewards(NodeType.Battle);
+        }
+        else
+        {
+
         }
     }
 

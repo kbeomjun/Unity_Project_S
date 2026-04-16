@@ -282,8 +282,10 @@ public class BattleManager : MonoBehaviour
             {
                 Debug.Log("Game Over");
                 _state = BattleState.End;
-                StopAllCoroutines();
                 _endTurnButton.enabled = false;
+                StopAllCoroutines();
+                CardManager.Instance.StopAllCoroutines();
+                GameManager.Instance.OnBattleEnd(false);
             }
             else if (_playerUnits[0] == null && _playerUnits[1] == null)
             {
@@ -300,8 +302,10 @@ public class BattleManager : MonoBehaviour
             {
                 Debug.Log("Stage Clear");
                 _state = BattleState.End;
-                StopAllCoroutines();
                 _endTurnButton.enabled = false;
+                StopAllCoroutines();
+                CardManager.Instance.StopAllCoroutines();
+                GameManager.Instance.OnBattleEnd(true);
             }
             else if (_enemyUnits[0] == null && _enemyUnits[1] == null)
             {
