@@ -18,6 +18,7 @@ public class RewardItem : MonoBehaviour
 
     private Button _button;
     private RectTransform _rect;
+    public RectTransform Rect => _rect;
 
     public RewardItemType Type { get; set; }
     public int Value { get; set; }
@@ -29,10 +30,11 @@ public class RewardItem : MonoBehaviour
         _rect = GetComponent<RectTransform>();
     }
 
-    public void Init(RewardItemType type, int value)
+    public void Init(RewardItemType type, int value, int index)
     {
         Type = type;
         Value = value;
+        Index = index;
 
         switch (Type) 
         {

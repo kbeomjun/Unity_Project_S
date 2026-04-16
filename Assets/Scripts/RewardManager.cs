@@ -4,20 +4,29 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+public enum RewardState
+{
+    Button,
+    Card
+}
+
 public class RewardManager : MonoBehaviour
 {
-    [SerializeField] private RectTransform _rewardContent;
+    [SerializeField] private RectTransform _rewardContentTr;
     [SerializeField] private VerticalLayoutGroup _layoutGroup;
-    [SerializeField] private RewardItem _rewardItem;
-    [SerializeField] private RectTransform _cardRewards;
+    [SerializeField] private RewardItem _rewardItemPrefab;
+    [SerializeField] private RectTransform _cardRewardsTr;
     [SerializeField] private RectTransform _canvasRect;
 
     private List<RewardItem> _rewardItems = new List<RewardItem>();
+    private List<List<CardData>> _rewardCardDatasList = new List<List<CardData>>();
     private List<Card> _rewardCards = new List<Card>();
 
     private PlayerInputActions _input;
     private Card _selectedCard = null;
-    private RewardItem _selectedReward = null;
+    private RewardItem _selectedRewardCard = null;
+
+    private RewardState _state = RewardState.Button;
 
     private Vector2 _uiMousePos = Vector2.zero;
     private Vector2 _screenMousePos = Vector2.zero;
@@ -53,20 +62,21 @@ public class RewardManager : MonoBehaviour
         int coinValue = 0;
         int unitValue = 0;
         int cardValue = 3;
+        int cardCount = 0;
 
         switch (nodeType)
         {
             case NodeType.Battle:
                 coinValue = Random.Range(30, 34);
-                coin = Instantiate(_rewardItem, _rewardContent);
-                coin.Init(RewardItemType.Coin, coinValue);
+                coin = Instantiate(_rewardItemPrefab, _rewardContentTr);
+                coin.Init(RewardItemType.Coin, coinValue, cardCount);
 
                 unitValue = Random.Range(0, DataManager.Instance.UnitData.Length);
-                unit = Instantiate(_rewardItem, _rewardContent);
-                unit.Init(RewardItemType.Unit, unitValue);
+                unit = Instantiate(_rewardItemPrefab, _rewardContentTr);
+                unit.Init(RewardItemType.Unit, unitValue, cardCount);
 
-                card = Instantiate(_rewardItem, _rewardContent);
-                card.Init(RewardItemType.Card, cardValue);
+                card = Instantiate(_rewardItemPrefab, _rewardContentTr);
+                card.Init(RewardItemType.Card, cardValue, cardCount++);
                 break;
 
             case NodeType.Elite:
@@ -80,29 +90,45 @@ public class RewardManager : MonoBehaviour
         _rewardItems.Add(unit);
         _rewardItems.Add(card);
         if (item != null) _rewardItems.Add(item);
+
+        for(int i = 0; i < cardCount; i++)
+        {
+            _rewardCardDatasList.Add(new List<CardData>());
+        }
     }
 
     public void ShowCardRewards(RewardItem rewardCard)
     {
         ClearRewardCards();
-
-        _selectedReward = rewardCard;
+        _selectedRewardCard = rewardCard;
+        _state = RewardState.Card;
         int cardNum = rewardCard.Value;
-        HashSet<int> set = new HashSet<int>();
 
-        while(set.Count < cardNum)
+        if (_rewardCardDatasList[rewardCard.Index].Count == 0)
         {
-            int index = Random.Range(0, DataManager.Instance.CardDatas.Length);
-            set.Add(index);
-        }
+            HashSet<int> set = new HashSet<int>();
+            while (set.Count < cardNum)
+            {
+                int index = Random.Range(0, DataManager.Instance.CardDatas.Length);
+                set.Add(index);
+            }
 
-        List<Card> rewardCards = new List<Card>();
+            List<CardData> cardDatas = new List<CardData>();
+            foreach (int index in set)
+            {
+                cardDatas.Add(DataManager.Instance.CardDatas[index]);
+            }
+
+            _rewardCardDatasList[rewardCard.Index] = cardDatas;
+        }
 
         float spacing = 500.0f; // 카드 간격
         float startX = -(cardNum - 1) * spacing * 0.5f;
         int i = 0;
 
-        foreach (int index in set)
+        List<Card> rewardCards = new List<Card>();
+
+        foreach (CardData data in _rewardCardDatasList[rewardCard.Index])
         {
             Card card = Instantiate(DataManager.Instance.CardPrefab);
             RectTransform rect = card.GetComponent<RectTransform>();
@@ -111,9 +137,9 @@ public class RewardManager : MonoBehaviour
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = new Vector2(startX + i * spacing, 0);
-            rect.SetParent(_cardRewards, false);
-            
-            card.Init(new CardData(DataManager.Instance.CardDatas[index]));
+            rect.SetParent(_cardRewardsTr, false);
+
+            card.Init(data);
             card.State = CardState.Idle;
             card.OriginScale = new Vector3(1.5f, 1.5f, 1.5f);
 
@@ -124,7 +150,6 @@ public class RewardManager : MonoBehaviour
         _rewardCards = rewardCards;
 
         ViewManager.Instance.ShowRewardCardPopup();
-        ViewManager.Instance.UnShowRewardPopup();
     }
 
     public void RemoveItem(RewardItem item)
@@ -136,9 +161,9 @@ public class RewardManager : MonoBehaviour
     {
         // 현재 아이템들 가져오기
         List<RectTransform> rects = new List<RectTransform>();
-        foreach (var it in _rewardItems)
+        foreach (RewardItem it in _rewardItems)
         {
-            rects.Add(it.GetComponent<RectTransform>());
+            rects.Add(it.Rect);
         }
 
         // 기존 위치 저장
@@ -150,6 +175,9 @@ public class RewardManager : MonoBehaviour
 
         // 삭제
         int removeIndex = _rewardItems.IndexOf(item);
+
+        if (removeIndex < 0) yield break;
+
         _rewardItems.RemoveAt(removeIndex);
         rects.RemoveAt(removeIndex);
 
@@ -158,7 +186,7 @@ public class RewardManager : MonoBehaviour
         yield return null;
 
         // Layout 강제 갱신 → 목표 위치 계산
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_rewardContent);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_rewardContentTr);
 
         Vector2[] targetPos = new Vector2[rects.Count];
         for (int i = 0; i < rects.Count; i++)
@@ -207,12 +235,33 @@ public class RewardManager : MonoBehaviour
     private void ClearRewardCards()
     {
         foreach (Card card in _rewardCards)
-        {
-            Debug.Log(card);
             Destroy(card.gameObject);
-        }
-
         _rewardCards.Clear();
+    }
+
+    public void OnClickRewardNextButton()
+    {
+        _selectedCard = null;
+        _selectedRewardCard = null;
+        _state = RewardState.Button;
+
+        foreach (RewardItem item in _rewardItems)
+            Destroy(item.gameObject);
+        _rewardItems.Clear();
+        _rewardCardDatasList.Clear();
+        ClearRewardCards();
+
+        ViewManager.Instance.Pop();
+    }
+
+    public void OnClickRewardCardPrevButton()
+    {
+        _selectedRewardCard = null;
+        _state = RewardState.Button;
+
+        ClearRewardCards();
+        
+        ViewManager.Instance.Pop();
     }
 
     private void OnEnable()
@@ -235,11 +284,13 @@ public class RewardManager : MonoBehaviour
 
         GameManager.Instance.AddCard(_selectedCard.CardData);
 
+        RemoveItem(_selectedRewardCard);
+        _selectedRewardCard = null;
+        _state = RewardState.Button;
+
         ClearRewardCards();
-        RemoveItem(_selectedReward);
-        
-        ViewManager.Instance.ShowRewardPopup();
-        ViewManager.Instance.UnShowRewardCardPopup();
+
+        ViewManager.Instance.Pop();
     }
 
     private void OnRelease(InputAction.CallbackContext ctx)
@@ -281,7 +332,12 @@ public class RewardManager : MonoBehaviour
 
     private void Update()
     {
-        MouseProcess();
+        switch (_state)
+        {
+            case RewardState.Card:
+                MouseProcess();
+                break;
+        }
     }
 
 }

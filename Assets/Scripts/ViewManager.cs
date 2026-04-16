@@ -1,10 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ViewManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _rewardPopup;
-    [SerializeField] private GameObject _rewardCardPopup;
-    [SerializeField] private GameObject _gameOverPopup;
+    [SerializeField] private UIPopup _rewardPopup;
+    [SerializeField] private UIPopup _rewardCardPopup;
+    [SerializeField] private UIPopup _gameOverPopup;
+    [SerializeField] private GameObject _dimBackGround;
+
+    private Stack<UIPopup> _popupStack = new Stack<UIPopup>();
 
     public static ViewManager Instance { get; private set; }
     private void Awake()
@@ -19,29 +23,49 @@ public class ViewManager : MonoBehaviour
         }
     }
 
-    public void ShowRewardPopup()
+    public void Push(UIPopup popup)
     {
-        _rewardPopup.SetActive(true);
+        if (_popupStack.Count > 0)
+        {
+            _popupStack.Peek().Hide(); 
+        }
+
+        _popupStack.Push(popup);
+        popup.Show();
+
+        _dimBackGround.SetActive(true);
     }
 
-    public void UnShowRewardPopup()
+    public void Pop()
     {
-        _rewardPopup.SetActive(false);
+        if (_popupStack.Count == 0) return;
+
+        UIPopup top = _popupStack.Pop();
+        top.Hide();
+
+        if (_popupStack.Count > 0)
+        {
+            _popupStack.Peek().Show();
+        }
+        else
+        {
+            _dimBackGround.SetActive(false);
+        }
+    }
+
+    public void ShowRewardPopup()
+    {
+        Push(_rewardPopup);
     }
 
     public void ShowRewardCardPopup()
     {
-        _rewardCardPopup.SetActive(true);
+        Push(_rewardCardPopup);
     }
 
-    public void UnShowRewardCardPopup()
+    public void ShowGameOverPopup() 
     {
-        _rewardCardPopup.SetActive(false);
-    }
-
-    public void ShowGameOverPopup()
-    {
-        //_gameOverPopup.SetActive(true);
+        //Push(_gameOverPopup);
     }
 
 }

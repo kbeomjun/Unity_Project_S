@@ -1,21 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Map _map;
+    [SerializeField] private TMP_Text _coinText;
+    [SerializeField] private TMP_Text _partyNumText;
+    [SerializeField] private TMP_Text _cardNumText;
 
-    private int _maxChapter;
-    private int _currentChapter;
-    private int _maxLayer;
-    private int _currentLayer;
-    private Node _currentNode;
+    private int _maxChapter = 0;
+    private int _currentChapter = 0;
+    private int _maxLayer = 0;
+    private int _currentLayer = 0;
+    private Node _currentNode = null;
+    private int _currentCoin = 0;
 
     private List<UnitData> _playerUnitDatas = new List<UnitData>();
     private List<CardData> _playerCardDatas = new List<CardData>();
     
     public List<UnitData> PlayerUnitDatas => _playerUnitDatas;
-    public int CurrentCoin { get; set; }
 
     public static GameManager Instance { get; private set; }
     private void Awake()
@@ -61,6 +65,7 @@ public class GameManager : MonoBehaviour
     {
         _currentChapter = 0;
         _maxLayer = _map.MaxLayer[_currentChapter];
+        _currentCoin = 80;
 
         StartChapter();
     }
@@ -150,7 +155,7 @@ public class GameManager : MonoBehaviour
 
     public void AddCoin(int coin)
     {
-        CurrentCoin += coin;
+        _currentCoin += coin;
     }
 
     public void AddUnit(int unitType)
@@ -161,6 +166,13 @@ public class GameManager : MonoBehaviour
     public void AddCard(CardData data)
     {
         _playerCardDatas.Add(new CardData(data));
+    }
+
+    private void Update()
+    {
+        _coinText.text = _currentCoin.ToString();
+        _partyNumText.text = _playerUnitDatas.Count.ToString();
+        _cardNumText.text = _playerCardDatas.Count.ToString();
     }
 
 }
