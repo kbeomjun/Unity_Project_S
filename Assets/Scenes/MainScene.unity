@@ -11215,7 +11215,7 @@ GameObject:
   - component: {fileID: 2010322160981228168}
   - component: {fileID: 582947702947539398}
   m_Layer: 5
-  m_Name: ShopCard
+  m_Name: Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
