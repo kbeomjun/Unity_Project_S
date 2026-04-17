@@ -125,15 +125,14 @@ public class GameManager : MonoBehaviour
 
         if (_currentLayer >= _maxLayer)
         {
-            Debug.Log("Chapter Clear");
-            _currentChapter++;
-
             if(_currentChapter >= _maxChapter)
             {
                 Debug.Log("Game Clear");
                 return;
             }
-
+            
+            Debug.Log("Chapter Clear");
+            _currentChapter++;
             StartChapter();
         }
     }
