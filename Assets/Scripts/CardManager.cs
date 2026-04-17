@@ -52,7 +52,7 @@ public class CardManager : MonoBehaviour
         foreach (CardData cardData in playerCardDatas)
         {
             Card card = Instantiate(DataManager.Instance.CardPrefab);
-            RectTransform rect = card.GetComponent<RectTransform>();
+            RectTransform rect = card.Rect;
 
             rect.SetParent(_handArea, false);
             rect.anchoredPosition = _drawPileOffset;

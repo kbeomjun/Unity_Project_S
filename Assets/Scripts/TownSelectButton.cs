@@ -1,9 +1,17 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public enum TownSelectButtonType
+{
+    Barrack,
+    Shop,
+    Inn
+}
+
 public class TownSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private GameObject _cursors;
+    [SerializeField] private TownSelectButtonType _type;
 
     private void Start()
     {
@@ -23,6 +31,22 @@ public class TownSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerExit(PointerEventData eventData)
     {
         _cursors.SetActive(false);
+    }
+
+    public void onClick()
+    {
+        switch (_type)
+        {
+            case TownSelectButtonType.Barrack:
+                break;
+
+            case TownSelectButtonType.Shop:
+                ViewManager.Instance.ShowShopPopup();
+                break;
+
+            case TownSelectButtonType.Inn:
+                break;
+        }
     }
 
 }

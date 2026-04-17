@@ -9,6 +9,8 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private UIPopup _rewardPopup;
     [SerializeField] private UIPopup _rewardCardPopup;
     [SerializeField] private UIPopup _gameOverPopup;
+    [SerializeField] private UIPopup _barrackPopup;
+    [SerializeField] private UIPopup _shopPopup;
     [SerializeField] private GameObject _dimBackGround;
 
     private UIView _currentView = null;
@@ -85,6 +87,16 @@ public class ViewManager : MonoBehaviour
     public void ShowGameOverPopup() 
     {
         Push(_gameOverPopup);
+    }
+
+    public void ShowBarrackPopup()
+    {
+        //Push(_barrackPopup);
+    }
+
+    public void ShowShopPopup()
+    {
+        Push(_shopPopup);
     }
 
 }

@@ -111,7 +111,7 @@ public class RewardManager : MonoBehaviour
         foreach (CardData data in _rewardCardDatasList[rewardCard.Index])
         {
             Card card = Instantiate(DataManager.Instance.CardPrefab);
-            RectTransform rect = card.GetComponent<RectTransform>();
+            RectTransform rect = card.Rect;
 
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchorMin = new Vector2(0.5f, 0.5f);

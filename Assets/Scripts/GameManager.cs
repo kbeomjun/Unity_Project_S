@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
         //StartBattle();
-        ViewManager.Instance.ShowTownView();
+        StartTown();
     }
 
     private void StartGame()
@@ -112,8 +112,14 @@ public class GameManager : MonoBehaviour
 
     private void StartBattle()
     {
-        ViewManager.Instance.ShowBattleView();
         BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
+        ViewManager.Instance.ShowBattleView();
+    }
+
+    private void StartTown()
+    {
+        TownManager.Instance.StartTown();
+        ViewManager.Instance.ShowTownView();
     }
 
     private void OnClearNode()
