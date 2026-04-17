@@ -112,7 +112,7 @@ public class Unit : MonoBehaviour
     public virtual void DecideAction()
     {
         _currentAttack = _unitData.Attack;
-        int random = Random.Range(2, 3);
+        int random = Random.Range(0, 3);
         _nextAction = (UnitAction)random;
     }
 

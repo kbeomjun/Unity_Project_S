@@ -1,14 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
-public enum RewardState
-{
-    Button,
-    Card
-}
 
 public class RewardManager : MonoBehaviour
 {
@@ -22,28 +15,15 @@ public class RewardManager : MonoBehaviour
     private List<List<CardData>> _rewardCardDatasList = new List<List<CardData>>();
     private List<Card> _rewardCards = new List<Card>();
 
-    private PlayerInputActions _input;
     private Card _selectedCard = null;
     private RewardItem _selectedRewardCard = null;
-
-    private RewardState _state = RewardState.Button;
-
-    private Vector2 _uiMousePos = Vector2.zero;
-    private Vector2 _screenMousePos = Vector2.zero;
+    Vector2 _uiMousePos = Vector2.zero;
 
     public static RewardManager Instance { get; private set; }
     private void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-        _input = new PlayerInputActions();
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     public void ShowRewards(NodeType nodeType)
@@ -101,7 +81,7 @@ public class RewardManager : MonoBehaviour
     {
         ClearRewardCards();
         _selectedRewardCard = rewardCard;
-        _state = RewardState.Card;
+        InputManager.Instance.State = InputState.RewardCard;
         int cardNum = rewardCard.Value;
 
         if (_rewardCardDatasList[rewardCard.Index].Count == 0)
@@ -243,7 +223,7 @@ public class RewardManager : MonoBehaviour
     {
         _selectedCard = null;
         _selectedRewardCard = null;
-        _state = RewardState.Button;
+        InputManager.Instance.State = InputState.None;
 
         foreach (RewardItem item in _rewardItems)
             Destroy(item.gameObject);
@@ -252,33 +232,20 @@ public class RewardManager : MonoBehaviour
         ClearRewardCards();
 
         ViewManager.Instance.Pop();
+        GameManager.Instance.StartBattle();
     }
 
     public void OnClickRewardCardPrevButton()
     {
         _selectedRewardCard = null;
-        _state = RewardState.Button;
+        InputManager.Instance.State = InputState.None;
 
         ClearRewardCards();
         
         ViewManager.Instance.Pop();
     }
 
-    private void OnEnable()
-    {
-        _input.Enable();
-        _input.Player.Click.started += OnClick;
-        _input.Player.Click.canceled += OnRelease;
-    }
-
-    private void OnDisable()
-    {
-        _input.Player.Click.started -= OnClick;
-        _input.Player.Click.canceled -= OnRelease;
-        _input.Disable();
-    }
-
-    private void OnClick(InputAction.CallbackContext ctx)
+    public void OnClick()
     {
         if (_selectedCard == null) return;
 
@@ -286,24 +253,22 @@ public class RewardManager : MonoBehaviour
 
         RemoveItem(_selectedRewardCard);
         _selectedRewardCard = null;
-        _state = RewardState.Button;
+        InputManager.Instance.State = InputState.None;
 
         ClearRewardCards();
 
         ViewManager.Instance.Pop();
     }
 
-    private void OnRelease(InputAction.CallbackContext ctx)
+    public void OnRelease()
     {
         if (_selectedCard == null) return;
     }
 
-    public void MouseProcess()
+    public void MouseProcess(Vector2 mousePos)
     {
-        _screenMousePos = _input.Player.Position.ReadValue<Vector2>();
-
         // Screen ¡æ UI ÁÂÇ¥ º¯È¯ (ÇÙ½É)
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, _screenMousePos, null, out _uiMousePos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
 
         int count = 0;
 
@@ -311,7 +276,7 @@ public class RewardManager : MonoBehaviour
         {
             Card card = _rewardCards[i];
 
-            if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, _screenMousePos, null))
+            if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, mousePos, null))
             {
                 _selectedCard = card;
                 card.State = CardState.Hover;
@@ -327,16 +292,6 @@ public class RewardManager : MonoBehaviour
         if(count == 0)
         {
             _selectedCard = null;
-        }
-    }
-
-    private void Update()
-    {
-        switch (_state)
-        {
-            case RewardState.Card:
-                MouseProcess();
-                break;
         }
     }
 

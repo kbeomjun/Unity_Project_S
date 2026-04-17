@@ -24,14 +24,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     private void Start()
@@ -41,9 +35,9 @@ public class GameManager : MonoBehaviour
         //StartGame();
 
         _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[0]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[1]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[1]));
         _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[2]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[3]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[3]));
 
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[1]));
@@ -56,9 +50,12 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        //BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
+        StartBattle();
+    }
 
-        OnBattleEnd(true);
+    public void StartBattle()
+    {
+        BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
     }
 
     private void StartGame()
@@ -149,7 +146,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-
+            ViewManager.Instance.ShowGameOverPopup();
         }
     }
 
@@ -168,11 +165,16 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(data));
     }
 
-    private void Update()
+    private void UpdateTopBar()
     {
         _coinText.text = _currentCoin.ToString();
         _partyNumText.text = _playerUnitDatas.Count.ToString();
         _cardNumText.text = _playerCardDatas.Count.ToString();
+    }
+
+    private void Update()
+    {
+        UpdateTopBar();
     }
 
 }

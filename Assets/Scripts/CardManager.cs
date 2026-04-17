@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using TMPro;
 
 public class CardManager : MonoBehaviour
@@ -28,40 +27,28 @@ public class CardManager : MonoBehaviour
     public bool IsDrawing => _isDrawing;
     public bool EndTurnRequested => _endTurnRequested;
 
-    private PlayerInputActions _input;
     private Card _selectedCard = null;
     private Unit _selectedUnit = null;
     public Unit SelectedUnit => _selectedUnit;
-
     private Vector2 _uiMousePos = Vector2.zero;
-    private Vector2 _screenMousePos = Vector2.zero;
-    private Vector2 _worldMousePos = Vector2.zero;
-
     private bool _isDrag = false;
     private float _thresholdY = 0.0f;
 
     public static CardManager Instance { get; private set; }
-
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
 
-        _input = new PlayerInputActions();
         _thresholdY = Screen.height * 0.4f;
-
         _drawPileOffset = new Vector2(-Screen.width, 0.0f);
         _discardPileOffset = new Vector2(Screen.width, 0.0f);
     }
 
     public void Init(List<CardData> playerCardDatas)
     {
+        ClearCards();
+
         foreach (CardData cardData in playerCardDatas)
         {
             Card card = Instantiate(DataManager.Instance.CardPrefab);
@@ -161,27 +148,27 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    public void ClearCards()
+    {
+        foreach (Card card in _drawPileCards)
+            Destroy(card.gameObject);
+        foreach (Card card in _handCards)
+            Destroy(card.gameObject);
+        foreach (Card card in _discardPileCards)
+            Destroy(card.gameObject);
+
+        _drawPileCards.Clear();
+        _handCards.Clear();
+        _discardPileCards.Clear();
+    }
+
     private void SetPileText()
     {
         _drawPileText.text = _drawPileCards.Count.ToString();
         _discardPileText.text = _discardPileCards.Count.ToString();
     }
 
-    private void OnEnable()
-    {
-        _input.Enable();
-        _input.Player.Click.started += OnClick;
-        _input.Player.Click.canceled += OnRelease;
-    }
-
-    private void OnDisable()
-    {
-        _input.Player.Click.started -= OnClick;
-        _input.Player.Click.canceled -= OnRelease;
-        _input.Disable();
-    }
-
-    private void OnClick(InputAction.CallbackContext ctx)
+    public void OnClick()
     {
         if (_selectedCard == null) return;
 
@@ -189,11 +176,11 @@ public class CardManager : MonoBehaviour
         _selectedCard.State = CardState.Selected;
     }
 
-    private void OnRelease(InputAction.CallbackContext ctx)
+    public void OnRelease(Vector2 mousePos)
     {
         if (_selectedCard == null) return;
 
-        if (_selectedCard.State == CardState.Selected && _screenMousePos.y >= _thresholdY && _selectedCard.CardData.TargetType == TargetType.None)
+        if (_selectedCard.State == CardState.Selected && mousePos.y >= _thresholdY && _selectedCard.CardData.TargetType == TargetType.None)
         {
             bool flag = BattleManager.Instance.UseCard(_selectedCard.CardData.Cost);
             
@@ -213,7 +200,7 @@ public class CardManager : MonoBehaviour
                 _selectedCard.transform.SetSiblingIndex(_selectedCard.OriginIndex);
             }
         }
-        else if (_selectedCard.State == CardState.Targeting && _selectedUnit != null && _screenMousePos.y >= _thresholdY)
+        else if (_selectedCard.State == CardState.Targeting && _selectedUnit != null && mousePos.y >= _thresholdY)
         {
             bool flag = BattleManager.Instance.UseCard(_selectedCard.CardData.Cost);
 
@@ -248,18 +235,10 @@ public class CardManager : MonoBehaviour
         _targetArrow.Hide();
     }
 
-    public void MouseProcess()
+    public void MouseProcess(Vector2 mousePos, Vector3 worldPos)
     {
-        _screenMousePos = _input.Player.Position.ReadValue<Vector2>();
-
         // Screen ¡æ UI ÁÂÇ¥ º¯È¯ (ÇÙ½É)
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, _screenMousePos, null, out _uiMousePos);
-
-        Vector3 screen = new Vector3(_screenMousePos.x, _screenMousePos.y, 8.0f);
-        Vector3 world = Camera.main.ScreenToWorldPoint(screen);
-        world.z = 0.0f;
-
-        _worldMousePos = world;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
 
         if (!_isDrag)
         {
@@ -269,7 +248,7 @@ public class CardManager : MonoBehaviour
             {
                 Card card = _handCards[i];
 
-                if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, _screenMousePos, null))
+                if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, mousePos, null))
                 {
                     _selectedCard = card;
                     card.State = CardState.Hover;
@@ -310,7 +289,7 @@ public class CardManager : MonoBehaviour
                 _selectedCard.Rect.anchoredPosition = _uiMousePos + new Vector2(0.0f, _selectedCard.Height * 1.5f);
             }
 
-            if (_screenMousePos.y >= _thresholdY)
+            if (mousePos.y >= _thresholdY)
             {
                 if (_selectedCard.CardData.TargetType != TargetType.None)
                 {
@@ -343,7 +322,7 @@ public class CardManager : MonoBehaviour
             {
                 if (unit == null) continue;
 
-                if (Vector3.Distance(unit.transform.position, _worldMousePos) <= 0.6f)
+                if (Vector3.Distance(unit.transform.position, worldPos) <= 0.6f)
                 {
                     unit.SetHighlight(true);
                     _selectedUnit = unit;
@@ -366,7 +345,6 @@ public class CardManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        MouseProcess();
         Arrange();
         SetPileText();
     }

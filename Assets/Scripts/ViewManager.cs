@@ -13,14 +13,8 @@ public class ViewManager : MonoBehaviour
     public static ViewManager Instance { get; private set; }
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     public void Push(UIPopup popup)
@@ -65,7 +59,7 @@ public class ViewManager : MonoBehaviour
 
     public void ShowGameOverPopup() 
     {
-        //Push(_gameOverPopup);
+        Push(_gameOverPopup);
     }
 
 }
