@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class ViewManager : MonoBehaviour
 {
+    [SerializeField] private UIView _battleView;
+    [SerializeField] private UIView _townView;
+
     [SerializeField] private UIPopup _rewardPopup;
     [SerializeField] private UIPopup _rewardCardPopup;
     [SerializeField] private UIPopup _gameOverPopup;
     [SerializeField] private GameObject _dimBackGround;
 
+    private UIView _currentView = null;
     private Stack<UIPopup> _popupStack = new Stack<UIPopup>();
 
     public static ViewManager Instance { get; private set; }
@@ -15,6 +19,27 @@ public class ViewManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+    }
+
+    public void ShowView(UIView view)
+    {
+        if (_currentView != null)
+        {
+            _currentView.Hide();
+        }
+
+        _currentView = view;
+        _currentView.Show();
+    }
+
+    public void ShowBattleView()
+    {
+        ShowView(_battleView);
+    }
+
+    public void ShowTownView()
+    {
+        ShowView(_townView);
     }
 
     public void Push(UIPopup popup)

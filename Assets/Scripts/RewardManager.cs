@@ -232,7 +232,6 @@ public class RewardManager : MonoBehaviour
         ClearRewardCards();
 
         ViewManager.Instance.Pop();
-        GameManager.Instance.StartBattle();
     }
 
     public void OnClickRewardCardPrevButton()

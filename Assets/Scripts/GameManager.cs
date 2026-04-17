@@ -50,12 +50,8 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        StartBattle();
-    }
-
-    public void StartBattle()
-    {
-        BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
+        //StartBattle();
+        ViewManager.Instance.ShowTownView();
     }
 
     private void StartGame()
@@ -92,7 +88,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case NodeType.Battle:
-                BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
+                StartBattle();
                 break;
 
             case NodeType.Elite:
@@ -112,6 +108,12 @@ public class GameManager : MonoBehaviour
         }
 
         OnClearNode();
+    }
+
+    private void StartBattle()
+    {
+        ViewManager.Instance.ShowBattleView();
+        BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
     }
 
     private void OnClearNode()
