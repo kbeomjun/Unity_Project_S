@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text _coinText;
     [SerializeField] private TMP_Text _partyNumText;
     [SerializeField] private TMP_Text _cardNumText;
+    [SerializeField] private RectTransform _cardPopupContentTr;
 
     private int _maxChapter = 0;
     private int _currentChapter = 0;
@@ -166,6 +167,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnClickCardButton()
+    {
+        ViewManager.Instance.ShowRemoveCardPopup();
+    }
+
     public void AddUnit(int unitType)
     {
         _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[unitType]));
@@ -174,6 +180,11 @@ public class GameManager : MonoBehaviour
     public void AddCard(CardData data)
     {
         _playerCardDatas.Add(new CardData(data));
+    }
+
+    public void RemoveCard(CardData data)
+    {
+        _playerCardDatas.Remove(data);
     }
 
     private void UpdateTopBar()

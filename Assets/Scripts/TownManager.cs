@@ -9,9 +9,11 @@ public class TownManager : MonoBehaviour
     [SerializeField] private RectTransform[] _cardPositions;
     [SerializeField] private GameObject[] _cardCoins;
     [SerializeField] private TMP_Text[] _cardCoinTexts;
-    [SerializeField] private Button _cardDeleteButton;
-    [SerializeField] private GameObject _cardDeleteCoin;
-    [SerializeField] private TMP_Text _cardDeleteCoinText;
+    [SerializeField] private Button _cardRemoveButton;
+    [SerializeField] private GameObject _cardRemoveCoin;
+    [SerializeField] private TMP_Text _cardRemoveCoinText;
+    [SerializeField] private GameObject _removeButton;
+    [SerializeField] private GameObject _prevButton;
 
     private Card[] _cards;
     private int _cardCount = 5;
@@ -67,8 +69,8 @@ public class TownManager : MonoBehaviour
             i++;
         }
 
-        _cardDeleteCoin.SetActive(true);
-        _cardDeleteCoinText.text = CardDeleteCoin.ToString();
+        _cardRemoveCoin.SetActive(true);
+        _cardRemoveCoinText.text = CardDeleteCoin.ToString();
     }
 
     private void ClearCards()
@@ -80,9 +82,11 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    public void OnClickCardDeleteButton()
+    public void OnClickCardRemoveButton()
     {
-        ViewManager.Instance.ShowDeleteCardPopup();
+        _removeButton.SetActive(true);
+        _prevButton.SetActive(true);
+        GameManager.Instance.OnClickCardButton();
     }
 
     public void OnClick()
@@ -96,15 +100,15 @@ public class TownManager : MonoBehaviour
             _selectedCard.Rect.SetParent(_canvasRect);
 
             int index = -1;
-            for(int i = 0; i < _cards.Length; i++)
+            for (int i = 0; i < _cards.Length; i++)
             {
                 if (_cards[i] == null) continue;
 
-                if (_cards[i] == _selectedCard) 
+                if (_cards[i] == _selectedCard)
                 {
                     index = i;
                     break;
-                } 
+                }
             }
             _cardCoins[index].SetActive(false);
 
@@ -145,10 +149,7 @@ public class TownManager : MonoBehaviour
             }
         }
 
-        if (count == 0)
-        {
-            _selectedCard = null;
-        }
+        if (count == 0) _selectedCard = null;
     }
 
 }

@@ -12,7 +12,7 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private UIPopup _gameOverPopup;
     [SerializeField] private UIPopup _barrackPopup;
     [SerializeField] private UIPopup _shopPopup;
-    [SerializeField] private UIPopup _deleteCardPopup;
+    [SerializeField] private UIPopup _removeCardPopup;
 
     private UIView _currentView = null;
     private Stack<UIPopup> _popupStack = new Stack<UIPopup>();
@@ -100,9 +100,9 @@ public class ViewManager : MonoBehaviour
         Push(_shopPopup);
     }
 
-    public void ShowDeleteCardPopup()
+    public void ShowRemoveCardPopup()
     {
-        Push(_deleteCardPopup);
+        Push(_removeCardPopup);
     }
 
 }

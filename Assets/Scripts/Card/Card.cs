@@ -11,7 +11,8 @@ public enum CardState
     Targeting,
     Draw,
     Discard,
-    Add
+    Add,
+    Stop
 }
 
 public class Card : MonoBehaviour
