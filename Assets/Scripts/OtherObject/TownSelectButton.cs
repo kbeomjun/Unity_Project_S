@@ -41,6 +41,7 @@ public class TownSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 break;
 
             case TownSelectButtonType.Shop:
+                InputManager.Instance.State = InputState.Shop;
                 ViewManager.Instance.ShowShopPopup();
                 break;
 

@@ -285,18 +285,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88abbe7b6a9cf43478034a1fe1a7d23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TownManager
+  _canvasRect: {fileID: 397832734}
   _cardPositions:
   - {fileID: 189090102}
   - {fileID: 2096978519}
   - {fileID: 2011340432}
   - {fileID: 1063067084}
   - {fileID: 609438409}
-  _cardCosts:
+  _cardCoins:
+  - {fileID: 671803197}
+  - {fileID: 1326689693}
+  - {fileID: 1133189686}
+  - {fileID: 1029203596}
+  - {fileID: 606297703}
+  _cardCoinTexts:
   - {fileID: 450533298}
   - {fileID: 880384688}
   - {fileID: 1510576599}
   - {fileID: 1733020475}
   - {fileID: 1193567210}
+  _cardDeleteButton: {fileID: 426839698}
+  _cardDeleteCoin: {fileID: 787899619}
+  _cardDeleteCoinText: {fileID: 842283658}
 --- !u!1 &22927685
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,7 +689,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &73867705
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1457,11 +1467,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52e5e771edb9914892e857e12f0b167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardManager
+  _canvasRect: {fileID: 397832734}
   _rewardContentTr: {fileID: 1323096168}
   _layoutGroup: {fileID: 1323096169}
   _rewardItemPrefab: {fileID: 4927312963012964703, guid: b7929c3ca1b4caf479717ad33acc5d26, type: 3}
   _cardRewardsTr: {fileID: 2082992163}
-  _canvasRect: {fileID: 397832734}
 --- !u!1 &268410442
 GameObject:
   m_ObjectHideFlags: 0
@@ -2201,12 +2211,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ViewManager
   _battleView: {fileID: 297686633}
   _townView: {fileID: 781919952}
+  _dimBackGround: {fileID: 73867704}
   _rewardPopup: {fileID: 771073851}
   _rewardCardPopup: {fileID: 1817929652}
   _gameOverPopup: {fileID: 2123339390}
   _barrackPopup: {fileID: 0}
   _shopPopup: {fileID: 1626338744}
-  _dimBackGround: {fileID: 73867704}
+  _deleteCardPopup: {fileID: 0}
 --- !u!1 &426839696
 GameObject:
   m_ObjectHideFlags: 0
@@ -9965,6 +9976,7 @@ RectTransform:
   - {fileID: 1817929649}
   - {fileID: 2123339389}
   - {fileID: 1626338743}
+  - {fileID: 1967743928}
   m_Father: {fileID: 397832734}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -11436,6 +11448,50 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923016654}
+  m_CullTransparentMesh: 1
+--- !u!1 &1967743927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1967743928}
+  - component: {fileID: 1967743929}
+  m_Layer: 5
+  m_Name: DeleteCardPopup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1967743928
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967743927}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1719039982}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1000, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1967743929
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967743927}
   m_CullTransparentMesh: 1
 --- !u!1 &2001710813
 GameObject:

@@ -66,7 +66,7 @@ public class RewardItem : MonoBehaviour
         switch (Type)
         {
             case RewardItemType.Coin:
-                GameManager.Instance.AddCoin(Value);
+                GameManager.Instance.CurrentCoin += Value;
                 RewardManager.Instance.RemoveItem(this);
                 break;
 

@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class RewardManager : MonoBehaviour
 {
+    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform _rewardContentTr;
     [SerializeField] private VerticalLayoutGroup _layoutGroup;
     [SerializeField] private RewardItem _rewardItemPrefab;
     [SerializeField] private RectTransform _cardRewardsTr;
-    [SerializeField] private RectTransform _canvasRect;
 
     private List<RewardItem> _rewardItems = new List<RewardItem>();
     private List<List<CardData>> _rewardCardDatasList = new List<List<CardData>>();
@@ -279,7 +279,6 @@ public class RewardManager : MonoBehaviour
             {
                 _selectedCard = card;
                 card.State = CardState.Hover;
-                card.transform.SetAsLastSibling();
                 count++;
             }
             else

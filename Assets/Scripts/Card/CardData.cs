@@ -25,8 +25,9 @@ public class CardData
     public TargetType TargetType { get; set; }
     public int Index { get; set; }
     public Sprite Image { get; set; }
+    public int Coin { get; set; }
 
-    public CardData(string name, int cost, CardType type, TargetType targetType, int index, string description)
+    public CardData(string name, int cost, CardType type, TargetType targetType, int index, int coin, string description)
     {
         Name = name;
         Cost = cost;
@@ -34,6 +35,7 @@ public class CardData
         Type = type;
         TargetType = targetType;
         Index = index;
+        Coin = coin;
         Image = null;
     }
 
@@ -45,6 +47,7 @@ public class CardData
         Type = data.Type;
         TargetType = data.TargetType;
         Index = data.Index;
+        Coin = data.Coin;
         Image = null;
     }
 

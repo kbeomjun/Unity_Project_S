@@ -6,12 +6,13 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private UIView _battleView;
     [SerializeField] private UIView _townView;
 
+    [SerializeField] private GameObject _dimBackGround;
     [SerializeField] private UIPopup _rewardPopup;
     [SerializeField] private UIPopup _rewardCardPopup;
     [SerializeField] private UIPopup _gameOverPopup;
     [SerializeField] private UIPopup _barrackPopup;
     [SerializeField] private UIPopup _shopPopup;
-    [SerializeField] private GameObject _dimBackGround;
+    [SerializeField] private UIPopup _deleteCardPopup;
 
     private UIView _currentView = null;
     private Stack<UIPopup> _popupStack = new Stack<UIPopup>();
@@ -97,6 +98,11 @@ public class ViewManager : MonoBehaviour
     public void ShowShopPopup()
     {
         Push(_shopPopup);
+    }
+
+    public void ShowDeleteCardPopup()
+    {
+        Push(_deleteCardPopup);
     }
 
 }

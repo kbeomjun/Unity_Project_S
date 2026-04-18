@@ -1,15 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
 
 public class TownManager : MonoBehaviour
 {
+    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform[] _cardPositions;
-    [SerializeField] private TMP_Text[] _cardCosts;
+    [SerializeField] private GameObject[] _cardCoins;
+    [SerializeField] private TMP_Text[] _cardCoinTexts;
+    [SerializeField] private Button _cardDeleteButton;
+    [SerializeField] private GameObject _cardDeleteCoin;
+    [SerializeField] private TMP_Text _cardDeleteCoinText;
 
     private Card[] _cards;
     private int _cardCount = 5;
+    private Vector3 _originScale = new Vector3(1.0f, 1.0f, 0.0f);
+    private Vector2 _addPosition = new Vector2(811.0f, 1037.0f);
+    private float _hoverScale = 1.2f;
+    private float _speed = 10.0f;
+    public int CardDeleteCoin { get; set; }
+
+    private Card _selectedCard = null;
+    private Vector2 _uiMousePos = Vector2.zero;
 
     public static TownManager Instance { get; private set; }
     private void Awake()
@@ -47,19 +60,94 @@ public class TownManager : MonoBehaviour
             card.Init(DataManager.Instance.CardDatas[i]);
             card.State = CardState.Idle;
 
-
-
             _cards[i] = card;
+
+            _cardCoins[i].SetActive(true);
+            _cardCoinTexts[i].text = card.CardData.Coin.ToString();
             i++;
         }
+
+        _cardDeleteCoin.SetActive(true);
+        _cardDeleteCoinText.text = CardDeleteCoin.ToString();
     }
 
     private void ClearCards()
     {
-        foreach(Card card in _cards)
+        for(int i = 0; i < _cards.Length; i++)
         {
+            if (_cards[i] != null) Destroy(_cards[i].gameObject);
+            _cardCoins[i].SetActive(false);
+        }
+    }
+
+    public void OnClickCardDeleteButton()
+    {
+        ViewManager.Instance.ShowDeleteCardPopup();
+    }
+
+    public void OnClick()
+    {
+        if (_selectedCard == null) return;
+
+        if (_selectedCard.CardData.Coin <= GameManager.Instance.CurrentCoin)
+        {
+            _selectedCard.State = CardState.Add;
+            _selectedCard.OriginPosition = _addPosition;
+            _selectedCard.Rect.SetParent(_canvasRect);
+
+            int index = -1;
+            for(int i = 0; i < _cards.Length; i++)
+            {
+                if (_cards[i] == null) continue;
+
+                if (_cards[i] == _selectedCard) 
+                {
+                    index = i;
+                    break;
+                } 
+            }
+            _cardCoins[index].SetActive(false);
+
+            GameManager.Instance.CurrentCoin -= _selectedCard.CardData.Coin;
+            GameManager.Instance.AddCard(_selectedCard.CardData);
+        }
+
+        _selectedCard = null;
+    }
+
+    public void OnRelease()
+    {
+        if (_selectedCard == null) return;
+    }
+
+    public void MouseProcess(Vector2 mousePos)
+    {
+        // Screen ¡æ UI ÁÂÇ¥ º¯È¯ (ÇÙ½É)
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
+
+        int count = 0;
+
+        for (int i = 0; i < _cardCount; i++)
+        {
+            Card card = _cards[i];
+
             if (card == null) continue;
-            Destroy(card.gameObject);
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, mousePos, null))
+            {
+                _selectedCard = card;
+                _cardPositions[i].localScale = Vector3.Lerp(_cardPositions[i].localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
+                count++;
+            }
+            else
+            {
+                _cardPositions[i].localScale = Vector3.Lerp(_cardPositions[i].localScale, _originScale, _speed * Time.deltaTime);
+            }
+        }
+
+        if (count == 0)
+        {
+            _selectedCard = null;
         }
     }
 

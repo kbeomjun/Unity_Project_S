@@ -14,11 +14,17 @@ public class GameManager : MonoBehaviour
     private int _maxLayer = 0;
     private int _currentLayer = 0;
     private Node _currentNode = null;
+    private int _prevCoin = 0;
     private int _currentCoin = 0;
+    public int CurrentCoin 
+    {
+        get => _currentCoin;
+        set => _currentCoin = value;
+    }
 
     private List<UnitData> _playerUnitDatas = new List<UnitData>();
     private List<CardData> _playerCardDatas = new List<CardData>();
-    
+
     public List<UnitData> PlayerUnitDatas => _playerUnitDatas;
 
     public static GameManager Instance { get; private set; }
@@ -31,6 +37,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _maxChapter = _map.MaxChapter;
+        TownManager.Instance.CardDeleteCoin = 100;
 
         //StartGame();
 
@@ -59,6 +66,7 @@ public class GameManager : MonoBehaviour
         _currentChapter = 0;
         _maxLayer = _map.MaxLayer[_currentChapter];
         _currentCoin = 80;
+        _prevCoin = _currentCoin;
 
         StartChapter();
     }
@@ -118,6 +126,7 @@ public class GameManager : MonoBehaviour
 
     private void StartTown()
     {
+        _currentCoin = 101;
         TownManager.Instance.StartTown();
         ViewManager.Instance.ShowTownView();
     }
@@ -155,11 +164,6 @@ public class GameManager : MonoBehaviour
         {
             ViewManager.Instance.ShowGameOverPopup();
         }
-    }
-
-    public void AddCoin(int coin)
-    {
-        _currentCoin += coin;
     }
 
     public void AddUnit(int unitType)

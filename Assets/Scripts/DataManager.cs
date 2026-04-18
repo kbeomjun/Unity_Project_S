@@ -45,34 +45,34 @@ public class DataManager : MonoBehaviour
     [SerializeField] public Sprite[] CardImages;
     public CardData[] CardDatas = new CardData[]
     {
-        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 0, 
+        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 0, 50,
                         $"Change unit's next action: <color=#FF5555>Attack</color>"),
         
-        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 1, 
+        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 1, 50,
                         $"Change unit's next action: <color=#FF5555>Defense</color>"),
         
-        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 2, 
+        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 2, 50,
                         $"Change unit's next action: <color=#FF5555>Skill</color>"),
 
-        new CardData("Attack", 1, CardType.Buff, TargetType.Ally, 3, 
+        new CardData("Attack", 1, CardType.Buff, TargetType.Ally, 3, 50,
                         $"Add <color=#FF5555>10</color> attack to my unit this turn"),
 
-        new CardData("Defense", 1, CardType.Buff, TargetType.Ally, 4, 
+        new CardData("Defense", 1, CardType.Buff, TargetType.Ally, 4, 50,
                         $"Add <color=#FF5555>10</color> defense to my unit this turn"),
 
-        new CardData("FrontDefense", 2, CardType.Buff, TargetType.None, 5, 
+        new CardData("FrontDefense", 2, CardType.Buff, TargetType.None, 5, 50,
                         $"Add <color=#FF5555>10</color> defense to my units in front line this turn"),
 
-        new CardData("BackAttack", 2, CardType.Buff, TargetType.None, 6, 
+        new CardData("BackAttack", 2, CardType.Buff, TargetType.None, 6, 50,
                         $"Add <color=#FF5555>10</color> attack to my units in back line this turn"),
 
-        new CardData("HealAll", 3, CardType.Skill, TargetType.None, 7, 
+        new CardData("HealAll", 3, CardType.Skill, TargetType.None, 7, 50,
                         $"Restore all my units <color=#FF5555>10%</color> of their maximum health"),
 
-        new CardData("ReduceAttack", 2, CardType.Debuff, TargetType.Enemy, 8, 
+        new CardData("ReduceAttack", 2, CardType.Debuff, TargetType.Enemy, 8, 50,
                         $"Reduce the attack power of enemy unit by <color=#FF5555>50%</color>"),
 
-        new CardData("ResetAllEnemyAction", 2, CardType.Skill, TargetType.None, 9, 
+        new CardData("ResetAllEnemyAction", 2, CardType.Skill, TargetType.None, 9, 50,
                         $"Reset all next actions of enemy units")
     };
     public List<IEffect>[] CardEffects = new List<IEffect>[]

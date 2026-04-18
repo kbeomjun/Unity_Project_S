@@ -6,7 +6,8 @@ public enum InputState
     None,
     BattlePrepare,
     Battle,
-    RewardCard
+    RewardCard,
+    Shop,
 }
 
 public class InputManager : MonoBehaviour
@@ -56,6 +57,10 @@ public class InputManager : MonoBehaviour
             case InputState.RewardCard:
                 RewardManager.Instance.OnClick();
                 break;
+
+            case InputState.Shop:
+                TownManager.Instance.OnClick();
+                break;
         }
     }
 
@@ -73,6 +78,10 @@ public class InputManager : MonoBehaviour
 
             case InputState.RewardCard:
                 RewardManager.Instance.OnRelease();
+                break;
+
+            case InputState.Shop:
+                TownManager.Instance.OnRelease();
                 break;
         }
     }
@@ -97,6 +106,10 @@ public class InputManager : MonoBehaviour
             case InputState.RewardCard:
                 RewardManager.Instance.MouseProcess(_mousePos);
                 break;
+
+            case InputState.Shop:
+                TownManager.Instance.MouseProcess(_mousePos);
+                break;
         }
     }
 
@@ -109,6 +122,10 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.RewardCard:
+                MouseProcess();
+                break;
+
+            case InputState.Shop:
                 MouseProcess();
                 break;
         }

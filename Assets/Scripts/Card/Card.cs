@@ -10,7 +10,8 @@ public enum CardState
     Selected,
     Targeting,
     Draw,
-    Discard
+    Discard,
+    Add
 }
 
 public class Card : MonoBehaviour
@@ -53,6 +54,7 @@ public class Card : MonoBehaviour
     private float _hoverScale = 1.3f;
     private float _selectedScale = 1.6f;
     private float _discardScale = 0.2f;
+    private float _addScale = 0.1f;
     private float _currentZAngle = 0.0f;
     private float _targetZAngle = 0.0f;
     private float _newZAngle = 0.0f;
@@ -141,6 +143,13 @@ public class Card : MonoBehaviour
                 _targetZAngle = -90.0f;
                 _newZAngle = Mathf.LerpAngle(_currentZAngle, _targetZAngle, _speed * Time.deltaTime);
                 _rect.rotation = Quaternion.Euler(0, 0, _newZAngle);
+                break;
+
+            case CardState.Add:
+                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _addScale, _speed * 2.0f * Time.deltaTime);
+                if (Vector3.Distance(_rect.anchoredPosition, _originPosition) <= 2.0f) 
+                    Destroy(gameObject);
                 break;
         }
     }
