@@ -354,14 +354,12 @@ public class BattleManager : MonoBehaviour
     public void OnClick()
     {
         if (_selectedUnit == null) return;
-        Debug.Log($"OnClickUnit");
         _isDrag = true;
     }
 
     public void OnRelease()
     {
         if (_selectedUnit == null) return;
-        Debug.Log($"OnReleaseUnit");
 
         if(_selectedUnit != null && _selectedSlotGround != null)
         {

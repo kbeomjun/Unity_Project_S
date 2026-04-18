@@ -23,18 +23,18 @@ public class CardData
     public List<IEffect> Effects { get; set; }
     public CardType Type { get; set; }
     public TargetType TargetType { get; set; }
-    public int Index { get; set; }
+    public int Key { get; set; }
     public Sprite Image { get; set; }
     public int Coin { get; set; }
 
-    public CardData(string name, int cost, CardType type, TargetType targetType, int index, int coin, string description)
+    public CardData(string name, int cost, CardType type, TargetType targetType, int key, int coin, string description)
     {
         Name = name;
         Cost = cost;
         Description = description;
         Type = type;
         TargetType = targetType;
-        Index = index;
+        Key = key;
         Coin = coin;
         Image = null;
     }
@@ -46,7 +46,7 @@ public class CardData
         Description = data.Description;
         Type = data.Type;
         TargetType = data.TargetType;
-        Index = data.Index;
+        Key = data.Key;
         Coin = data.Coin;
         Image = null;
     }

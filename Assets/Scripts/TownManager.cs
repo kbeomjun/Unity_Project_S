@@ -12,13 +12,10 @@ public class TownManager : MonoBehaviour
     [SerializeField] private Button _cardRemoveButton;
     [SerializeField] private GameObject _cardRemoveCoin;
     [SerializeField] private TMP_Text _cardRemoveCoinText;
-    [SerializeField] private GameObject _removeButton;
-    [SerializeField] private GameObject _prevButton;
 
     private Card[] _cards;
     private int _cardCount = 5;
     private Vector3 _originScale = new Vector3(1.0f, 1.0f, 0.0f);
-    private Vector2 _addPosition = new Vector2(811.0f, 1037.0f);
     private float _hoverScale = 1.2f;
     private float _speed = 10.0f;
     public int CardDeleteCoin { get; set; }
@@ -37,12 +34,14 @@ public class TownManager : MonoBehaviour
 
     public void StartTown()
     {
-        ClearCards();
         CreateCards();
     }
 
     private void CreateCards()
     {
+        ClearCards();
+        _cardRemoveButton.enabled = true;
+
         HashSet<int> set = new HashSet<int>();
         while (set.Count < _cardCount)
         {
@@ -58,12 +57,10 @@ public class TownManager : MonoBehaviour
 
             rect.anchoredPosition = Vector2.zero;
             rect.SetParent(_cardPositions[i], false);
-
-            card.Init(DataManager.Instance.CardDatas[i]);
+            card.Init(DataManager.Instance.CardDatas[index]);
             card.State = CardState.Idle;
 
             _cards[i] = card;
-
             _cardCoins[i].SetActive(true);
             _cardCoinTexts[i].text = card.CardData.Coin.ToString();
             i++;
@@ -71,6 +68,19 @@ public class TownManager : MonoBehaviour
 
         _cardRemoveCoin.SetActive(true);
         _cardRemoveCoinText.text = CardDeleteCoin.ToString();
+    }
+
+    public void OnRemoveCard()
+    {
+        _cardRemoveButton.enabled = false;
+        _cardRemoveCoin.SetActive(false);
+        CardDeleteCoin += 50;
+    }
+
+    public void OnClickCardRemoveButton()
+    {
+        if (CardDeleteCoin <= GameManager.Instance.CurrentCoin)
+            GameManager.Instance.OnClickCardCollectionButton(true);
     }
 
     private void ClearCards()
@@ -82,13 +92,6 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    public void OnClickCardRemoveButton()
-    {
-        _removeButton.SetActive(true);
-        _prevButton.SetActive(true);
-        GameManager.Instance.OnClickCardButton();
-    }
-
     public void OnClick()
     {
         if (_selectedCard == null) return;
@@ -96,7 +99,7 @@ public class TownManager : MonoBehaviour
         if (_selectedCard.CardData.Coin <= GameManager.Instance.CurrentCoin)
         {
             _selectedCard.State = CardState.Add;
-            _selectedCard.OriginPosition = _addPosition;
+            _selectedCard.OriginPosition = _selectedCard.AddPosition;
             _selectedCard.Rect.SetParent(_canvasRect);
 
             int index = -1;

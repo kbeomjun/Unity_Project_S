@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public enum InputState
 {
     None,
+    CardCollection,
     BattlePrepare,
     Battle,
     RewardCard,
@@ -46,6 +47,10 @@ public class InputManager : MonoBehaviour
     {
         switch (State)
         {
+            case InputState.CardCollection:
+                GameManager.Instance.CardCollectionUI.OnClick();
+                break;
+
             case InputState.BattlePrepare:
                 BattleManager.Instance.OnClick();
                 break;
@@ -68,6 +73,10 @@ public class InputManager : MonoBehaviour
     {
         switch (State)
         {
+            case InputState.CardCollection:
+                GameManager.Instance.CardCollectionUI.OnRelease();
+                break;
+
             case InputState.BattlePrepare:
                 BattleManager.Instance.OnRelease();
                 break;
@@ -92,15 +101,20 @@ public class InputManager : MonoBehaviour
         _screenPos = new Vector3(_mousePos.x, _mousePos.y, 8.0f);
         _worldPos = Camera.main.ScreenToWorldPoint(_screenPos);
         _worldPos.z = 0.0f;
+    }
+
+    private void Update()
+    {
+        MouseProcess();
 
         switch (State)
         {
-            case InputState.BattlePrepare:
-                BattleManager.Instance.MouseProcess(_worldPos);
+            case InputState.CardCollection:
+                GameManager.Instance.CardCollectionUI.MouseProcess(_mousePos);
                 break;
 
-            case InputState.Battle:
-                CardManager.Instance.MouseProcess(_mousePos, _worldPos);
+            case InputState.BattlePrepare:
+                BattleManager.Instance.MouseProcess(_worldPos);
                 break;
 
             case InputState.RewardCard:
@@ -113,30 +127,12 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        switch (State)
-        {
-            case InputState.BattlePrepare:
-                MouseProcess();
-                break;
-
-            case InputState.RewardCard:
-                MouseProcess();
-                break;
-
-            case InputState.Shop:
-                MouseProcess();
-                break;
-        }
-    }
-
     private void LateUpdate()
     {
         switch (State)
         {
             case InputState.Battle:
-                MouseProcess();
+                CardManager.Instance.MouseProcess(_mousePos, _worldPos);
                 break;
         }
     }

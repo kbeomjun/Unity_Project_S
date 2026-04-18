@@ -28,10 +28,12 @@ public class Card : MonoBehaviour
     private CardData _cardData;
     public CardData CardData => _cardData;
 
+    private Vector2 _addPosition = new Vector2(811.0f, 1037.0f);
     private Vector2 _originPosition;
     private Vector3 _originScale;
     private int _originIndex = -1;
 
+    public Vector2 AddPosition => _addPosition;
     public Vector2 OriginPosition
     {
         get => _originPosition;
@@ -77,8 +79,8 @@ public class Card : MonoBehaviour
     public void Init(CardData cardData)
     {
         _cardData = new CardData(cardData);
-        _cardData.Effects = DataManager.Instance.CardEffects[_cardData.Index];
-        _cardData.Image = DataManager.Instance.CardImages[_cardData.Index];
+        _cardData.Effects = DataManager.Instance.CardEffects[_cardData.Key];
+        _cardData.Image = DataManager.Instance.CardImages[_cardData.Key];
 
         _nameText.text = _cardData.Name;
         _costText.text = _cardData.Cost.ToString();

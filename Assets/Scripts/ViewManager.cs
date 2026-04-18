@@ -12,7 +12,8 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private UIPopup _gameOverPopup;
     [SerializeField] private UIPopup _barrackPopup;
     [SerializeField] private UIPopup _shopPopup;
-    [SerializeField] private UIPopup _removeCardPopup;
+    [SerializeField] private UIPopup _cardCollectionPopup;
+    [SerializeField] private UIPopup _cardHighlitedPopup;
 
     private UIView _currentView = null;
     private Stack<UIPopup> _popupStack = new Stack<UIPopup>();
@@ -100,9 +101,18 @@ public class ViewManager : MonoBehaviour
         Push(_shopPopup);
     }
 
-    public void ShowRemoveCardPopup()
+    public bool ShowCardCollectionPopup()
     {
-        Push(_removeCardPopup);
+        if (_popupStack.Peek() == _cardCollectionPopup || _popupStack.Peek() == _cardHighlitedPopup) 
+            return false;
+
+        Push(_cardCollectionPopup);
+        return true;
+    }
+
+    public void ShowCardHighlitedPopup()
+    {
+        Push(_cardHighlitedPopup);
     }
 
 }

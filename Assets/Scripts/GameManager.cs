@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text _cardNumText;
     [SerializeField] private RectTransform _cardPopupContentTr;
 
+    private CardCollectionUI _cardCollectionUI;
+    public CardCollectionUI CardCollectionUI => _cardCollectionUI;
+
     private int _maxChapter = 0;
     private int _currentChapter = 0;
     private int _maxLayer = 0;
@@ -33,6 +36,8 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        _cardCollectionUI = GetComponent<CardCollectionUI>();
     }
 
     private void Start()
@@ -127,7 +132,7 @@ public class GameManager : MonoBehaviour
 
     private void StartTown()
     {
-        _currentCoin = 101;
+        _currentCoin = 1000;
         TownManager.Instance.StartTown();
         ViewManager.Instance.ShowTownView();
     }
@@ -167,9 +172,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnClickCardButton()
+    public void OnClickCardCollectionButton(bool isRemove)
     {
-        ViewManager.Instance.ShowRemoveCardPopup();
+        bool flag = ViewManager.Instance.ShowCardCollectionPopup();
+
+        if (flag)
+        {
+            _cardCollectionUI.CardCollectionInit(_playerCardDatas, isRemove);
+            InputManager.Instance.State = InputState.CardCollection;
+        }
     }
 
     public void AddUnit(int unitType)
@@ -182,9 +193,9 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(data));
     }
 
-    public void RemoveCard(CardData data)
+    public void RemoveCard(int index)
     {
-        _playerCardDatas.Remove(data);
+        _playerCardDatas.RemoveAt(index);
     }
 
     private void UpdateTopBar()

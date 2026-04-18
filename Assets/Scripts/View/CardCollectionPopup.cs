@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RemoveCardPopup : UIPopup
+public class CardCollectionPopup : UIPopup
 {
     private ScrollRect _scrollRect;
 
