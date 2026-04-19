@@ -72,7 +72,7 @@ public class SingleTargetSelector : ITargetSelector
 {
     public List<Unit> SelectTargets(Unit caster)
     {
-        return new List<Unit> { CardManager.Instance.SelectedUnit };
+        return new List<Unit> { BattleManager.Instance.DeckUI.SelectedUnit };
     }
 }
 

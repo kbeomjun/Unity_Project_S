@@ -204,21 +204,6 @@ public class RewardManager : MonoBehaviour
         _layoutGroup.enabled = true;
     }
 
-    private void ClearRewardItems()
-    {
-        foreach (RewardItem item in _rewardItems)
-            Destroy(item.gameObject);
-
-        _rewardItems.Clear();
-    }
-
-    private void ClearRewardCards()
-    {
-        foreach (Card card in _rewardCards)
-            Destroy(card.gameObject);
-        _rewardCards.Clear();
-    }
-
     public void OnClickRewardNextButton()
     {
         _selectedCard = null;
@@ -237,11 +222,24 @@ public class RewardManager : MonoBehaviour
     public void OnClickRewardCardPrevButton()
     {
         _selectedRewardCard = null;
-
         ClearRewardCards();
 
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
+    }
+
+    private void ClearRewardItems()
+    {
+        foreach (RewardItem item in _rewardItems)
+            Destroy(item.gameObject);
+        _rewardItems.Clear();
+    }
+
+    private void ClearRewardCards()
+    {
+        foreach (Card card in _rewardCards)
+            Destroy(card.gameObject);
+        _rewardCards.Clear();
     }
 
     public void OnClick()
@@ -254,7 +252,6 @@ public class RewardManager : MonoBehaviour
         GameManager.Instance.AddCard(_selectedCard.CardData);
         RemoveItem(_selectedRewardCard);
         _selectedRewardCard = null;
-
         ClearRewardCards();
 
         InputManager.Instance.Pop();
@@ -289,10 +286,7 @@ public class RewardManager : MonoBehaviour
             }
         }
 
-        if(count == 0)
-        {
-            _selectedCard = null;
-        }
+        if(count == 0) _selectedCard = null;
     }
 
 }

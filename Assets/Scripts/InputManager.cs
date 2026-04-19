@@ -85,7 +85,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.Battle:
-                CardManager.Instance.OnClick();
+                BattleManager.Instance.DeckUI.OnClick();
                 break;
 
             case InputState.RewardCard:
@@ -111,7 +111,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.Battle:
-                CardManager.Instance.OnRelease(_mousePos);
+                BattleManager.Instance.DeckUI.OnRelease(_mousePos);
                 break;
 
             case InputState.RewardCard:
@@ -161,7 +161,7 @@ public class InputManager : MonoBehaviour
         switch (State)
         {
             case InputState.Battle:
-                CardManager.Instance.MouseProcess(_mousePos, _worldPos);
+                BattleManager.Instance.DeckUI.MouseProcess(_mousePos, _worldPos);
                 break;
         }
     }

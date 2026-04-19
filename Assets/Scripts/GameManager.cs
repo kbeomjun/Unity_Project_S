@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     private int _currentLayer = 0;
     private Node _currentNode = null;
     private int _prevCoin = 0;
-    private int _currentCoin = 0;
+    private int _currentCoin = 1000;
     public int CurrentCoin 
     {
         get => _currentCoin;
@@ -63,8 +63,8 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        //StartBattle();
-        StartTown();
+        StartBattle();
+        //StartTown();
     }
 
     private void StartGame()
@@ -132,7 +132,6 @@ public class GameManager : MonoBehaviour
 
     private void StartTown()
     {
-        _currentCoin = 1000;
         TownManager.Instance.StartTown();
         ViewManager.Instance.ShowTownView();
     }

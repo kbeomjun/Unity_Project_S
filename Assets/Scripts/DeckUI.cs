@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class CardManager : MonoBehaviour
+public class DeckUI : MonoBehaviour
 {
+    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private Transform _handArea;
     [SerializeField] private TMP_Text _drawPileText;
     [SerializeField] private TMP_Text _discardPileText;
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private TargetArrow _targetArrow;
 
     private List<Card> _drawPileCards = new List<Card>();
@@ -34,12 +34,8 @@ public class CardManager : MonoBehaviour
     private bool _isDrag = false;
     private float _thresholdY = 0.0f;
 
-    public static CardManager Instance { get; private set; }
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-
         _thresholdY = Screen.height * 0.4f;
         _drawPileOffset = new Vector2(-Screen.width, 0.0f);
         _discardPileOffset = new Vector2(Screen.width, 0.0f);
@@ -115,9 +111,9 @@ public class CardManager : MonoBehaviour
             card.OriginPosition = _drawPileOffset;
             _drawPileCards.Add(card);
             _discardPileCards.Remove(card);
-
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
+        yield return new WaitForSeconds(0.1f);
     }
 
     public void DiscardHandCards()
@@ -160,12 +156,6 @@ public class CardManager : MonoBehaviour
         _drawPileCards.Clear();
         _handCards.Clear();
         _discardPileCards.Clear();
-    }
-
-    private void SetPileText()
-    {
-        _drawPileText.text = _drawPileCards.Count.ToString();
-        _discardPileText.text = _discardPileCards.Count.ToString();
     }
 
     public void OnClick()
@@ -343,10 +333,16 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    private void UpdatePileText()
+    {
+        _drawPileText.text = _drawPileCards.Count.ToString();
+        _discardPileText.text = _discardPileCards.Count.ToString();
+    }
+
     private void LateUpdate()
     {
         Arrange();
-        SetPileText();
+        UpdatePileText();
     }
 
 }

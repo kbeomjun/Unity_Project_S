@@ -56,7 +56,6 @@ public class Unit : MonoBehaviour
     }
 
     private List<IStatusEffect> _statuses = new List<IStatusEffect>();
-
     private Material _outlineMaterial;
 
     public void Init(UnitData unitData)
@@ -80,6 +79,7 @@ public class Unit : MonoBehaviour
 
     public void OnTurnStart()
     {
+        _nextActionScript.gameObject.SetActive(true);
         for (int i = _statuses.Count - 1; i >= 0; i--)
         {
             IStatusEffect status = _statuses[i];
@@ -119,6 +119,7 @@ public class Unit : MonoBehaviour
     public virtual void PerformAction()
     {
         _currentAction = _nextAction;
+        _nextActionScript.gameObject.SetActive(false);
 
         switch (_nextAction)
         {
@@ -228,12 +229,8 @@ public class Unit : MonoBehaviour
     public void HealByPercentage(float percentage)
     {
         _unitData.CurrentHealth += (int)(_unitData.MaxHealth * percentage);
-
         if (_unitData.CurrentHealth > _unitData.MaxHealth)
-        {
             _unitData.CurrentHealth = _unitData.MaxHealth;
-        }
-        
         _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
         _unitEffect.HealEffect();
     }

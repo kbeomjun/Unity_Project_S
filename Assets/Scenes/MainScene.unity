@@ -1273,7 +1273,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2015149248}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: OnClickEndPrepare
+        m_MethodName: OnClickEndPrepareButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5610,55 +5610,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TargetArrow
   _head: {fileID: 756518278}
   _body: {fileID: 3135241220558041267}
---- !u!1 &781734246
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 781734247}
-  - component: {fileID: 781734248}
-  m_Layer: 0
-  m_Name: CardManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &781734247
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 781734246}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1667663372}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &781734248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 781734246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b556ad202ebf58447a79ba422d7954ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CardManager
-  _handArea: {fileID: 1184276595}
-  _drawPileText: {fileID: 2094228009}
-  _discardPileText: {fileID: 506577091}
-  _canvasRect: {fileID: 397832734}
-  _targetArrow: {fileID: 776698472}
 --- !u!1 &781919950
 GameObject:
   m_ObjectHideFlags: 0
@@ -10149,7 +10100,6 @@ Transform:
   m_Children:
   - {fileID: 1330473543}
   - {fileID: 2015149247}
-  - {fileID: 781734247}
   - {fileID: 309057097}
   - {fileID: 246494458}
   - {fileID: 1374866722}
@@ -12168,7 +12118,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2015149248}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: OnClickEndTurn
+        m_MethodName: OnClickEndTurnButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12649,6 +12599,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2015149247}
   - component: {fileID: 2015149248}
+  - component: {fileID: 2015149249}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -12702,6 +12653,23 @@ MonoBehaviour:
   _costText: {fileID: 22927687}
   _endPrepareButton: {fileID: 226456766}
   _endTurnButton: {fileID: 1922572608}
+--- !u!114 &2015149249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015149246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b556ad202ebf58447a79ba422d7954ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeckUI
+  _handArea: {fileID: 1184276595}
+  _drawPileText: {fileID: 2094228009}
+  _discardPileText: {fileID: 506577091}
+  _canvasRect: {fileID: 397832734}
+  _targetArrow: {fileID: 776698472}
 --- !u!1 &2018533397
 GameObject:
   m_ObjectHideFlags: 0

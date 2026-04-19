@@ -22,6 +22,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Button _endPrepareButton;
     [SerializeField] private Button _endTurnButton;
 
+    private DeckUI _deckUI;
+    public DeckUI DeckUI => _deckUI;
+
     private Unit[] _playerUnits = new Unit[4];
     private Unit[] _enemyUnits = new Unit[4];
 
@@ -44,6 +47,7 @@ public class BattleManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        _deckUI = GetComponent<DeckUI>();
         for (int i = 0; i < _playerSlotGrounds.Length; i++)
             _playerSlotGrounds[i].SlotIndex = i;
     }
@@ -82,27 +86,7 @@ public class BattleManager : MonoBehaviour
         }
 
         InputManager.Instance.Push(InputState.BattlePrepare);
-        CardManager.Instance.Init(playerCardDatas);
-    }
-
-    public void OnClickEndPrepare()
-    {
-        if (_playerUnits[0] == null && _playerUnits[1] == null)
-        {
-            Debug.Log($"앞열 유닛 없음 전투 시작 불가");
-            return;
-        }
-
-        _state = BattleState.Battle;
-        _endPrepareButton.gameObject.SetActive(false);
-        _endTurnButton.gameObject.SetActive(true);
-        _cardView.SetActive(true);
-
-        foreach (SlotGround slotGround in _playerSlotGrounds)
-            slotGround.gameObject.SetActive(false);
-
-        InputManager.Instance.Push(InputState.Battle);
-        Invoke("StartPlayerTurn", 0.1f);
+        _deckUI.Init(playerCardDatas);
     }
 
     public void StartPlayerTurn()
@@ -114,12 +98,11 @@ public class BattleManager : MonoBehaviour
         _currentCost = _maxCost;
         _endTurnButton.enabled = true;
         
-        StartCoroutine(CardManager.Instance.DrawCards(_drawCardNum));
+        StartCoroutine(_deckUI.DrawCards(_drawCardNum));
 
         foreach (Unit unit in _playerUnits)
         {
             if (unit == null) continue;
-
             if (_currentTurn <= 1) unit.NextActionScript.gameObject.SetActive(true);
             if (_currentTurn > 1) unit.ResetAction();
             unit.OnTurnStart();
@@ -131,18 +114,11 @@ public class BattleManager : MonoBehaviour
             foreach (Unit unit in _enemyUnits)
             {
                 if (unit == null) continue;
-
                 unit.NextActionScript.gameObject.SetActive(true);
                 unit.OnTurnStart();
                 unit.DecideAction();
             }
         }
-    }
-    
-    private void SetCostText()
-    {
-        string costText = $"{_currentCost}/{_maxCost}";
-        _costText.text = costText;
     }
 
     public bool UseCard(int cost)
@@ -157,20 +133,9 @@ public class BattleManager : MonoBehaviour
     {
         for (int i = 0; i < num; i++)
         {
-            yield return StartCoroutine(CardManager.Instance.DrawCardRoutine());
+            yield return StartCoroutine(_deckUI.DrawCardRoutine());
             yield return new WaitForSeconds(0.5f);
         }
-    }
-
-    public void OnClickEndTurn()
-    {
-        if (CardManager.Instance.IsDrawing)
-        {
-            CardManager.Instance.RequestEndTurn();
-            return;
-        }
-
-        EndPlayerTurn();
     }
 
     public void EndPlayerTurn()
@@ -186,8 +151,7 @@ public class BattleManager : MonoBehaviour
             unit.OnTurnEnd();
         }
 
-        CardManager.Instance.DiscardHandCards();
-
+        _deckUI.DiscardHandCards();
         StartCoroutine(PlayerToEnemyFlow());
     }
 
@@ -298,7 +262,7 @@ public class BattleManager : MonoBehaviour
         _cardView.SetActive(false);
         StopAllCoroutines();
         InputManager.Instance.PopUntil(InputState.BattlePrepare);
-        CardManager.Instance.StopAllCoroutines();
+        _deckUI.StopAllCoroutines();
         GameManager.Instance.OnBattleEnd(isWin);
     }
 
@@ -337,6 +301,37 @@ public class BattleManager : MonoBehaviour
         return validIndexes[Random.Range(0, validIndexes.Count)];
     }
 
+    public void OnClickEndPrepareButton()
+    {
+        if (_playerUnits[0] == null && _playerUnits[1] == null)
+        {
+            Debug.Log($"앞열 유닛 없음 전투 시작 불가");
+            return;
+        }
+
+        _state = BattleState.Battle;
+        _endPrepareButton.gameObject.SetActive(false);
+        _endTurnButton.gameObject.SetActive(true);
+        _cardView.SetActive(true);
+
+        foreach (SlotGround slotGround in _playerSlotGrounds)
+            slotGround.gameObject.SetActive(false);
+
+        InputManager.Instance.Push(InputState.Battle);
+        Invoke("StartPlayerTurn", 0.1f);
+    }
+
+    public void OnClickEndTurnButton()
+    {
+        if (_deckUI.IsDrawing)
+        {
+            _deckUI.RequestEndTurn();
+            return;
+        }
+
+        EndPlayerTurn();
+    }
+
     private void ClearUnits()
     {
         foreach(Unit unit in _playerUnits)
@@ -350,7 +345,7 @@ public class BattleManager : MonoBehaviour
             Destroy(unit.gameObject);
         }
     }
-
+    
     public void OnClick()
     {
         if (_selectedUnit == null) return;
@@ -455,12 +450,18 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private void UpdateCostText()
+    {
+        string costText = $"{_currentCost}/{_maxCost}";
+        _costText.text = costText;
+    }
+
     private void Update()
     {
         switch (_state)
         {
             case BattleState.Battle:
-                SetCostText();
+                UpdateCostText();
                 break;
         }
     }
