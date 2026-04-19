@@ -81,7 +81,6 @@ public class RewardManager : MonoBehaviour
     {
         ClearRewardCards();
         _selectedRewardCard = rewardCard;
-        InputManager.Instance.State = InputState.RewardCard;
         int cardNum = rewardCard.Value;
 
         if (_rewardCardDatasList[rewardCard.Index].Count == 0)
@@ -129,6 +128,7 @@ public class RewardManager : MonoBehaviour
 
         _rewardCards = rewardCards;
 
+        InputManager.Instance.Push(InputState.RewardCard);
         ViewManager.Instance.ShowRewardCardPopup();
     }
 
@@ -223,7 +223,6 @@ public class RewardManager : MonoBehaviour
     {
         _selectedCard = null;
         _selectedRewardCard = null;
-        InputManager.Instance.State = InputState.None;
 
         foreach (RewardItem item in _rewardItems)
             Destroy(item.gameObject);
@@ -231,16 +230,17 @@ public class RewardManager : MonoBehaviour
         _rewardCardDatasList.Clear();
         ClearRewardCards();
 
+        InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
     }
 
     public void OnClickRewardCardPrevButton()
     {
         _selectedRewardCard = null;
-        InputManager.Instance.State = InputState.None;
 
         ClearRewardCards();
-        
+
+        InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
     }
 
@@ -254,10 +254,10 @@ public class RewardManager : MonoBehaviour
         GameManager.Instance.AddCard(_selectedCard.CardData);
         RemoveItem(_selectedRewardCard);
         _selectedRewardCard = null;
-        InputManager.Instance.State = InputState.None;
 
         ClearRewardCards();
 
+        InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
     }
 

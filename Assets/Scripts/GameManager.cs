@@ -179,7 +179,7 @@ public class GameManager : MonoBehaviour
         if (flag)
         {
             _cardCollectionUI.CardCollectionInit(_playerCardDatas, isRemove);
-            InputManager.Instance.State = InputState.CardCollection;
+            InputManager.Instance.Push(InputState.CardCollection);
         }
     }
 

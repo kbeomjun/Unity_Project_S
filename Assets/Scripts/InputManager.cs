@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,7 +14,8 @@ public enum InputState
 
 public class InputManager : MonoBehaviour
 {
-    public InputState State { get; set; }
+    public InputState State => _stateStack.Count > 0 ? _stateStack.Peek() : InputState.None;
+    private Stack<InputState> _stateStack = new Stack<InputState>();
 
     private PlayerInputActions _input;
     private Vector2 _mousePos = Vector2.zero;
@@ -27,6 +29,33 @@ public class InputManager : MonoBehaviour
         else Destroy(gameObject);
 
         _input = new PlayerInputActions();
+    }
+
+    public void Push(InputState newState)
+    {
+        _stateStack.Push(newState);
+    }
+
+    public void Pop()
+    {
+        if (_stateStack.Count > 0)
+            _stateStack.Pop();
+    }
+
+    public void PopUntil(InputState targetState)
+    {
+        while (_stateStack.Count > 0)
+        {
+            if (_stateStack.Peek() == targetState)
+            {
+                _stateStack.Pop();
+                break;
+            }
+            
+            InputState state = _stateStack.Pop();
+            if (state == InputState.CardCollection || state == InputState.None)
+                ViewManager.Instance.Pop();
+        }
     }
 
     private void OnEnable()

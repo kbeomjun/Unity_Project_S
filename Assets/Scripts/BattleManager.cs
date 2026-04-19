@@ -56,7 +56,6 @@ public class BattleManager : MonoBehaviour
         _drawCardNum = 10;
         _maxCost = 10;
         _state = BattleState.Prepare;
-        InputManager.Instance.State = InputState.BattlePrepare;
         _endPrepareButton.gameObject.SetActive(true);
         _cardView.SetActive(false);
 
@@ -82,6 +81,7 @@ public class BattleManager : MonoBehaviour
             _enemyUnits[i].transform.localPosition = Vector3.zero;
         }
 
+        InputManager.Instance.Push(InputState.BattlePrepare);
         CardManager.Instance.Init(playerCardDatas);
     }
 
@@ -94,7 +94,6 @@ public class BattleManager : MonoBehaviour
         }
 
         _state = BattleState.Battle;
-        InputManager.Instance.State = InputState.Battle;
         _endPrepareButton.gameObject.SetActive(false);
         _endTurnButton.gameObject.SetActive(true);
         _cardView.SetActive(true);
@@ -102,6 +101,7 @@ public class BattleManager : MonoBehaviour
         foreach (SlotGround slotGround in _playerSlotGrounds)
             slotGround.gameObject.SetActive(false);
 
+        InputManager.Instance.Push(InputState.Battle);
         Invoke("StartPlayerTurn", 0.1f);
     }
 
@@ -294,10 +294,10 @@ public class BattleManager : MonoBehaviour
     private void BattleEnd(bool isWin)
     {
         _state = BattleState.End;
-        InputManager.Instance.State = InputState.None;
         _endTurnButton.enabled = false;
         _cardView.SetActive(false);
         StopAllCoroutines();
+        InputManager.Instance.PopUntil(InputState.BattlePrepare);
         CardManager.Instance.StopAllCoroutines();
         GameManager.Instance.OnBattleEnd(isWin);
     }

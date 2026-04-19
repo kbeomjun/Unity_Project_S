@@ -41,7 +41,7 @@ public class CardCollectionUI : MonoBehaviour
 
     public void OnClickCardCollectionPrevButton()
     {
-        InputManager.Instance.State = InputState.Shop;
+        InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
     }
 
@@ -51,7 +51,7 @@ public class CardCollectionUI : MonoBehaviour
         _selectedCard.Rect.SetSiblingIndex(_selectedCard.OriginIndex);
         _selectedCard.Rect.localScale = _originScale;
 
-        InputManager.Instance.State = InputState.CardCollection;
+        InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
     }
 
@@ -61,7 +61,8 @@ public class CardCollectionUI : MonoBehaviour
 
         GameManager.Instance.RemoveCard(_selectedCard.OriginIndex);
         TownManager.Instance.OnRemoveCard();
-        InputManager.Instance.State = InputState.Shop;
+        InputManager.Instance.Pop();
+        InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
         ViewManager.Instance.Pop();
     }
@@ -82,7 +83,7 @@ public class CardCollectionUI : MonoBehaviour
         _selectedCard.Rect.localScale = _originScale * _highlitedScale;
         if (_isRemove) _cardHighlitedRemoveButton.SetActive(true);
 
-        InputManager.Instance.State = InputState.None;
+        InputManager.Instance.Push(InputState.None);
         ViewManager.Instance.ShowCardHighlitedPopup();
     }
 

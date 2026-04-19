@@ -103,8 +103,12 @@ public class ViewManager : MonoBehaviour
 
     public bool ShowCardCollectionPopup()
     {
-        if (_popupStack.Peek() == _cardCollectionPopup || _popupStack.Peek() == _cardHighlitedPopup) 
-            return false;
+        if (_popupStack.Count > 0)
+        {
+            if (_popupStack.Peek() == _cardCollectionPopup ||
+                _popupStack.Peek() == _cardHighlitedPopup)
+                return false;
+        }
 
         Push(_cardCollectionPopup);
         return true;
