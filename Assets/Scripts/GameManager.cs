@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text _cardNumText;
     [SerializeField] private RectTransform _cardPopupContentTr;
 
+    private UnitCollectionUI _unitCollectionUI;
     private CardCollectionUI _cardCollectionUI;
+    public UnitCollectionUI UnitCollectionUI => _unitCollectionUI;
     public CardCollectionUI CardCollectionUI => _cardCollectionUI;
 
     private int _maxChapter = 0;
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        _unitCollectionUI = GetComponent<UnitCollectionUI>();
         _cardCollectionUI = GetComponent<CardCollectionUI>();
     }
 
@@ -63,8 +66,8 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        StartBattle();
-        //StartTown();
+        //StartBattle();
+        StartTown();
     }
 
     private void StartGame()
@@ -171,13 +174,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnClickUnitCollectionButton(bool isBarrack)
+    {
+        bool flag = ViewManager.Instance.ShowUnitCollectionPopup();
+
+        if (flag)
+        {
+            _unitCollectionUI.Init(_playerUnitDatas, isBarrack);
+        }
+    }
+
     public void OnClickCardCollectionButton(bool isRemove)
     {
         bool flag = ViewManager.Instance.ShowCardCollectionPopup();
 
         if (flag)
         {
-            _cardCollectionUI.CardCollectionInit(_playerCardDatas, isRemove);
+            _cardCollectionUI.Init(_playerCardDatas, isRemove);
             InputManager.Instance.Push(InputState.CardCollection);
         }
     }

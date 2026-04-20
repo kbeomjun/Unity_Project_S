@@ -12,6 +12,7 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private UIPopup _gameOverPopup;
     [SerializeField] private UIPopup _barrackPopup;
     [SerializeField] private UIPopup _shopPopup;
+    [SerializeField] private UIPopup _unitCollectionPopup;
     [SerializeField] private UIPopup _cardCollectionPopup;
     [SerializeField] private UIPopup _cardHighlitedPopup;
 
@@ -99,6 +100,18 @@ public class ViewManager : MonoBehaviour
     public void ShowShopPopup()
     {
         Push(_shopPopup);
+    }
+
+    public bool ShowUnitCollectionPopup()
+    {
+        if (_popupStack.Count > 0)
+        {
+            if (_popupStack.Peek() == _unitCollectionPopup)
+                return false;
+        }
+
+        Push(_unitCollectionPopup);
+        return true;
     }
 
     public bool ShowCardCollectionPopup()

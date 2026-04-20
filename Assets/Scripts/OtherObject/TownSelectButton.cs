@@ -38,11 +38,11 @@ public class TownSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
         switch (_type)
         {
             case TownSelectButtonType.Barrack:
+                TownManager.Instance.ShowBarrack();
                 break;
 
             case TownSelectButtonType.Shop:
-                InputManager.Instance.Push(InputState.Shop);
-                ViewManager.Instance.ShowShopPopup();
+                TownManager.Instance.ShowShop();
                 break;
 
             case TownSelectButtonType.Inn:

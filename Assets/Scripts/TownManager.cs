@@ -70,6 +70,17 @@ public class TownManager : MonoBehaviour
         _cardRemoveCoinText.text = CardDeleteCoin.ToString();
     }
 
+    public void ShowBarrack()
+    {
+        GameManager.Instance.OnClickUnitCollectionButton(true);
+    }
+
+    public void ShowShop()
+    {
+        InputManager.Instance.Push(InputState.Shop);
+        ViewManager.Instance.ShowShopPopup();
+    }
+
     public void OnRemoveCard()
     {
         _cardRemoveButton.enabled = false;

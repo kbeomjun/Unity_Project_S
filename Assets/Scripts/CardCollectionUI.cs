@@ -18,7 +18,7 @@ public class CardCollectionUI : MonoBehaviour
     private Card _selectedCard;
     private Vector2 _uiMousePos = Vector2.zero;
 
-    public void CardCollectionInit(List<CardData> _datas, bool isRemove)
+    public void Init(List<CardData> _datas, bool isRemove)
     {
         ClearCards();
         _isRemove = isRemove;
