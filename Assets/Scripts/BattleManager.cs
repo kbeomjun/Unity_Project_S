@@ -84,17 +84,16 @@ public class BattleManager : MonoBehaviour
             _enemyUnits[i].Init(new UnitData(DataManager.Instance.UnitDatas[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
             _enemyUnits[i].transform.localPosition = Vector3.zero;
-            _playerUnits[i].UnitTeam = UnitTeam.Enemy;
+            _enemyUnits[i].UnitTeam = UnitTeam.Enemy;
         }
 
         InputManager.Instance.Push(InputState.BattlePrepare);
         _deckUI.Init(playerCardDatas);
     }
 
-    public void StartPlayerTurn()
+    private void StartPlayerTurn()
     {
         if (_state != BattleState.Battle) return;
-
         _currentTurn++;
         Debug.Log($"PlayerTurn{_currentTurn} Start");
         _currentCost = _maxCost;
@@ -114,28 +113,17 @@ public class BattleManager : MonoBehaviour
             unit.DecideAction();
         }
 
-        if(_currentTurn <= 1)
+        foreach(Unit unit in _enemyUnits)
         {
-            foreach (Unit unit in _enemyUnits)
-            {
-                if (unit == null) continue;
-                unit.DecideAction();
-            }
+            if (unit == null) continue;
+            unit.OnTurnEnd();
+            unit.DecideAction();
         }
-    }
-
-    public bool UseCard(int cost)
-    {
-        if(cost > _currentCost) return false;
-
-        _currentCost -= cost;
-        return true;
     }
 
     public void EndPlayerTurn()
     {
         if (_state != BattleState.Battle) return;
-
         Debug.Log($"PlayerTurn{_currentTurn} End");
         _endTurnButton.enabled = false;
 
@@ -149,43 +137,31 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(PlayerToEnemyFlow());
     }
 
-    private IEnumerator PlayerToEnemyFlow()
+    private void StartEnemyTurn()
     {
-        yield return StartCoroutine(UnitTurnProcess(_playerUnits));
+        if (_state != BattleState.Battle) return;
+        Debug.Log($"EnemyTurn{_currentTurn} Start");
 
-        yield return null;
-        StartEnemyTurn();
-
-        yield return StartCoroutine(UnitTurnProcess(_enemyUnits));
-        Debug.Log($"EnemyTurn{_currentTurn} End");
-
-        yield return null;
         foreach (Unit unit in _enemyUnits)
         {
             if (unit == null) continue;
-            unit.OnTurnEnd();
-            unit.DecideAction();
+            unit.OnTurnStart();
+            unit.ResetAction();
         }
-
-        yield return null;
-        StartPlayerTurn();
     }
 
-    public void StartEnemyTurn()
+    private IEnumerator PlayerToEnemyFlow()
     {
-        if (_state != BattleState.Battle) return;
+        yield return StartCoroutine(UnitTurnProcess(_playerUnits));
+        yield return null;
 
-        Debug.Log($"EnemyTurn{_currentTurn} Start");
+        StartEnemyTurn();
+        yield return null;
 
-        if(_currentTurn > 1)
-        {
-            foreach (Unit unit in _enemyUnits)
-            {
-                if (unit == null) continue;
-                unit.OnTurnStart();
-                unit.ResetAction();
-            }
-        }
+        yield return StartCoroutine(UnitTurnProcess(_enemyUnits));
+        yield return null;
+        
+        StartPlayerTurn();
     }
 
     private IEnumerator UnitTurnProcess(Unit[] units)
@@ -445,6 +421,13 @@ public class BattleManager : MonoBehaviour
 
             if (count == 0) _selectedSlotGround = null;
         }
+    }
+
+    public bool UseCard(int cost)
+    {
+        if (cost > _currentCost) return false;
+        _currentCost -= cost;
+        return true;
     }
 
     private void UpdateCostText()
