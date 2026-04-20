@@ -94,6 +94,12 @@ public class TownManager : MonoBehaviour
             GameManager.Instance.OnClickCardCollectionButton(true);
     }
 
+    public void OnClickShopPrevButton()
+    {
+        InputManager.Instance.Pop();
+        ViewManager.Instance.Pop();
+    }
+
     private void ClearCards()
     {
         for(int i = 0; i < _cards.Length; i++)

@@ -51,7 +51,7 @@ public class RewardManager : MonoBehaviour
                 coin = Instantiate(_rewardItemPrefab, _rewardContentTr);
                 coin.Init(RewardItemType.Coin, coinValue, cardCount);
 
-                unitValue = Random.Range(0, DataManager.Instance.UnitData.Length);
+                unitValue = Random.Range(0, DataManager.Instance.UnitDatas.Length);
                 unit = Instantiate(_rewardItemPrefab, _rewardContentTr);
                 unit.Init(RewardItemType.Unit, unitValue, cardCount);
 

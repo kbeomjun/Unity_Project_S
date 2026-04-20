@@ -80,7 +80,7 @@ public class BattleManager : MonoBehaviour
         {
             int random2 = Random.Range(0, 4);
             _enemyUnits[i] = Instantiate(DataManager.Instance.EnemyUnitPrefabs[random2], _enemySlots[i]);
-            _enemyUnits[i].Init(new UnitData(DataManager.Instance.UnitData[random2]));
+            _enemyUnits[i].Init(new UnitData(DataManager.Instance.UnitDatas[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
             _enemyUnits[i].transform.localPosition = Vector3.zero;
         }
@@ -235,6 +235,7 @@ public class BattleManager : MonoBehaviour
                 _playerUnits[index - 2].UnitData.SlotIndex = index - 2;
                 StartCoroutine(MoveToSlot(_playerUnits[index - 2], _playerSlots[index - 2]));
                 _playerUnits[index] = null;
+                GameManager.Instance.RemoveUnit(index);
             }
         }
         else

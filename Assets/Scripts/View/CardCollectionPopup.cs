@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,13 +14,14 @@ public class CardCollectionPopup : UIPopup
     public override void Show()
     {
         base.Show();
-        ResetScroll();
+        StartCoroutine(ResetScrollCoroutine());
     }
 
-    private void ResetScroll()
+    private IEnumerator ResetScrollCoroutine()
     {
+        yield return null;
         Canvas.ForceUpdateCanvases();
-        _scrollRect.verticalNormalizedPosition = 1f;
+        _scrollRect.verticalNormalizedPosition = 1.0f;
     }
 
 }

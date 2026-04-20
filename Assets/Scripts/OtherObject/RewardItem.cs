@@ -47,7 +47,7 @@ public class RewardItem : MonoBehaviour
             case RewardItemType.Unit:
                 _icon.sprite = DataManager.Instance.UnitSprites[Value];
                 _iconRect.sizeDelta = new Vector2(100.0f, 100.0f);
-                _text.text = $"Add Unit: {DataManager.Instance.UnitData[Value].Name}";
+                _text.text = $"Add Unit: {DataManager.Instance.UnitDatas[Value].Name}";
                 break;
 
             case RewardItemType.Card:

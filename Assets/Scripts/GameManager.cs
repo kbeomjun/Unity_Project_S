@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     private int _currentLayer = 0;
     private Node _currentNode = null;
     private int _prevCoin = 0;
-    private int _currentCoin = 1000;
+    private int _currentCoin = 10000;
     public int CurrentCoin 
     {
         get => _currentCoin;
@@ -48,12 +48,10 @@ public class GameManager : MonoBehaviour
         _maxChapter = _map.MaxChapter;
         TownManager.Instance.CardDeleteCoin = 100;
 
-        //StartGame();
-
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[0]));
-        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[1]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[2]));
-        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[3]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
 
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[1]));
@@ -66,6 +64,7 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
+        //StartGame();
         //StartBattle();
         StartTown();
     }
@@ -74,7 +73,7 @@ public class GameManager : MonoBehaviour
     {
         _currentChapter = 0;
         _maxLayer = _map.MaxLayer[_currentChapter];
-        _currentCoin = 80;
+        _currentCoin = 100;
         _prevCoin = _currentCoin;
 
         StartChapter();
@@ -176,19 +175,16 @@ public class GameManager : MonoBehaviour
 
     public void OnClickUnitCollectionButton(bool isBarrack)
     {
-        bool flag = ViewManager.Instance.ShowUnitCollectionPopup();
-
-        if (flag)
+        if (ViewManager.Instance.ShowUnitCollectionPopup())
         {
             _unitCollectionUI.Init(_playerUnitDatas, isBarrack);
+            InputManager.Instance.Push(InputState.None);
         }
     }
 
     public void OnClickCardCollectionButton(bool isRemove)
     {
-        bool flag = ViewManager.Instance.ShowCardCollectionPopup();
-
-        if (flag)
+        if (ViewManager.Instance.ShowCardCollectionPopup())
         {
             _cardCollectionUI.Init(_playerCardDatas, isRemove);
             InputManager.Instance.Push(InputState.CardCollection);
@@ -197,7 +193,12 @@ public class GameManager : MonoBehaviour
 
     public void AddUnit(int unitType)
     {
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitData[unitType]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[unitType]));
+    }
+
+    public void RemoveUnit(int index)
+    {
+        _playerUnitDatas.RemoveAt(index);
     }
 
     public void AddCard(CardData data)
@@ -210,6 +211,12 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.RemoveAt(index);
     }
 
+    private void UpdateUnitIndex()
+    {
+        for (int i = 0; i < _playerUnitDatas.Count; i++)
+            _playerUnitDatas[i].Index = i;
+    }
+
     private void UpdateTopBar()
     {
         _coinText.text = _currentCoin.ToString();
@@ -219,6 +226,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        UpdateUnitIndex();
         UpdateTopBar();
     }
 

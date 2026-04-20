@@ -16,4 +16,10 @@ public class UnitCollectionUI : MonoBehaviour
         }
     }
 
+    public void OnClickPrevButton()
+    {
+        InputManager.Instance.Pop();
+        ViewManager.Instance.Pop();
+    }
+
 }
