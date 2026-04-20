@@ -94,8 +94,9 @@ public class Card : MonoBehaviour
 
     public void Use()
     {
-        foreach (IEffect effect in CardData.Effects)
+        foreach (var factory in _cardData.Effects)
         {
+            IEffect effect = factory(); 
             List<Unit> targets = effect.TargetSelector.SelectTargets(null);
             effect.Execute(null, targets);
         }

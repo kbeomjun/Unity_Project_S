@@ -75,11 +75,11 @@ public class BattleManager : MonoBehaviour
             _playerUnits[i].UnitTeam = UnitTeam.Player;
         }
 
-        int random = Random.Range(2, 3);
+        int random = Random.Range(1, 3);
 
         for (int i = 0; i < random; i++)
         {
-            int random2 = Random.Range(1, 2);
+            int random2 = Random.Range(0, 4);
             _enemyUnits[i] = Instantiate(DataManager.Instance.EnemyUnitPrefabs[random2], _enemySlots[i]);
             _enemyUnits[i].Init(new UnitData(DataManager.Instance.UnitDatas[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
@@ -104,19 +104,13 @@ public class BattleManager : MonoBehaviour
         foreach (Unit unit in _playerUnits)
         {
             if (unit == null) continue;
-            
-            if (_currentTurn > 1) 
-            { 
-                unit.ResetAction();
-                unit.OnTurnStart();
-            }
+            unit.ResetAction();
+            unit.OnTurnStart();
             unit.DecideAction();
         }
-
         foreach(Unit unit in _enemyUnits)
         {
             if (unit == null) continue;
-            unit.OnTurnEnd();
             unit.DecideAction();
         }
     }
@@ -126,12 +120,6 @@ public class BattleManager : MonoBehaviour
         if (_state != BattleState.Battle) return;
         Debug.Log($"PlayerTurn{_currentTurn} End");
         _endTurnButton.enabled = false;
-
-        foreach (Unit unit in _playerUnits)
-        {
-            if (unit == null) continue;
-            unit.OnTurnEnd();
-        }
 
         _deckUI.DiscardHandCards();
         StartCoroutine(PlayerToEnemyFlow());
@@ -145,20 +133,40 @@ public class BattleManager : MonoBehaviour
         foreach (Unit unit in _enemyUnits)
         {
             if (unit == null) continue;
-            unit.OnTurnStart();
             unit.ResetAction();
+            unit.OnTurnStart();
+        }
+    }
+
+    private void EndEnemyTurn()
+    {
+        if (_state != BattleState.Battle) return;
+        Debug.Log($"EnemyTurn{_currentTurn} End");
+
+        foreach (Unit unit in _enemyUnits)
+        {
+            if (unit == null) continue;
+            unit.OnTurnEnd();
         }
     }
 
     private IEnumerator PlayerToEnemyFlow()
     {
         yield return StartCoroutine(UnitTurnProcess(_playerUnits));
+        foreach (Unit unit in _playerUnits)
+        {
+            if (unit == null) continue;
+            unit.OnTurnEnd();
+        }
         yield return null;
 
         StartEnemyTurn();
         yield return null;
 
         yield return StartCoroutine(UnitTurnProcess(_enemyUnits));
+        yield return null;
+
+        EndEnemyTurn();
         yield return null;
         
         StartPlayerTurn();
@@ -167,7 +175,6 @@ public class BattleManager : MonoBehaviour
     private IEnumerator UnitTurnProcess(Unit[] units)
     {
         List<Unit> turnList = units.Where(u => u != null).ToList();
-
         foreach (Unit unit in turnList)
         {
             if (unit == null) continue;
@@ -254,7 +261,6 @@ public class BattleManager : MonoBehaviour
             time += Time.deltaTime;
             float tValue = time / duration;
             t.position = Vector3.Lerp(startPos, endPos, tValue);
-
             yield return null;
         }
 

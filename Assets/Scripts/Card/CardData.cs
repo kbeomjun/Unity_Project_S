@@ -20,7 +20,7 @@ public class CardData
     public string Name { get; set; }
     public int Cost { get; set; }
     public string Description { get; set; }
-    public List<IEffect> Effects { get; set; }
+    public List<System.Func<IEffect>> Effects { get; set; }
     public CardType Type { get; set; }
     public TargetType TargetType { get; set; }
     public int Key { get; set; }

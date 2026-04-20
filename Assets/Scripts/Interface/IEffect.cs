@@ -147,11 +147,11 @@ public class ApplyStatusSelfEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
 
-    private IStatusEffect _status;
+    private System.Func<IStatusEffect> _statusFactory;
 
-    public ApplyStatusSelfEffect(IStatusEffect status, ITargetSelector selector)
+    public ApplyStatusSelfEffect(System.Func<IStatusEffect> factory, ITargetSelector selector)
     {
-        _status = status;
+        _statusFactory = factory;
         TargetSelector = selector;
     }
 
@@ -160,7 +160,7 @@ public class ApplyStatusSelfEffect : IEffect
         foreach (Unit target in targets)
         {
             caster.Target = target;
-            caster.ApplyStatus(_status);
+            caster.ApplyStatus(_statusFactory());
         }
     }
 }
@@ -169,11 +169,11 @@ public class ApplyStatusEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
 
-    private IStatusEffect _status;
+    private System.Func<IStatusEffect> _statusFactory;
 
-    public ApplyStatusEffect(IStatusEffect status, ITargetSelector selector)
+    public ApplyStatusEffect(System.Func<IStatusEffect> factory, ITargetSelector selector)
     {
-        _status = status;
+        _statusFactory = factory;
         TargetSelector = selector;
     }
 
@@ -181,7 +181,7 @@ public class ApplyStatusEffect : IEffect
     {
         foreach (Unit target in targets)
         {
-            target.ApplyStatus(_status);
+            target.ApplyStatus(_statusFactory());
         }
     }
 }

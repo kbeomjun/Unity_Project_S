@@ -94,9 +94,7 @@ public class Unit : MonoBehaviour
         for (int i = _statuses.Count - 1; i >= 0; i--)
         {
             IStatusEffect status = _statuses[i];
-
             status.OnTurnStart(this);
-
             if (status.Duration <= 0)
             {
                 status.OnRemove(this);
@@ -110,9 +108,7 @@ public class Unit : MonoBehaviour
         for (int i = _statuses.Count - 1; i >= 0; i--)
         {
             IStatusEffect status = _statuses[i];
-
             status.OnTurnEnd(this);
-
             if (status.Duration <= 0)
             {
                 status.OnRemove(this);

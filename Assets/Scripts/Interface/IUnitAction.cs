@@ -8,17 +8,18 @@ public interface IUnitAction
 
 public class Attack : IUnitAction
 {
-    private List<IEffect> _effects;
+    private List<System.Func<IEffect>> _effectFactories;
 
-    public Attack(List<IEffect> effects)
+    public Attack(List<System.Func<IEffect>> effectFactories)
     {
-        _effects = effects;
+        _effectFactories = effectFactories;
     }
 
     public void Execute(Unit caster)
     {
-        foreach (IEffect effect in _effects)
+        foreach (var factory in _effectFactories)
         {
+            IEffect effect = factory(); 
             List<Unit> targets = effect.TargetSelector.SelectTargets(caster);
             effect.Execute(caster, targets);
         }
@@ -27,17 +28,18 @@ public class Attack : IUnitAction
 
 public class Defense : IUnitAction
 {
-    private List<IEffect> _effects;
+    private List<System.Func<IEffect>> _effectFactories;
 
-    public Defense(List<IEffect> effects)
+    public Defense(List<System.Func<IEffect>> effectFactories)
     {
-        _effects = effects;
+        _effectFactories = effectFactories;
     }
 
     public void Execute(Unit caster)
     {
-        foreach (IEffect effect in _effects)
+        foreach (var factory in _effectFactories)
         {
+            IEffect effect = factory();
             List<Unit> targets = effect.TargetSelector.SelectTargets(caster);
             effect.Execute(caster, targets);
         }
@@ -46,17 +48,18 @@ public class Defense : IUnitAction
 
 public class Skill : IUnitAction
 {
-    private List<IEffect> _effects;
+    private List<System.Func<IEffect>> _effectFactories;
 
-    public Skill(List<IEffect> effects)
+    public Skill(List<System.Func<IEffect>> effectFactories)
     {
-        _effects = effects;
+        _effectFactories = effectFactories;
     }
 
     public void Execute(Unit caster)
     {
-        foreach (IEffect effect in _effects)
+        foreach (var factory in _effectFactories)
         {
+            IEffect effect = factory();
             List<Unit> targets = effect.TargetSelector.SelectTargets(caster);
             effect.Execute(caster, targets);
         }

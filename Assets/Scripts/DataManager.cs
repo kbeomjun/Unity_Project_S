@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,36 +13,36 @@ public class DataManager : MonoBehaviour
                         "Reduce 50% damage, Takes all attack"),
         new UnitData("Lancer", UnitType.Lancer, 90, 90, 20, 20, 0, 100, 100,
                         "Reflex 10 damage to attacker"),
-        new UnitData("Archer", UnitType.Archer, 1000, 1000, 50, 10, 0, 100, 100,
+        new UnitData("Archer", UnitType.Archer, 70, 70, 30, 10, 0, 100, 100,
                         "Increase attack 100%"),
         new UnitData("Monk", UnitType.Monk, 50, 50, 5, 5, 0, 100, 100,
                         "Heal random ally unit by 10%")
     };
-    public IUnitAction UnitAttack = new Attack(new List<IEffect> { new AttackEffect(new RandomAttackSelector())});
-    public IUnitAction UnitDefense = new Defense(new List<IEffect> { new AddDefenseEffect(-1, new SelfTargetSelector())});
+    public IUnitAction UnitAttack = new Attack(
+       new List<Func<IEffect>>
+       {
+            () => new AttackEffect(new RandomAttackSelector())
+       });
+    public IUnitAction UnitDefense = new Defense(
+        new List<Func<IEffect>>
+        {
+            () => new AddDefenseEffect(-1, new SelfTargetSelector())
+        });
     public IUnitAction[] UnitSkills = new IUnitAction[]
     {
-        new Skill(
-            new List<IEffect>{ 
-                new AddDefenseEffect(30, new SelfTargetSelector()), 
-                new ApplyStatusEffect(new DamageReductionStatus(0.5f, 1), new SelfTargetSelector())
-            }
-        ),
-        new Skill(
-            new List<IEffect>{
-                new ApplyStatusEffect(new DamageReflectionStatus(10, 1), new SelfTargetSelector())
-            }
-        ),
-        new Skill(
-            new List<IEffect>{
-                new ApplyStatusSelfEffect(new AttackBuffStatus(1.0f, 1), new RandomAttackSelector())
-            }
-        ),
-        new Skill(
-            new List<IEffect>{
-                new HealEffect(new RandomTeamSelector(1))
-            }
-        )
+        new Skill(new List<Func<IEffect>>{
+            () => new AddDefenseEffect(30, new SelfTargetSelector()),
+            () => new ApplyStatusEffect(() => new DamageReductionStatus(0.5f, 1), new SelfTargetSelector())
+        }),
+        new Skill(new List<Func<IEffect>>{
+            () => new ApplyStatusEffect(() => new DamageReflectionStatus(10, 1), new SelfTargetSelector())
+        }),
+        new Skill(new List<Func<IEffect>>{
+            () => new ApplyStatusSelfEffect(() => new AttackBuffStatus(1.0f, 1), new RandomAttackSelector())
+        }),
+        new Skill(new List<Func<IEffect>>{
+            () => new HealEffect(new RandomTeamSelector(1))
+        })
     };
 
     // Card
@@ -79,18 +80,18 @@ public class DataManager : MonoBehaviour
         new CardData("ResetAllEnemyAction", 2, CardType.Skill, TargetType.None, 9, 50,
                         $"Reset all next actions of enemy units")
     };
-    public List<IEffect>[] CardEffects = new List<IEffect>[]
+    public List<Func<IEffect>>[] CardEffects = new List<Func<IEffect>>[]
     {
-        new List<IEffect>{ new ChangeActionEffect(UnitAction.Attack, new SingleTargetSelector()) },
-        new List<IEffect>{ new ChangeActionEffect(UnitAction.Defense, new SingleTargetSelector()) },
-        new List<IEffect>{ new ChangeActionEffect(UnitAction.Skill, new SingleTargetSelector()) },
-        new List<IEffect>{ new AddAttackEffect(10, new SingleTargetSelector()) },
-        new List<IEffect>{ new AddDefenseEffect(10, new SingleTargetSelector()) },
-        new List<IEffect>{ new AddDefenseEffect(10, new FrontAllySelector()) },
-        new List<IEffect>{ new AddAttackEffect(10, new BackAllySelector()) },
-        new List<IEffect>{ new HealByPercentageEffect(0.1f, new AllAllySelector()) },
-        new List<IEffect>{ new ApplyStatusEffect(new AttackReductionStatus(0.5f, 1), new SingleTargetSelector()) },
-        new List<IEffect>{ new ResetActionEffect(new AllEnemySelector()) }
+        new List<Func<IEffect>>{ () => new ChangeActionEffect(UnitAction.Attack, new SingleTargetSelector()) },
+        new List<Func<IEffect>>{ () => new ChangeActionEffect(UnitAction.Defense, new SingleTargetSelector()) },
+        new List<Func<IEffect>>{ () => new ChangeActionEffect(UnitAction.Skill, new SingleTargetSelector()) },
+        new List<Func<IEffect>>{ () => new AddAttackEffect(10, new SingleTargetSelector()) },
+        new List<Func<IEffect>>{ () => new AddDefenseEffect(10, new SingleTargetSelector()) },
+        new List<Func<IEffect>>{ () => new AddDefenseEffect(10, new FrontAllySelector()) },
+        new List<Func<IEffect>>{ () => new AddAttackEffect(10, new BackAllySelector()) },
+        new List<Func<IEffect>>{ () => new HealByPercentageEffect(0.1f, new AllAllySelector()) },
+        new List<Func<IEffect>>{ () => new ApplyStatusEffect(() => new AttackReductionStatus(0.5f, 1), new SingleTargetSelector()) },
+        new List<Func<IEffect>>{ () => new ResetActionEffect(new AllEnemySelector()) }
     };
 
     //Reward

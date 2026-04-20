@@ -90,14 +90,11 @@ public class AttackBuffStatus : IStatusEffect
         target.AttackDamageMultiplier /= (1 + _increase);
     }
 
-    public void OnTurnStart(Unit target)
-    {
-        if(target.UnitTeam == UnitTeam.Player) Duration--;
-    }
+    public void OnTurnStart(Unit target) { }
 
-    public void OnTurnEnd(Unit target) 
+    public void OnTurnEnd(Unit target)
     {
-        if (target.UnitTeam == UnitTeam.Enemy) Duration--;
+        Duration--;
     }
 }
 
@@ -122,13 +119,10 @@ public class AttackReductionStatus : IStatusEffect
         target.AttackDamageMultiplier /= (1 - _reduction);
     }
 
-    public void OnTurnStart(Unit target)
-    {
-        if (target.UnitTeam == UnitTeam.Player) Duration--;
-    }
+    public void OnTurnStart(Unit target) { }
 
     public void OnTurnEnd(Unit target)
     {
-        if (target.UnitTeam == UnitTeam.Enemy) Duration--;
+        Duration--;
     }
 }
