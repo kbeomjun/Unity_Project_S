@@ -92,10 +92,13 @@ public class AttackBuffStatus : IStatusEffect
 
     public void OnTurnStart(Unit target)
     {
-        Duration--;
+        if(target.UnitTeam == UnitTeam.Player) Duration--;
     }
 
-    public void OnTurnEnd(Unit target) { }
+    public void OnTurnEnd(Unit target) 
+    {
+        if (target.UnitTeam == UnitTeam.Enemy) Duration--;
+    }
 }
 
 public class AttackReductionStatus : IStatusEffect
@@ -121,8 +124,11 @@ public class AttackReductionStatus : IStatusEffect
 
     public void OnTurnStart(Unit target)
     {
-        Duration--;
+        if (target.UnitTeam == UnitTeam.Player) Duration--;
     }
 
-    public void OnTurnEnd(Unit target) { }
+    public void OnTurnEnd(Unit target)
+    {
+        if (target.UnitTeam == UnitTeam.Enemy) Duration--;
+    }
 }

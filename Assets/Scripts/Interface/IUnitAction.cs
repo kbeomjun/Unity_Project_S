@@ -55,7 +55,6 @@ public class Skill : IUnitAction
 
     public void Execute(Unit caster)
     {
-
         foreach (IEffect effect in _effects)
         {
             List<Unit> targets = effect.TargetSelector.SelectTargets(caster);

@@ -11,7 +11,7 @@ public class Knight : Unit
     public override void Die()
     {
         _animator.SetBool("IsSkillUsing", false);
-        _animator.SetTrigger("Die");
+        base.Die();
     }
 
     public override void UseSkill()

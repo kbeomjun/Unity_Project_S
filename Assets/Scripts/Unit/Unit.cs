@@ -8,13 +8,19 @@ public enum UnitAction
     Skill
 }
 
+public enum UnitTeam 
+{ 
+    Player,
+    Enemy 
+}
+
 public class Unit : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] protected Animator _animator;
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private UnitEffect _unitEffect;
-    [SerializeField] private NextAction _nextActionScript;
+    [SerializeField] protected NextAction _nextActionScript;
     public NextAction NextActionScript => _nextActionScript;
 
     protected UnitData _unitData;
@@ -46,9 +52,15 @@ public class Unit : MonoBehaviour
 
     protected UnitAction _currentAction;
     protected UnitAction _nextAction;
+    protected UnitTeam _unitTeam;
     protected Unit _target = null;
 
     public UnitAction CurrentAction => _currentAction;
+    public UnitTeam UnitTeam
+    {
+        get => _unitTeam;
+        set => _unitTeam = value;
+    }
     public Unit Target
     {
         get => _target;
@@ -79,7 +91,6 @@ public class Unit : MonoBehaviour
 
     public void OnTurnStart()
     {
-        _nextActionScript.gameObject.SetActive(true);
         for (int i = _statuses.Count - 1; i >= 0; i--)
         {
             IStatusEffect status = _statuses[i];
@@ -96,9 +107,17 @@ public class Unit : MonoBehaviour
 
     public void OnTurnEnd()
     {
-        foreach (IStatusEffect status in _statuses)
+        for (int i = _statuses.Count - 1; i >= 0; i--)
         {
+            IStatusEffect status = _statuses[i];
+
             status.OnTurnEnd(this);
+
+            if (status.Duration <= 0)
+            {
+                status.OnRemove(this);
+                _statuses.RemoveAt(i);
+            }
         }
     }
 
@@ -111,6 +130,7 @@ public class Unit : MonoBehaviour
 
     public virtual void DecideAction()
     {
+        _nextActionScript.gameObject.SetActive(true);
         _currentAttack = _unitData.Attack;
         int random = Random.Range(0, 3);
         _nextAction = (UnitAction)random;

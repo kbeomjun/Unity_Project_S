@@ -48,10 +48,11 @@ public class GameManager : MonoBehaviour
         _maxChapter = _map.MaxChapter;
         TownManager.Instance.CardDeleteCoin = 100;
 
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
         _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
 
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[1]));
@@ -65,8 +66,8 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
         //StartGame();
-        //StartBattle();
-        StartTown();
+        StartBattle();
+        //StartTown();
     }
 
     private void StartGame()
@@ -126,13 +127,13 @@ public class GameManager : MonoBehaviour
         OnClearNode();
     }
 
-    private void StartBattle()
+    public void StartBattle()
     {
         BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
         ViewManager.Instance.ShowBattleView();
     }
 
-    private void StartTown()
+    public void StartTown()
     {
         TownManager.Instance.StartTown();
         ViewManager.Instance.ShowTownView();

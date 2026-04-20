@@ -12,7 +12,7 @@ public class DataManager : MonoBehaviour
                         "Reduce 50% damage, Takes all attack"),
         new UnitData("Lancer", UnitType.Lancer, 90, 90, 20, 20, 0, 100, 100,
                         "Reflex 10 damage to attacker"),
-        new UnitData("Archer", UnitType.Archer, 70, 70, 30, 10, 0, 100, 100,
+        new UnitData("Archer", UnitType.Archer, 1000, 1000, 50, 10, 0, 100, 100,
                         "Increase attack 100%"),
         new UnitData("Monk", UnitType.Monk, 50, 50, 5, 5, 0, 100, 100,
                         "Heal random ally unit by 10%")

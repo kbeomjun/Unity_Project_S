@@ -72,17 +72,19 @@ public class BattleManager : MonoBehaviour
             _playerUnits[i].Init(playerUnitDatas[i]);
             _playerUnits[i].UnitData.SlotIndex = i;
             _playerUnits[i].transform.localPosition = Vector3.zero;
+            _playerUnits[i].UnitTeam = UnitTeam.Player;
         }
 
-        int random = Random.Range(1, 3);
+        int random = Random.Range(2, 3);
 
         for (int i = 0; i < random; i++)
         {
-            int random2 = Random.Range(0, 4);
+            int random2 = Random.Range(1, 2);
             _enemyUnits[i] = Instantiate(DataManager.Instance.EnemyUnitPrefabs[random2], _enemySlots[i]);
             _enemyUnits[i].Init(new UnitData(DataManager.Instance.UnitDatas[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
             _enemyUnits[i].transform.localPosition = Vector3.zero;
+            _playerUnits[i].UnitTeam = UnitTeam.Enemy;
         }
 
         InputManager.Instance.Push(InputState.BattlePrepare);
@@ -103,9 +105,12 @@ public class BattleManager : MonoBehaviour
         foreach (Unit unit in _playerUnits)
         {
             if (unit == null) continue;
-            if (_currentTurn <= 1) unit.NextActionScript.gameObject.SetActive(true);
-            if (_currentTurn > 1) unit.ResetAction();
-            unit.OnTurnStart();
+            
+            if (_currentTurn > 1) 
+            { 
+                unit.ResetAction();
+                unit.OnTurnStart();
+            }
             unit.DecideAction();
         }
 
@@ -114,8 +119,6 @@ public class BattleManager : MonoBehaviour
             foreach (Unit unit in _enemyUnits)
             {
                 if (unit == null) continue;
-                unit.NextActionScript.gameObject.SetActive(true);
-                unit.OnTurnStart();
                 unit.DecideAction();
             }
         }
@@ -127,15 +130,6 @@ public class BattleManager : MonoBehaviour
 
         _currentCost -= cost;
         return true;
-    }
-
-    private IEnumerator DrawCard(int num)
-    {
-        for (int i = 0; i < num; i++)
-        {
-            yield return StartCoroutine(_deckUI.DrawCardRoutine());
-            yield return new WaitForSeconds(0.5f);
-        }
     }
 
     public void EndPlayerTurn()
@@ -159,19 +153,21 @@ public class BattleManager : MonoBehaviour
     {
         yield return StartCoroutine(UnitTurnProcess(_playerUnits));
 
+        yield return null;
         StartEnemyTurn();
 
         yield return StartCoroutine(UnitTurnProcess(_enemyUnits));
-
         Debug.Log($"EnemyTurn{_currentTurn} End");
 
+        yield return null;
         foreach (Unit unit in _enemyUnits)
         {
             if (unit == null) continue;
-            unit.OnTurnStart();
+            unit.OnTurnEnd();
             unit.DecideAction();
         }
 
+        yield return null;
         StartPlayerTurn();
     }
 
@@ -186,7 +182,7 @@ public class BattleManager : MonoBehaviour
             foreach (Unit unit in _enemyUnits)
             {
                 if (unit == null) continue;
-                unit.OnTurnEnd();
+                unit.OnTurnStart();
                 unit.ResetAction();
             }
         }
@@ -208,6 +204,7 @@ public class BattleManager : MonoBehaviour
     {
         if (_playerUnits.Contains(unit))
         {
+            GameManager.Instance.RemoveUnit(_playerUnits[unit.UnitData.SlotIndex].UnitData.Index);
             _playerUnits[unit.UnitData.SlotIndex] = null;
             Check(true);
         }
@@ -235,7 +232,6 @@ public class BattleManager : MonoBehaviour
                 _playerUnits[index - 2].UnitData.SlotIndex = index - 2;
                 StartCoroutine(MoveToSlot(_playerUnits[index - 2], _playerSlots[index - 2]));
                 _playerUnits[index] = null;
-                GameManager.Instance.RemoveUnit(index);
             }
         }
         else

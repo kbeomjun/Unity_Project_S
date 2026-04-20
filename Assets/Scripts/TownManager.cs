@@ -88,6 +88,11 @@ public class TownManager : MonoBehaviour
         CardDeleteCoin += 50;
     }
 
+    public void OnClickTownNextButton()
+    {
+        GameManager.Instance.StartBattle();
+    }
+
     public void OnClickCardRemoveButton()
     {
         if (CardDeleteCoin <= GameManager.Instance.CurrentCoin)
