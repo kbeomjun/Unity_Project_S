@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         ViewManager.Instance.ShowMapView();
 
         _currentLayer = 0;
-        _map.Nodes[_currentChapter][_currentLayer][0].SetState(NodeState.Available);
+        _map.Nodes[_currentChapter][_currentLayer][0].State = NodeState.Available;
     }
 
     private void StartChapter()
@@ -94,12 +94,12 @@ public class GameManager : MonoBehaviour
     public void OnClickNode(Node node)
     {
         _currentNode = node;
-        _currentNode.SetState(NodeState.Selected);
+        _currentNode.State = NodeState.Selected;
 
         for(int i = 0; i < _map.Nodes[_currentChapter][_currentLayer].Length; i++)
         {
             if (i == _currentNode.Index) continue;
-            _map.Nodes[_currentChapter][_currentLayer][i].SetState(NodeState.Locked);
+            _map.Nodes[_currentChapter][_currentLayer][i].State = NodeState.Locked;
         }
     }
 
@@ -157,9 +157,7 @@ public class GameManager : MonoBehaviour
     public void OnClearNode()
     {
         foreach(Node node in _currentNode.NextNode)
-        {
-            node.SetState(NodeState.Available);
-        }
+            node.State = NodeState.Available;
 
         _currentLayer++;
 

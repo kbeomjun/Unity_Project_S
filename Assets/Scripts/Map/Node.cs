@@ -35,12 +35,12 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Color[] _colors =
     {
         new Color32(40, 55, 210, 255),
-        new Color32(210, 40, 40, 255),
+        new Color32(255, 255, 255, 255),
         new Color32(84, 24, 71, 255),
         new Color32(94, 52, 20, 255),
         new Color32(18, 156, 34, 255),
         new Color32(221, 190, 20, 255),
-        new Color32(0, 0, 0, 255)
+        new Color32(210, 180, 40, 255)
     };
 
     public NodeType Type
@@ -55,8 +55,11 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             _iconBaseColor = _icon.color;
         }
     }
-
-    public NodeState State => _state;
+    public NodeState State
+    {
+        get => _state;
+        set => _state = value;
+    }
 
     private List<Node> _nextNode = new List<Node>();
     public List<Node> NextNode => _nextNode;
@@ -64,7 +67,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Image _icon;
     private Color _iconBaseColor;
     private Vector3 _iconBaseScale;
-    private float _scaleSize = 1.5f;
+    private float _scaleSize = 1.2f;
     private float _scaleSpeed = 10.0f;
 
     private int _layer;
@@ -90,21 +93,19 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _selectCircleImage = _selectCircle.GetComponent<Image>();
         _selectCircle.SetActive(false);
 
-        SetState(NodeState.Locked);
+        _state = NodeState.Locked;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_state != NodeState.Available) return;
-
-        SetState(NodeState.HighLited);
+        _state = NodeState.HighLited;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (_state != NodeState.HighLited) return;
-
-        SetState(NodeState.Available);
+        _state = NodeState.Available;
     }
 
     public void OnClick()
@@ -137,10 +138,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         GameManager.Instance.AfterClickNode();
     }
 
-    public void SetState(NodeState state)
+    private void Update()
     {
-        _state = state;
-
         switch (_state)
         {
             case NodeState.Available:
@@ -157,7 +156,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 _icon.color = Color.Lerp(_iconBaseColor, Color.white, 0.2f);
                 transform.localScale = Vector3.Lerp(transform.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
                 break;
-            
+
             case NodeState.Locked:
                 _icon.color = Color.Lerp(_iconBaseColor, Color.black, 0.2f);
                 transform.localScale = Vector3.Lerp(transform.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);

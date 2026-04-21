@@ -8,13 +8,6 @@ public class NextAction : MonoBehaviour
     [SerializeField] private TMP_Text _nextActionNumberText;
     [SerializeField] private Sprite[] _actionImages;
 
-    private Color[] _colors =
-    {
-        new Color32(210, 40, 40, 255),
-        new Color32(255, 255, 255, 255),
-        new Color32(40, 55, 210, 255),
-    };
-
     public void UpdateNextActionIcon(int index, int attack, int defense)
     {
         _nextActionImage.sprite = _actionImages[index];
@@ -32,9 +25,6 @@ public class NextAction : MonoBehaviour
         {
             _nextActionNumberText.gameObject.SetActive(false);
         }
-
-        _nextActionImage.color = _colors[index];
-        _nextActionNumberText.color = _colors[index];
     }
 
 }
