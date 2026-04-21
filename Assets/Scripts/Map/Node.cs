@@ -64,7 +64,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Image _icon;
     private Color _iconBaseColor;
     private Vector3 _iconBaseScale;
-    private float _scaleSize = 1.15f;
+    private float _scaleSize = 1.5f;
     private float _scaleSpeed = 10.0f;
 
     private int _layer;
@@ -81,7 +81,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         set => _index = value;
     }
 
-    private void Awake()
+    public void Init()
     {
         _icon = GetComponent<Image>();
         _iconBaseColor = _icon.color;
@@ -133,6 +133,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
 
         _selectCircleImage.fillAmount = 1.0f;
+        yield return new WaitForSeconds(0.5f);
+        GameManager.Instance.AfterClickNode();
     }
 
     public void SetState(NodeState state)

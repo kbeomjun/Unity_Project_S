@@ -87,6 +87,7 @@ public class TownRestManager : MonoBehaviour
     {
         _cardRemoveButton.enabled = false;
         _cardRemoveCoin.SetActive(false);
+        GameManager.Instance.CurrentCoin -= CardDeleteCoin;
         CardDeleteCoin += 50;
     }
 
@@ -113,7 +114,7 @@ public class TownRestManager : MonoBehaviour
     public void OnClickTownNextButton()
     {
         //Test
-        GameManager.Instance.StartRest();
+        GameManager.Instance.OnClearNode();
     }
 
     public void OnClickCardRemoveButton()
@@ -133,7 +134,7 @@ public class TownRestManager : MonoBehaviour
         _restSelectButtons.SetActive(true);
 
         //Test
-        GameManager.Instance.StartBattle();
+        GameManager.Instance.OnClearNode();
     }
 
     private void ClearCards()

@@ -5,6 +5,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Map _map;
+    [SerializeField] private GameObject _topBar;
     [SerializeField] private TMP_Text _coinText;
     [SerializeField] private TMP_Text _partyNumText;
     [SerializeField] private TMP_Text _cardNumText;
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     private int _maxLayer = 0;
     private int _currentLayer = 0;
     private Node _currentNode = null;
+    public Node CurrentNode => _currentNode;
     private int _prevCoin = 0;
     private int _currentCoin = 10000;
     public int CurrentCoin 
@@ -30,7 +32,6 @@ public class GameManager : MonoBehaviour
 
     private List<UnitData> _playerUnitDatas = new List<UnitData>();
     private List<CardData> _playerCardDatas = new List<CardData>();
-
     public List<UnitData> PlayerUnitDatas => _playerUnitDatas;
 
     public static GameManager Instance { get; private set; }
@@ -64,8 +65,8 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        //StartGame();
-        StartBattle();
+        StartGame();
+        //StartBattle();
         //StartTown();
         //StartRest();
     }
@@ -76,15 +77,18 @@ public class GameManager : MonoBehaviour
         _maxLayer = _map.MaxLayer[_currentChapter];
         _currentCoin = 100;
         _prevCoin = _currentCoin;
+        
+        _map.Init(_currentChapter);
+        _topBar.SetActive(true);
+        ViewManager.Instance.ShowMapView();
 
-        StartChapter();
+        _currentLayer = 0;
+        _map.Nodes[_currentChapter][_currentLayer][0].SetState(NodeState.Available);
     }
 
     private void StartChapter()
     {
-        _currentLayer = 0;
         _map.CreateMap(_currentChapter);
-        _map.Nodes[_currentChapter][_currentLayer][0].SetState(NodeState.Available);
     }
 
     public void OnClickNode(Node node)
@@ -95,13 +99,16 @@ public class GameManager : MonoBehaviour
         for(int i = 0; i < _map.Nodes[_currentChapter][_currentLayer].Length; i++)
         {
             if (i == _currentNode.Index) continue;
-
             _map.Nodes[_currentChapter][_currentLayer][i].SetState(NodeState.Locked);
         }
+    }
 
+    public void AfterClickNode()
+    {
         switch (_currentNode.Type)
         {
             case NodeType.Start:
+                OnClearNode();
                 break;
 
             case NodeType.Battle:
@@ -109,22 +116,25 @@ public class GameManager : MonoBehaviour
                 break;
 
             case NodeType.Elite:
+                OnClearNode();
                 break;
 
             case NodeType.Shop:
+                StartTown();
                 break;
 
             case NodeType.Rest:
+                StartRest();
                 break;
 
             case NodeType.Event:
+                OnClearNode();
                 break;
 
             case NodeType.Boss:
+                OnClearNode();
                 break;
         }
-
-        OnClearNode();
     }
 
     public void StartBattle()
@@ -144,7 +154,7 @@ public class GameManager : MonoBehaviour
         ViewManager.Instance.ShowRestView();
     }
 
-    private void OnClearNode()
+    public void OnClearNode()
     {
         foreach(Node node in _currentNode.NextNode)
         {
@@ -165,6 +175,8 @@ public class GameManager : MonoBehaviour
             _currentChapter++;
             StartChapter();
         }
+
+        ViewManager.Instance.ShowMapView();
     }
 
     public void OnBattleEnd(bool isWin)
@@ -177,6 +189,20 @@ public class GameManager : MonoBehaviour
         {
             ViewManager.Instance.ShowGameOverPopup();
         }
+    }
+
+    public void OnClickMapButton()
+    {
+        if (ViewManager.Instance.ShowMapPopup())
+        {
+            InputManager.Instance.Push(InputState.None);
+        }
+    }
+
+    public void OnClickMapPrevButton()
+    {
+        InputManager.Instance.Pop();
+        ViewManager.Instance.Pop();
     }
 
     public void OnClickUnitCollectionButton(int type)

@@ -219,7 +219,7 @@ public class RewardManager : MonoBehaviour
         ViewManager.Instance.Pop();
 
         //Test
-        GameManager.Instance.StartTown();
+        GameManager.Instance.OnClearNode();
     }
 
     public void OnClickRewardCardPrevButton()

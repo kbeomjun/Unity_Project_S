@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -48,7 +49,7 @@ public class Map : MonoBehaviour
 
     private float _nodeDistance = 0.0f;
 
-    private void Awake()
+    public void Init(int chapter)
     {
         _maxWidth = GetComponent<RectTransform>().rect.width;
         _maxHeight = GetComponent<RectTransform>().rect.height;
@@ -61,8 +62,9 @@ public class Map : MonoBehaviour
         _mapImageRectTr.sizeDelta = new Vector2(_mapWidth, _mapImageRectTr.sizeDelta.y);
 
         _nodeDistance = _maxWidth / 4.26f;
-
         _nodes = new Node[_maxChapter][][];
+
+        CreateMap(chapter);
     }
 
     public void CreateMap(int chapter)
@@ -90,7 +92,6 @@ public class Map : MonoBehaviour
             if (l == 0)
             {
                 _nodes[c][l] = new Node[1];
-
                 _nodes[c][l][0] = SpawnNode(0, c, _startX, _startY, l, 0);
             }            
             else if (l == _maxLayer[c] - 2)
@@ -172,6 +173,7 @@ public class Map : MonoBehaviour
     private Node SpawnNode(int nodeType, int chapter, float x, float y, int layer, int index)
     {
         Node node = Instantiate(_nodePrefab, _nodesParent[chapter], false);
+        node.Init();
 
         RectTransform rect = node.GetComponent<RectTransform>();
         rect.position = new Vector3(x, y, 0.0f);

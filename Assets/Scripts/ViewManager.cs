@@ -3,11 +3,17 @@ using UnityEngine;
 
 public class ViewManager : MonoBehaviour
 {
+    [SerializeField] private RectTransform _mapViewTr;
+    [SerializeField] private RectTransform _mapPopupTr;
+    [SerializeField] private RectTransform _mapScrollView;
+
+    [SerializeField] private UIView _mapView;
     [SerializeField] private UIView _battleView;
     [SerializeField] private UIView _townView;
     [SerializeField] private UIView _restView;
 
     [SerializeField] private GameObject _dimBackGround;
+    [SerializeField] private UIPopup _mapPopup;
     [SerializeField] private UIPopup _rewardPopup;
     [SerializeField] private UIPopup _rewardCardPopup;
     [SerializeField] private UIPopup _gameOverPopup;
@@ -35,6 +41,12 @@ public class ViewManager : MonoBehaviour
 
         _currentView = view;
         _currentView.Show();
+    }
+
+    public void ShowMapView()
+    {
+        _mapScrollView.SetParent(_mapViewTr, false);
+        ShowView(_mapView);
     }
 
     public void ShowBattleView()
@@ -80,6 +92,21 @@ public class ViewManager : MonoBehaviour
         {
             _dimBackGround.SetActive(false);
         }
+    }
+
+    public bool ShowMapPopup()
+    {
+        if (_currentView == _mapView) return false;
+
+        if (_popupStack.Count > 0)
+        {
+            if (_popupStack.Peek() == _mapPopup)
+                return false;
+        }
+
+        _mapScrollView.SetParent(_mapPopupTr, false);
+        Push(_mapPopup);
+        return true;
     }
 
     public void ShowRewardPopup()
