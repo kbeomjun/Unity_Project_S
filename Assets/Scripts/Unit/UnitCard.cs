@@ -13,37 +13,44 @@ public class UnitCard : MonoBehaviour
     [SerializeField] private TMP_Text _SkillText;
     [SerializeField] private TMP_Text _UpgradeText;
 
-    [SerializeField] private GameObject _unitButtons;
+    [SerializeField] private GameObject _unitBarrackButtons;
     [SerializeField] private TMP_Text _upgradeCoinText;
     [SerializeField] private TMP_Text _sellCoinText;
-    
+
     [SerializeField] private GameObject _unitRecruitButton;
     [SerializeField] private TMP_Text _unitRecruitCoinText;
 
+    [SerializeField] private GameObject _unitCureButton;
+
     private UnitData _unitData = null;
-    private bool _isBarrack = false;
+    private int _type = 0;
     private int _unitUpgradeCoin = 0;
     private int _unitRecruitCoin = 300;
     private int _unitSellCoin = 0;
 
-    public void Init(UnitData data, bool isBarrack)
+    public void Init(UnitData data, int type)
     {
         _unitData = data;
-        _isBarrack = isBarrack;
+        _type = type;
 
         _unitInfo.SetActive(false);
-        _unitButtons.SetActive(false);
+        _unitBarrackButtons.SetActive(false);
         _unitRecruitButton.SetActive(false);
+        _unitCureButton.SetActive(false);
 
         if(data != null)
         {
-            if (isBarrack)
+            if (type == 1)
             {
-                _unitButtons.SetActive(true);
+                _unitBarrackButtons.SetActive(true);
                 _upgradeCoinText.text = data.UpgradeCoin.ToString();
                 _sellCoinText.text = data.SellCoin.ToString();
                 _unitUpgradeCoin = data.UpgradeCoin;
                 _unitSellCoin = data.SellCoin;
+            }
+            else if (type == 2)
+            {
+                _unitCureButton.SetActive(true);
             }
 
             _unitInfo.SetActive(true);
@@ -67,7 +74,7 @@ public class UnitCard : MonoBehaviour
         }
         else
         {
-            if (isBarrack)
+            if (type == 1)
             {
                 _unitRecruitButton.SetActive(true);
                 _unitRecruitCoinText.text = _unitRecruitCoin.ToString();
@@ -81,7 +88,7 @@ public class UnitCard : MonoBehaviour
         {
             GameManager.Instance.PlayerUnitDatas[_unitData.Index].UpgradeUnit();
             GameManager.Instance.CurrentCoin -= _unitUpgradeCoin;
-            GameManager.Instance.UnitCollectionUI.Init(GameManager.Instance.PlayerUnitDatas, _isBarrack);
+            GameManager.Instance.UnitCollectionUI.Init(GameManager.Instance.PlayerUnitDatas, _type);
         }
     }
 
@@ -91,7 +98,7 @@ public class UnitCard : MonoBehaviour
         {
             GameManager.Instance.RemoveUnit(_unitData.Index);
             GameManager.Instance.CurrentCoin += _unitSellCoin;
-            GameManager.Instance.UnitCollectionUI.Init(GameManager.Instance.PlayerUnitDatas, _isBarrack);
+            GameManager.Instance.UnitCollectionUI.Init(GameManager.Instance.PlayerUnitDatas, _type);
         }
     }
 
@@ -102,8 +109,16 @@ public class UnitCard : MonoBehaviour
             int unitType = Random.Range(0, DataManager.Instance.UnitDatas.Length);
             GameManager.Instance.AddUnit(unitType);
             GameManager.Instance.CurrentCoin -= _unitRecruitCoin;
-            GameManager.Instance.UnitCollectionUI.Init(GameManager.Instance.PlayerUnitDatas, _isBarrack);
+            GameManager.Instance.UnitCollectionUI.Init(GameManager.Instance.PlayerUnitDatas, _type);
         }
+    }
+
+    public void OnClickCureButton()
+    {
+        GameManager.Instance.CureUnit(_unitData.Index);
+        TownRestManager.Instance.OnCureUnit();
+        InputManager.Instance.Pop();
+        ViewManager.Instance.Pop();
     }
 
 }

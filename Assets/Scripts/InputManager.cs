@@ -93,7 +93,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.Shop:
-                TownManager.Instance.OnClick();
+                TownRestManager.Instance.OnClick();
                 break;
         }
     }
@@ -119,7 +119,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.Shop:
-                TownManager.Instance.OnRelease();
+                TownRestManager.Instance.OnRelease();
                 break;
         }
     }
@@ -151,7 +151,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.Shop:
-                TownManager.Instance.MouseProcess(_mousePos);
+                TownRestManager.Instance.MouseProcess(_mousePos);
                 break;
         }
     }

@@ -5,6 +5,7 @@ public class ViewManager : MonoBehaviour
 {
     [SerializeField] private UIView _battleView;
     [SerializeField] private UIView _townView;
+    [SerializeField] private UIView _restView;
 
     [SerializeField] private GameObject _dimBackGround;
     [SerializeField] private UIPopup _rewardPopup;
@@ -44,6 +45,11 @@ public class ViewManager : MonoBehaviour
     public void ShowTownView()
     {
         ShowView(_townView);
+    }
+
+    public void ShowRestView()
+    {
+        ShowView(_restView);
     }
 
     public void Push(UIPopup popup)

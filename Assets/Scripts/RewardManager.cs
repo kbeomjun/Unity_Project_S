@@ -218,6 +218,7 @@ public class RewardManager : MonoBehaviour
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
 
+        //Test
         GameManager.Instance.StartTown();
     }
 

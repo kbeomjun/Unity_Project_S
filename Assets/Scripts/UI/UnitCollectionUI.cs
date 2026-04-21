@@ -5,14 +5,14 @@ public class UnitCollectionUI : MonoBehaviour
 {
     [SerializeField] private UnitCard[] _unitCards;
 
-    public void Init(List<UnitData> playerUnitDatas, bool isBarrack)
+    public void Init(List<UnitData> playerUnitDatas, int type)
     {
         for(int i = 0; i < _unitCards.Length; i++)
         {
             if(i < playerUnitDatas.Count)
-                _unitCards[i].Init(playerUnitDatas[i], isBarrack);
+                _unitCards[i].Init(playerUnitDatas[i], type);
             else
-                _unitCards[i].Init(null, isBarrack);
+                _unitCards[i].Init(null, type);
         }
     }
 

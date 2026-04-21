@@ -60,7 +60,7 @@ public class CardCollectionUI : MonoBehaviour
         _cardHighlitedRemoveButton.SetActive(false);
 
         GameManager.Instance.RemoveCard(_selectedCard.OriginIndex);
-        TownManager.Instance.OnRemoveCard();
+        TownRestManager.Instance.OnRemoveCard();
         InputManager.Instance.Pop();
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();

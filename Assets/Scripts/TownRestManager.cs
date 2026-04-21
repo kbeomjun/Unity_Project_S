@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TownManager : MonoBehaviour
+public class TownRestManager : MonoBehaviour
 {
     [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform[] _cardPositions;
@@ -12,6 +12,8 @@ public class TownManager : MonoBehaviour
     [SerializeField] private Button _cardRemoveButton;
     [SerializeField] private GameObject _cardRemoveCoin;
     [SerializeField] private TMP_Text _cardRemoveCoinText;
+
+    [SerializeField] private GameObject _restSelectButtons;
 
     private Card[] _cards;
     private int _cardCount = 5;
@@ -23,7 +25,7 @@ public class TownManager : MonoBehaviour
     private Card _selectedCard = null;
     private Vector2 _uiMousePos = Vector2.zero;
 
-    public static TownManager Instance { get; private set; }
+    public static TownRestManager Instance { get; private set; }
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -72,7 +74,7 @@ public class TownManager : MonoBehaviour
 
     public void ShowBarrack()
     {
-        GameManager.Instance.OnClickUnitCollectionButton(true);
+        GameManager.Instance.OnClickUnitCollectionButton(1);
     }
 
     public void ShowShop()
@@ -88,9 +90,30 @@ public class TownManager : MonoBehaviour
         CardDeleteCoin += 50;
     }
 
+    public void Meal()
+    {
+        foreach(UnitData unit in GameManager.Instance.PlayerUnitDatas)
+        {
+            unit.CurrentHealth += (int)(unit.MaxHealth * 0.2f);
+            if (unit.CurrentHealth > unit.MaxHealth) unit.CurrentHealth = unit.MaxHealth;
+        }
+        _restSelectButtons.SetActive(false);
+    }
+
+    public void Cure()
+    {
+        GameManager.Instance.OnClickUnitCollectionButton(2);
+    }
+
+    public void OnCureUnit()
+    {
+        _restSelectButtons.SetActive(false);
+    }
+
     public void OnClickTownNextButton()
     {
-        GameManager.Instance.StartBattle();
+        //Test
+        GameManager.Instance.StartRest();
     }
 
     public void OnClickCardRemoveButton()
@@ -103,6 +126,14 @@ public class TownManager : MonoBehaviour
     {
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
+    }
+
+    public void OnClickRestNextButton()
+    {
+        _restSelectButtons.SetActive(true);
+
+        //Test
+        GameManager.Instance.StartBattle();
     }
 
     private void ClearCards()

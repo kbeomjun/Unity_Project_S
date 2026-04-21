@@ -46,9 +46,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _maxChapter = _map.MaxChapter;
-        TownManager.Instance.CardDeleteCoin = 100;
+        TownRestManager.Instance.CardDeleteCoin = 100;
 
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
         //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
         _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
         //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
         //StartGame();
         StartBattle();
         //StartTown();
+        //StartRest();
     }
 
     private void StartGame()
@@ -134,8 +135,13 @@ public class GameManager : MonoBehaviour
 
     public void StartTown()
     {
-        TownManager.Instance.StartTown();
+        TownRestManager.Instance.StartTown();
         ViewManager.Instance.ShowTownView();
+    }
+
+    public void StartRest()
+    {
+        ViewManager.Instance.ShowRestView();
     }
 
     private void OnClearNode()
@@ -173,11 +179,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnClickUnitCollectionButton(bool isBarrack)
+    public void OnClickUnitCollectionButton(int type)
     {
         if (ViewManager.Instance.ShowUnitCollectionPopup())
         {
-            _unitCollectionUI.Init(_playerUnitDatas, isBarrack);
+            _unitCollectionUI.Init(_playerUnitDatas, type);
             InputManager.Instance.Push(InputState.None);
         }
     }
@@ -199,6 +205,13 @@ public class GameManager : MonoBehaviour
     public void RemoveUnit(int index)
     {
         _playerUnitDatas.RemoveAt(index);
+    }
+
+    public void CureUnit(int index)
+    {
+        UnitData unit = _playerUnitDatas[index];
+        unit.CurrentHealth += (int)(unit.MaxHealth * 0.5f);
+        if (unit.CurrentHealth > unit.MaxHealth) unit.CurrentHealth = unit.MaxHealth;
     }
 
     public void AddCard(CardData data)
