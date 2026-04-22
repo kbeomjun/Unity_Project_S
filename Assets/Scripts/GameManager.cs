@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     private void StartChapter()
     {
         _map.CreateMap(_currentChapter);
-        _map.Nodes[_currentChapter][_currentLayer][0].State = NodeState.Available;
+        _map.Nodes[_currentChapter][_currentLayer][0].State = NodeState.Idle;
     }
 
     public void OnClickNode(Node node)
@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
     public void OnClearNode()
     {
         foreach(Node node in _currentNode.NextNode)
-            node.State = NodeState.Available;
+            node.State = NodeState.Idle;
 
         _currentLayer++;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public enum NodeType
 {
@@ -17,7 +18,7 @@ public enum NodeType
 
 public enum NodeState
 {
-    Available,
+    Idle,
     Hover,
     Selected,
     Locked   
@@ -68,9 +69,11 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Image _icon;
     private Color _iconBaseColor;
     private Vector3 _iconBaseScale;
-    private bool _isUp = true;
-    private float _availableScale = 1.15f;
-    private float _hoverScale = 1.3f;
+    private float _pulseTime = 0.0f;
+    private float _pulseAmount = 0.2f;
+    private float _pulseSpeed = 3.0f;
+    private float _idleScale = 0.0f;
+    private float _hoverScale = 1.4f;
     private float _scaleSpeed = 10.0f;
 
     private int _layer;
@@ -99,14 +102,14 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_state != NodeState.Available) return;
+        if (_state != NodeState.Idle) return;
         _state = NodeState.Hover;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (_state != NodeState.Hover) return;
-        _state = NodeState.Available;
+        _state = NodeState.Idle;
     }
 
     public void OnClick()
@@ -143,18 +146,11 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         switch (_state)
         {
-            case NodeState.Available:
+            case NodeState.Idle:
                 _icon.color = _iconBaseColor;
-                if (_isUp)
-                {
-                    _rect.localScale = Vector3.Lerp(_rect.localScale, _iconBaseScale * _availableScale, _scaleSpeed * Time.deltaTime);
-                    if(Vector3.Distance(_rect.localScale, _iconBaseScale * _availableScale) <= 0.01f) _isUp = false;
-                }
-                else
-                {
-                    _rect.localScale = Vector3.Lerp(_rect.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
-                    if (Vector3.Distance(_rect.localScale, _iconBaseScale) <= 0.01f) _isUp = true;
-                }
+                _pulseTime += Time.deltaTime;
+                _idleScale = 1.0f + Mathf.Abs(Mathf.Sin(_pulseTime * _pulseSpeed)) * _pulseAmount;
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _iconBaseScale * _idleScale, _scaleSpeed * Time.deltaTime);
                 break;
 
             case NodeState.Hover:
