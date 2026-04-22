@@ -276,6 +276,7 @@ MonoBehaviour:
   _animator: {fileID: 736112576434899926}
   _healthBar: {fileID: 8686827266841236526}
   _unitEffect: {fileID: 2277275923909611190}
+  _unitEffectTr: {fileID: 6023507146912291754}
   _nextActionScript: {fileID: 6939333804582987550}
 --- !u!1001 &7182870890340882356
 PrefabInstance:

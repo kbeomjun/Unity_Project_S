@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Missile
   layers:
   - Default
   - TransparentFX
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: Unit
     uniqueID: 3355896103
+    locked: 0
+  - name: Effect
+    uniqueID: 1540394489
     locked: 0
   m_RenderingLayers:
   - Default

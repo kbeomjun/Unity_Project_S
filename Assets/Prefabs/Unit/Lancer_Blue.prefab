@@ -52,6 +52,7 @@ MonoBehaviour:
   _animator: {fileID: 8227885086285883084}
   _healthBar: {fileID: 9180120450249655196}
   _unitEffect: {fileID: 4814397205814551369}
+  _unitEffectTr: {fileID: 710770496729428094}
   _nextActionScript: {fileID: 5298959453295926065}
 --- !u!1 &2523922595723371390
 GameObject:

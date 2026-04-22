@@ -84,6 +84,7 @@ MonoBehaviour:
   _animator: {fileID: 6339229427705760946}
   _healthBar: {fileID: 8366005563782111275}
   _unitEffect: {fileID: 2954603206345917788}
+  _unitEffectTr: {fileID: 6470835393730557001}
   _nextActionScript: {fileID: 4483473216555304075}
 --- !u!1 &2765429837184574410
 GameObject:
@@ -410,6 +411,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6470835393730557001}
     m_Modifications:
+    - target: {fileID: 2946968048302830660, guid: e226127340ed25b42be87f17f6e577c1, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946968048302830660, guid: e226127340ed25b42be87f17f6e577c1, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946968048302830660, guid: e226127340ed25b42be87f17f6e577c1, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946968048302830660, guid: e226127340ed25b42be87f17f6e577c1, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946968048302830660, guid: e226127340ed25b42be87f17f6e577c1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 3573900810208330456, guid: e226127340ed25b42be87f17f6e577c1, type: 3}
       propertyPath: m_Name
       value: UnitEffect

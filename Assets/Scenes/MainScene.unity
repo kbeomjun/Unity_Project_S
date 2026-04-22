@@ -2833,6 +2833,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1ae77def86fe54f889da24e43f32ae32, type: 3}
   - {fileID: 21300000, guid: 8fd2d0449599e4f7a9a1f1f170b6a2b0, type: 3}
   - {fileID: 21300000, guid: f846c6072ceb0445bbcb59c41b57a5cb, type: 3}
+  HitEffect: {fileID: 7711288077435556309, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
+  BlockEffect: {fileID: 3451554484878522497, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
 --- !u!1 &365437768
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,7 @@ public class Unit : MonoBehaviour
     [SerializeField] protected Animator _animator;
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private UnitEffect _unitEffect;
+    [SerializeField] private Transform _unitEffectTr;
     [SerializeField] protected NextAction _nextActionScript;
     public NextAction NextActionScript => _nextActionScript;
 
@@ -191,6 +192,11 @@ public class Unit : MonoBehaviour
         {
             _currentDefense -= damage;
             _healthBar.SetDefense(_currentDefense);
+            if (damage != 0)
+            {
+                UnitEffect e = Instantiate(DataManager.Instance.BlockEffect, _unitEffectTr, false);
+                e.Init();
+            }
         }
         else
         {
@@ -200,11 +206,28 @@ public class Unit : MonoBehaviour
             
             if(_unitData.CurrentHealth > 0)
             {
-                if(_currentAction != UnitAction.Skill) _animator.SetTrigger("Hit");
+                if(_currentAction == UnitAction.Skill && _unitData.Type == UnitType.Knight)
+                {
+                    UnitEffect e = Instantiate(DataManager.Instance.BlockEffect, _unitEffectTr, false);
+                    e.Init();
+                }
+                else if (_currentAction == UnitAction.Skill && _unitData.Type == UnitType.Lancer)
+                {
+                    UnitEffect e = Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
+                    e.Init();
+                }
+                else
+                {
+                    _animator.SetTrigger("Hit");
+                    UnitEffect e = Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
+                    e.Init();
+                }
             }
             else
             {
                 _unitData.CurrentHealth = 0;
+                UnitEffect e = Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
+                e.Init();
                 Die();
             }
 
@@ -227,7 +250,7 @@ public class Unit : MonoBehaviour
     public void Defense()
     {
         _currentDefense += _unitData.Defense;
-        _unitEffect.ShieldEffect();
+        _unitEffect.DefenseEffect();
         _healthBar.SetDefense(_currentDefense);
     }
 
@@ -264,7 +287,7 @@ public class Unit : MonoBehaviour
     public void AddDefense(int defense)
     {
         _currentDefense += defense;
-        _unitEffect.ShieldEffect();
+        _unitEffect.DefenseEffect();
         _healthBar.SetDefense(_currentDefense);
     }
 
