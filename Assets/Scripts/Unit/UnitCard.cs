@@ -6,6 +6,7 @@ public class UnitCard : MonoBehaviour
 {
     [SerializeField] private GameObject _unitInfo;
     [SerializeField] private Image _unitIconImage;
+    [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _unitTypeText;
     [SerializeField] private TMP_Text _HPText;
     [SerializeField] private TMP_Text _AttackText;
@@ -55,6 +56,7 @@ public class UnitCard : MonoBehaviour
 
             _unitInfo.SetActive(true);
             _unitIconImage.sprite = DataManager.Instance.UnitSprites[(int)data.Type];
+            _nameText.text = data.Name;
             _unitTypeText.text = data.Type.ToString();
             _SkillText.text = data.SkillDescription;
             if(data.Upgrade > 0)

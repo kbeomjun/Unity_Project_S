@@ -49,7 +49,7 @@ public class Map : MonoBehaviour
 
     private float _nodeDistance = 0.0f;
 
-    public void Init(int chapter)
+    public void Init()
     {
         _maxWidth = GetComponent<RectTransform>().rect.width;
         _maxHeight = GetComponent<RectTransform>().rect.height;
@@ -63,8 +63,6 @@ public class Map : MonoBehaviour
 
         _nodeDistance = _maxWidth / 4.26f;
         _nodes = new Node[_maxChapter][][];
-
-        CreateMap(chapter);
     }
 
     public void CreateMap(int chapter)

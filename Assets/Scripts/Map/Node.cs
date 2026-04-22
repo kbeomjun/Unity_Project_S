@@ -18,7 +18,7 @@ public enum NodeType
 public enum NodeState
 {
     Available,
-    HighLited,
+    Hover,
     Selected,
     Locked   
 }
@@ -28,8 +28,9 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private NodeType _type;
     [SerializeField] private NodeState _state;
     [SerializeField] private Sprite[] _images;
-
     [SerializeField] private GameObject _selectCircle;
+
+    private RectTransform _rect;
     private Image _selectCircleImage;
 
     private Color[] _colors =
@@ -67,12 +68,13 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Image _icon;
     private Color _iconBaseColor;
     private Vector3 _iconBaseScale;
-    private float _scaleSize = 1.2f;
+    private bool _isUp = true;
+    private float _availableScale = 1.15f;
+    private float _hoverScale = 1.3f;
     private float _scaleSpeed = 10.0f;
 
     private int _layer;
     private int _index;
-
     public int Layer
     {
         get => _layer;
@@ -86,31 +88,30 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void Init()
     {
+        _rect = GetComponent<RectTransform>();
         _icon = GetComponent<Image>();
         _iconBaseColor = _icon.color;
-        _iconBaseScale = GetComponent<RectTransform>().localScale;
-
+        _iconBaseScale = _rect.localScale;
         _selectCircleImage = _selectCircle.GetComponent<Image>();
         _selectCircle.SetActive(false);
-
         _state = NodeState.Locked;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_state != NodeState.Available) return;
-        _state = NodeState.HighLited;
+        _state = NodeState.Hover;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_state != NodeState.HighLited) return;
+        if (_state != NodeState.Hover) return;
         _state = NodeState.Available;
     }
 
     public void OnClick()
     {
-        if (_state != NodeState.HighLited) return;
+        if (_state != NodeState.Hover) return;
 
         _selectCircle.SetActive(true);
         StartCoroutine(DrawCircle());
@@ -144,22 +145,31 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             case NodeState.Available:
                 _icon.color = _iconBaseColor;
-                transform.localScale = Vector3.Lerp(transform.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
+                if (_isUp)
+                {
+                    _rect.localScale = Vector3.Lerp(_rect.localScale, _iconBaseScale * _availableScale, _scaleSpeed * Time.deltaTime);
+                    if(Vector3.Distance(_rect.localScale, _iconBaseScale * _availableScale) <= 0.01f) _isUp = false;
+                }
+                else
+                {
+                    _rect.localScale = Vector3.Lerp(_rect.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
+                    if (Vector3.Distance(_rect.localScale, _iconBaseScale) <= 0.01f) _isUp = true;
+                }
                 break;
 
-            case NodeState.HighLited:
+            case NodeState.Hover:
                 _icon.color = Color.Lerp(_iconBaseColor, Color.white, 0.1f);
-                transform.localScale = Vector3.Lerp(transform.localScale, _iconBaseScale * _scaleSize, _scaleSpeed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _iconBaseScale * _hoverScale, _scaleSpeed * Time.deltaTime);
                 break;
 
             case NodeState.Selected:
                 _icon.color = Color.Lerp(_iconBaseColor, Color.white, 0.2f);
-                transform.localScale = Vector3.Lerp(transform.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
                 break;
 
             case NodeState.Locked:
                 _icon.color = Color.Lerp(_iconBaseColor, Color.black, 0.2f);
-                transform.localScale = Vector3.Lerp(transform.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
+                _rect.localScale = Vector3.Lerp(_rect.localScale, _iconBaseScale, _scaleSpeed * Time.deltaTime);
                 break;
         }
     }

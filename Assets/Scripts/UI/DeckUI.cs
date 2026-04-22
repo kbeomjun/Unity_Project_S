@@ -144,7 +144,31 @@ public class DeckUI : MonoBehaviour
         }
     }
 
-    public void ClearCards()
+    public void OnClickDrawPileCardButton()
+    {
+        if (ViewManager.Instance.ShowCardCollectionPopup())
+        {
+            List<CardData> list = new List<CardData>();
+            foreach (Card card in _drawPileCards)
+                list.Add(card.CardData);
+            GameManager.Instance.CardCollectionUI.Init(list, false);
+            InputManager.Instance.Push(InputState.CardCollection);
+        }
+    }
+
+    public void OnClickDiscardPileCardButton()
+    {
+        if (ViewManager.Instance.ShowCardCollectionPopup())
+        {
+            List<CardData> list = new List<CardData>();
+            foreach (Card card in _discardPileCards)
+                list.Add(card.CardData);
+            GameManager.Instance.CardCollectionUI.Init(list, false);
+            InputManager.Instance.Push(InputState.CardCollection);
+        }
+    }
+
+    private void ClearCards()
     {
         foreach (Card card in _drawPileCards)
             Destroy(card.gameObject);

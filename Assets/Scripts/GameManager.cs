@@ -65,8 +65,8 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        //StartGame();
-        StartBattle();
+        StartGame();
+        //StartBattle();
         //StartTown();
         //StartRest();
     }
@@ -75,20 +75,21 @@ public class GameManager : MonoBehaviour
     {
         _currentChapter = 0;
         _maxLayer = _map.MaxLayer[_currentChapter];
+        _currentLayer = 0;
         _currentCoin = 100;
         _prevCoin = _currentCoin;
         
-        _map.Init(_currentChapter);
+        _map.Init();
         _topBar.SetActive(true);
         ViewManager.Instance.ShowMapView();
 
-        _currentLayer = 0;
-        _map.Nodes[_currentChapter][_currentLayer][0].State = NodeState.Available;
+        StartChapter();
     }
 
     private void StartChapter()
     {
         _map.CreateMap(_currentChapter);
+        _map.Nodes[_currentChapter][_currentLayer][0].State = NodeState.Available;
     }
 
     public void OnClickNode(Node node)
