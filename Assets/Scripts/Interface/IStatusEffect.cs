@@ -10,15 +10,14 @@ public enum StatusType
 
 public interface IStatusEffect
 {
-    void OnApply(Unit target);     // 처음 적용될 때
-    void OnRemove(Unit target);    // 제거될 때
-
-    void OnTurnStart(Unit target); // 턴 시작
-    void OnTurnEnd(Unit target);   // 턴 종료
-
     StatusType Type { get; }
     int Duration { get; set; }     // 남은 턴
     Sprite Icon { get; }
+
+    void OnApply(Unit target);     // 처음 적용될 때
+    void OnRemove(Unit target);    // 제거될 때
+    void OnTurnStart(Unit target); // 턴 시작
+    void OnTurnEnd(Unit target);   // 턴 종료
 }
 
 public class StatusEffect : IStatusEffect
@@ -105,4 +104,5 @@ public class StatusEffect : IStatusEffect
                 break;
         }
     }
+
 }

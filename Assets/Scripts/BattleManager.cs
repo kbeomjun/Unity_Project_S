@@ -75,7 +75,7 @@ public class BattleManager : MonoBehaviour
             _playerUnits[i].UnitTeam = UnitTeam.Player;
         }
 
-        int random = Random.Range(1, 2);
+        int random = Random.Range(4, 5);
         for (int i = 0; i < random; i++)
         {
             int random2 = Random.Range(3, 4);
