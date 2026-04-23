@@ -1,12 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using TMPro.EditorUtilities;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Map _map;
     [SerializeField] private GameObject _topBar;
     [SerializeField] private TMP_Text _coinText;
+    [SerializeField] private TMP_Text _layerText;
+    [SerializeField] private TMP_Text _playTimeText;
     [SerializeField] private TMP_Text _partyNumText;
     [SerializeField] private TMP_Text _cardNumText;
     [SerializeField] private RectTransform _cardPopupContentTr;
@@ -24,10 +28,20 @@ public class GameManager : MonoBehaviour
     public Node CurrentNode => _currentNode;
     private int _prevCoin = 0;
     private int _currentCoin = 10000;
+    private float _playTime = 0.0f;
+    private bool _isGameStart = false;
+
     public int CurrentCoin 
     {
         get => _currentCoin;
-        set => _currentCoin = value;
+        set
+        {
+            if (_currentCoin == value) return;
+            _prevCoin = _currentCoin;
+            _currentCoin = value;
+            StopAllCoroutines();
+            StartCoroutine(UpdateCoinText());
+        }
     }
 
     private List<UnitData> _playerUnitDatas = new List<UnitData>();
@@ -65,8 +79,8 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        StartGame();
-        //StartBattle();
+        //StartGame();
+        StartBattle();
         //StartTown();
         //StartRest();
     }
@@ -76,8 +90,10 @@ public class GameManager : MonoBehaviour
         _currentChapter = 0;
         _maxLayer = _map.MaxLayer[_currentChapter];
         _currentLayer = 0;
-        _currentCoin = 100;
+        CurrentCoin = 100;
         _prevCoin = _currentCoin;
+        _playTime = 0.0f;
+        _isGameStart = true;
         
         _map.Init();
         _topBar.SetActive(true);
@@ -186,6 +202,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            _isGameStart = false;
             ViewManager.Instance.ShowGameOverPopup();
         }
     }
@@ -251,21 +268,51 @@ public class GameManager : MonoBehaviour
 
     private void UpdateUnitIndex()
     {
-        for (int i = 0; i < _playerUnitDatas.Count; i++)
-            _playerUnitDatas[i].Index = i;
+        for (int i = 0; i < _playerUnitDatas.Count; i++) _playerUnitDatas[i].Index = i;
+    }
+
+    private IEnumerator UpdateCoinText()
+    {
+        float time = 0.0f;
+        float duration = 0.5f;
+
+        int start = _prevCoin;
+        int end = _currentCoin;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+
+            int value = Mathf.RoundToInt(Mathf.Lerp(start, end, t));
+            _coinText.text = value.ToString();
+            yield return null;
+        }
+
+        _coinText.text = end.ToString();
     }
 
     private void UpdateTopBar()
     {
-        _coinText.text = _currentCoin.ToString();
+        _playTime += Time.deltaTime;
+
+        int hour = (int)(_playTime / 3600);
+        int minute = (int)((_playTime % 3600) / 60);
+        int second = (int)(_playTime % 60);
+
+        _layerText.text = $"{_currentChapter + 1}-{_currentLayer + 1}";
+        _playTimeText.text = $"{hour:D2}:{minute:D2}:{second:D2}";
         _partyNumText.text = _playerUnitDatas.Count.ToString();
         _cardNumText.text = _playerCardDatas.Count.ToString();
     }
 
     private void Update()
     {
-        UpdateUnitIndex();
-        UpdateTopBar();
+        if (_isGameStart)
+        {
+            UpdateUnitIndex();
+            UpdateTopBar();
+        }
     }
 
 }
