@@ -77,7 +77,10 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[6]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[7]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
-        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
+        //_playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
         //StartGame();
         StartBattle();

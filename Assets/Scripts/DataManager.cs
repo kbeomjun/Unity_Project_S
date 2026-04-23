@@ -9,13 +9,13 @@ public class DataManager : MonoBehaviour
     [SerializeField] public Unit[] EnemyUnitPrefabs;
     public UnitData[] UnitDatas = new UnitData[]
     {
-        new UnitData("Knight", UnitType.Knight, 110, 110, 10, 30, 0, 100, 100,
+        new UnitData("Knight", UnitType.Knight, 500, 500, 10, 30, 0, 100, 100,
                         "Reduce 50% damage, Takes all attack"),
-        new UnitData("Lancer", UnitType.Lancer, 90, 90, 20, 20, 0, 100, 100,
+        new UnitData("Lancer", UnitType.Lancer, 500, 500, 20, 20, 0, 100, 100,
                         "Reflex 10 damage to attacker"),
-        new UnitData("Archer", UnitType.Archer, 70, 70, 30, 10, 0, 100, 100,
+        new UnitData("Archer", UnitType.Archer, 500, 500, 30, 10, 0, 100, 100,
                         "Increase attack 100%"),
-        new UnitData("Monk", UnitType.Monk, 50, 50, 5, 5, 0, 100, 100,
+        new UnitData("Monk", UnitType.Monk, 500, 500, 5, 5, 0, 100, 100,
                         "Heal random ally unit by 10%")
     };
     public IUnitAction UnitAttack = new Attack(
@@ -32,18 +32,19 @@ public class DataManager : MonoBehaviour
     {
         new Skill(new List<Func<IEffect>>{
             () => new AddDefenseEffect(30, new SelfTargetSelector()),
-            () => new ApplyStatusEffect(() => new DamageReductionStatus(0.5f, 1), new SelfTargetSelector())
+            () => new ApplyStatusEffect(StatusType.Fortify, 1, new SelfTargetSelector())
         }),
         new Skill(new List<Func<IEffect>>{
-            () => new ApplyStatusEffect(() => new DamageReflectionStatus(10, 1), new SelfTargetSelector())
+            () => new ApplyStatusEffect(StatusType.Brace, 1, new SelfTargetSelector())
         }),
         new Skill(new List<Func<IEffect>>{
-            () => new ApplyStatusSelfEffect(() => new AttackBuffStatus(1.0f, 1), new RandomAttackSelector())
+            () => new ApplyStatusSelfEffect(StatusType.Focus, 1, new RandomAttackSelector())
         }),
         new Skill(new List<Func<IEffect>>{
             () => new HealEffect(new RandomTeamSelector(1))
         })
     };
+    public Sprite[] StatusSprites;
 
     // Card
     [SerializeField] public Card CardPrefab;
@@ -75,7 +76,7 @@ public class DataManager : MonoBehaviour
                         $"Restore all my units <color=#FF5555>10%</color> of their maximum health"),
 
         new CardData("ReduceAttack", 2, CardType.Debuff, TargetType.Enemy, 8, 50,
-                        $"Reduce the attack power of enemy unit by <color=#FF5555>50%</color>"),
+                        $"Inflicts a <color=#FF5555>weak</color> status on the selected enemy"),
 
         new CardData("ResetAllEnemyAction", 2, CardType.Skill, TargetType.None, 9, 50,
                         $"Reset all next actions of enemy units")
@@ -90,7 +91,7 @@ public class DataManager : MonoBehaviour
         new List<Func<IEffect>>{ () => new AddDefenseEffect(10, new FrontAllySelector()) },
         new List<Func<IEffect>>{ () => new AddAttackEffect(10, new BackAllySelector()) },
         new List<Func<IEffect>>{ () => new HealByPercentageEffect(0.1f, new AllAllySelector()) },
-        new List<Func<IEffect>>{ () => new ApplyStatusEffect(() => new AttackReductionStatus(0.5f, 1), new SingleTargetSelector()) },
+        new List<Func<IEffect>>{ () => new ApplyStatusEffect(StatusType.Weak, 1, new SingleTargetSelector()) },
         new List<Func<IEffect>>{ () => new ResetActionEffect(new AllEnemySelector()) }
     };
 

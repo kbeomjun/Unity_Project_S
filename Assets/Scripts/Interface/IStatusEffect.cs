@@ -1,5 +1,13 @@
 using UnityEngine;
 
+public enum StatusType
+{
+    Fortify,        // 받는 피해 -50%
+    Brace,          // 받는 피해 50% 반사
+    Focus,          // 공격 +X
+    Weak,           // 공격 -25%
+}
+
 public interface IStatusEffect
 {
     void OnApply(Unit target);     // 처음 적용될 때
@@ -8,121 +16,93 @@ public interface IStatusEffect
     void OnTurnStart(Unit target); // 턴 시작
     void OnTurnEnd(Unit target);   // 턴 종료
 
+    StatusType Type { get; }
     int Duration { get; set; }     // 남은 턴
+    Sprite Icon { get; }
 }
 
-public class DamageReductionStatus : IStatusEffect
+public class StatusEffect : IStatusEffect
 {
-    private float _reduction;
+    public StatusType Type { get; }
     public int Duration { get; set; }
+    public Sprite Icon { get; }
 
-    public DamageReductionStatus(float reduction, int duration)
+    public StatusEffect(StatusType type, int duration)
     {
-        _reduction = reduction;
+        Type = type;
         Duration = duration;
+        Icon = DataManager.Instance.StatusSprites[(int)type];
     }
 
     public void OnApply(Unit target)
     {
-        target.HitDamageMultiplier *= (1 - _reduction);
+        switch (Type)
+        {
+            case StatusType.Fortify:
+                target.HitDamageMultiplier *= 0.5f;
+                break;
+
+            case StatusType.Brace:
+                target.HitDamageReflection *= 0.5f;
+                break;
+
+            case StatusType.Focus:
+                target.AttackDamageMultiplier *= 2.0f;
+                break;
+
+            case StatusType.Weak:
+                target.AttackDamageMultiplier *= 0.75f;
+                break;
+        }
     }
 
     public void OnRemove(Unit target)
     {
-        target.HitDamageMultiplier /= (1 - _reduction);
+        switch (Type)
+        {
+            case StatusType.Fortify:
+                target.HitDamageMultiplier /= 0.5f;
+                break;
+
+            case StatusType.Brace:
+                target.HitDamageReflection -= 50;
+                break;
+
+            case StatusType.Focus:
+                target.AttackDamageMultiplier /= 2.0f;
+                break;
+
+            case StatusType.Weak:
+                target.AttackDamageMultiplier /= 0.75f;
+                break;
+        }
     }
 
     public void OnTurnStart(Unit target)
     {
-        Duration--;
+        switch (Type)
+        {
+            case StatusType.Fortify:
+                Duration--;
+                break;
+
+            case StatusType.Brace:
+                Duration--;
+                break;
+        }
     }
-
-    public void OnTurnEnd(Unit target) { }
-}
-
-public class DamageReflectionStatus : IStatusEffect
-{
-    private int _reflection;
-    public int Duration { get; set; }
-
-    public DamageReflectionStatus(int reflection, int duration)
-    {
-        _reflection = reflection;
-        Duration = duration;
-    }
-
-    public void OnApply(Unit target)
-    {
-        target.HitDamageReflection += _reflection;
-    }
-
-    public void OnRemove(Unit target)
-    {
-        target.HitDamageReflection -= _reflection;
-    }
-
-    public void OnTurnStart(Unit target) 
-    {
-        Duration--;
-    }
-
-    public void OnTurnEnd(Unit target) { }
-}
-
-public class AttackBuffStatus : IStatusEffect
-{
-    private float _increase;
-    public int Duration { get; set; }
-
-    public AttackBuffStatus(float increase, int duration)
-    {
-        _increase = increase;
-        Duration = duration;
-    }
-
-    public void OnApply(Unit target)
-    {
-        target.AttackDamageMultiplier *= (1 + _increase);
-    }
-
-    public void OnRemove(Unit target)
-    {
-        target.AttackDamageMultiplier /= (1 + _increase);
-    }
-
-    public void OnTurnStart(Unit target) { }
 
     public void OnTurnEnd(Unit target)
     {
-        Duration--;
-    }
-}
+        switch (Type)
+        {
+            case StatusType.Focus:
+                Duration--;
+                break;
 
-public class AttackReductionStatus : IStatusEffect
-{
-    private float _reduction;
-    public int Duration { get; set; }
-
-    public AttackReductionStatus(float reduction, int duration)
-    {
-        _reduction = reduction;
-        Duration = duration;
-    }
-
-    public void OnApply(Unit target)
-    {
-        target.AttackDamageMultiplier *= (1 - _reduction);
-    }
-
-    public void OnRemove(Unit target)
-    {
-        target.AttackDamageMultiplier /= (1 - _reduction);
-    }
-
-    public void OnTurnStart(Unit target) { }
-
-    public void OnTurnEnd(Unit target)
-    {
-        Duration--;
+            case StatusType.Weak:
+                Duration--;
+                break;
+        }
     }
 }

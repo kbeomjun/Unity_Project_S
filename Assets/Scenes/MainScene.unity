@@ -2851,6 +2851,11 @@ MonoBehaviour:
   - {fileID: 4259618837807430659, guid: 131925450d02d194e8f0dbaac2b9613d, type: 3}
   - {fileID: 6012671971255946176, guid: 31d1a4d0e1543474485951954b36a1cc, type: 3}
   - {fileID: 7415239439242457113, guid: 491631197c0f8bd408440f65ac59e173, type: 3}
+  StatusSprites:
+  - {fileID: 21300000, guid: 737f80ee8da33594dbc2eae546e3d863, type: 3}
+  - {fileID: 21300000, guid: 23f51e2c4fe76a7478b7744b0cdc742b, type: 3}
+  - {fileID: 21300000, guid: 5cff77938bc1f68428d2041f96a76223, type: 3}
+  - {fileID: 21300000, guid: 5b88dcc397c3c704dbda071119fb764c, type: 3}
   CardPrefab: {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
   CardImages:
   - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}

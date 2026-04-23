@@ -18,10 +18,12 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] protected Animator _animator;
+    [SerializeField] protected NextAction _nextActionScript;
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private UnitEffect _unitEffect;
     [SerializeField] private Transform _unitEffectTr;
-    [SerializeField] protected NextAction _nextActionScript;
+    [SerializeField] private StatusIconGroup _statusIconGroup;
+    
     public NextAction NextActionScript => _nextActionScript;
 
     protected UnitData _unitData;
@@ -30,7 +32,7 @@ public class Unit : MonoBehaviour
     protected int _currentAttack = 0;
     private int _currentDefense = 0;
     private float _hitdamageMultiplier = 1.0f;
-    private int _hitdamageReflection = 0;
+    private float _hitdamageReflection = 1.0f;
     private float _attackdamageMultiplier = 1.0f;
     private int _totalAttack = 0;
     private int _totalDefense = 0;
@@ -40,7 +42,7 @@ public class Unit : MonoBehaviour
         get => _hitdamageMultiplier;
         set => _hitdamageMultiplier = value;
     }
-    public int HitDamageReflection
+    public float HitDamageReflection
     {
         get => _hitdamageReflection;
         set => _hitdamageReflection = value;
@@ -84,10 +86,23 @@ public class Unit : MonoBehaviour
         _nextActionScript.gameObject.SetActive(false);
     }
 
-    public void ApplyStatus(IStatusEffect status)
+    public void ApplyStatus(StatusType type, int duration)
     {
-        status.OnApply(this);
-        _statuses.Add(status);
+        for (int i = 0; i < _statuses.Count; i++)
+        {
+            IStatusEffect s = _statuses[i];
+            if (s is StatusEffect se && se.Type == type)
+            {
+                se.Duration += duration;
+                _statusIconGroup.UpdateStatus(se);
+                return;
+            }
+        }
+
+        IStatusEffect newStatus = new StatusEffect(type, duration);
+        newStatus.OnApply(this);
+        _statuses.Add(newStatus);
+        _statusIconGroup.AddStatus(newStatus);
     }
 
     public void OnTurnStart()
@@ -96,9 +111,11 @@ public class Unit : MonoBehaviour
         {
             IStatusEffect status = _statuses[i];
             status.OnTurnStart(this);
+            _statusIconGroup.UpdateStatus(status);
             if (status.Duration <= 0)
             {
                 status.OnRemove(this);
+                _statusIconGroup.RemoveStatus(status);
                 _statuses.RemoveAt(i);
             }
         }
@@ -110,9 +127,11 @@ public class Unit : MonoBehaviour
         {
             IStatusEffect status = _statuses[i];
             status.OnTurnEnd(this);
+            _statusIconGroup.UpdateStatus(status);
             if (status.Duration <= 0)
             {
                 status.OnRemove(this);
+                _statusIconGroup.RemoveStatus(status);
                 _statuses.RemoveAt(i);
             }
         }
@@ -179,7 +198,8 @@ public class Unit : MonoBehaviour
     public void HitTarget()
     {
         _target.Hit(_totalAttack);
-        Hit(_target.HitDamageReflection);
+        int reflectionDamage = (int)(_totalAttack * (1.0f - _target.HitDamageReflection));
+        Hit(reflectionDamage);
     }
 
     private void Hit(int damage)
@@ -206,12 +226,7 @@ public class Unit : MonoBehaviour
             
             if(_unitData.CurrentHealth > 0)
             {
-                if(_currentAction == UnitAction.Skill && _unitData.Type == UnitType.Knight)
-                {
-                    UnitEffect e = Instantiate(DataManager.Instance.BlockEffect, _unitEffectTr, false);
-                    e.Init();
-                }
-                else if (_currentAction == UnitAction.Skill && _unitData.Type == UnitType.Lancer)
+                if(_currentAction == UnitAction.Skill && (_unitData.Type == UnitType.Knight || _unitData.Type == UnitType.Lancer))
                 {
                     UnitEffect e = Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
                     e.Init();

@@ -146,12 +146,13 @@ public class ResetActionEffect : IEffect
 public class ApplyStatusSelfEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
+    private StatusType _type;
+    private int _duration;
 
-    private System.Func<IStatusEffect> _statusFactory;
-
-    public ApplyStatusSelfEffect(System.Func<IStatusEffect> factory, ITargetSelector selector)
+    public ApplyStatusSelfEffect(StatusType type, int duration, ITargetSelector selector)
     {
-        _statusFactory = factory;
+        _type = type;
+        _duration = duration;
         TargetSelector = selector;
     }
 
@@ -160,7 +161,7 @@ public class ApplyStatusSelfEffect : IEffect
         foreach (Unit target in targets)
         {
             caster.Target = target;
-            caster.ApplyStatus(_statusFactory());
+            caster.ApplyStatus(_type, _duration);
         }
     }
 }
@@ -168,12 +169,13 @@ public class ApplyStatusSelfEffect : IEffect
 public class ApplyStatusEffect : IEffect
 {
     public ITargetSelector TargetSelector { get; set; }
+    private StatusType _type;
+    private int _duration;
 
-    private System.Func<IStatusEffect> _statusFactory;
-
-    public ApplyStatusEffect(System.Func<IStatusEffect> factory, ITargetSelector selector)
+    public ApplyStatusEffect(StatusType type, int duration, ITargetSelector selector)
     {
-        _statusFactory = factory;
+        _type = type;
+        _duration = duration;
         TargetSelector = selector;
     }
 
@@ -181,7 +183,7 @@ public class ApplyStatusEffect : IEffect
     {
         foreach (Unit target in targets)
         {
-            target.ApplyStatus(_statusFactory());
+            target.ApplyStatus(_type, _duration);
         }
     }
 }
