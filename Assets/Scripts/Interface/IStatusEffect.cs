@@ -64,7 +64,7 @@ public class StatusEffect : IStatusEffect
                 break;
 
             case StatusType.Brace:
-                target.HitDamageReflection -= 50;
+                target.HitDamageReflection /= 0.5f;
                 break;
 
             case StatusType.Focus:
