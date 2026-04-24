@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public enum CardState
 {
@@ -22,15 +23,16 @@ public class Card : MonoBehaviour
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private Image _iconImage;
 
+    private CanvasGroup _canvasGroup;
     private RectTransform _rect;
     public RectTransform Rect => _rect;
     
     private CardData _cardData;
     public CardData CardData => _cardData;
 
-    private Vector2 _drawPilePosition = new Vector2(907.0f, -47.0f);
-    private Vector2 _discardPilePosition = new Vector2(-907.0f, -47.0f);
-    private Vector2 _addPosition = new Vector2(811.0f, 1037.0f);
+    private Vector2 _drawPilePosition = new Vector2(-907.0f, -47.0f);
+    private Vector2 _discardPilePosition = new Vector2(907.0f, -47.0f);
+    private Vector2 _addPosition = new Vector2(811.0f, 1037.0f); // 804.0f, 501.0f
     private Vector2 _originPosition;
     private Vector3 _originScale;
     private int _originIndex = -1;
@@ -74,6 +76,7 @@ public class Card : MonoBehaviour
 
     private void Awake()
     {
+        _canvasGroup = GetComponent<CanvasGroup>();
         _rect = GetComponent<RectTransform>();
         _height = _rect.rect.height;
     }
@@ -91,7 +94,6 @@ public class Card : MonoBehaviour
 
         _originPosition = _rect.anchoredPosition;
         _originScale = _rect.localScale;
-        _state = CardState.Draw;
     }
 
     public void Use()
@@ -102,6 +104,112 @@ public class Card : MonoBehaviour
             List<Unit> targets = effect.TargetSelector.SelectTargets(null);
             effect.Execute(null, targets);
         }
+        PlayUseAnimation();
+    }
+
+    public void PlayUseAnimation()
+    {
+        _state = CardState.Discard;
+        _rect.DOKill();
+
+        Sequence seq = DOTween.Sequence();
+        Vector2 target = _rect.anchoredPosition + new Vector2(0.0f, _hoverY);
+        seq.Append(_rect.DOAnchorPos(target, 0.2f).SetEase(Ease.OutQuad));
+        seq.Join(_rect.DOScale(_originScale * _hoverScale, 0.2f));
+
+        seq.Append(_rect.DOAnchorPos(_discardPilePosition, 0.6f).SetEase(Ease.InQuad));
+        seq.Join(_rect.DORotate(new Vector3(0, 0, 360.0f), 0.6f, RotateMode.FastBeyond360));
+        seq.Join(_rect.DOScale(_originScale * _discardScale, 0.6f));
+        seq.Join(_canvasGroup.DOFade(0, 0.6f));
+
+        seq.OnComplete(() => 
+        {
+            gameObject.SetActive(false);
+        });
+    }
+
+    public void PlayDiscardAnimation()
+    {
+        _state = CardState.Discard;
+        _rect.DOKill();
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(_rect.DOAnchorPos(_discardPilePosition, 0.35f).SetEase(Ease.InQuad));
+        seq.Join(_rect.DOScale(_originScale * 0.3f, 0.35f));
+        seq.Join(_canvasGroup.DOFade(0, 0.3f));
+        seq.OnComplete(() =>
+        {
+            gameObject.SetActive(false);
+        });
+    }
+
+    public void PlayShuffleAnimation()
+    {
+        _state = CardState.Draw;
+
+        gameObject.SetActive(true);
+        _canvasGroup.alpha = 1.0f;
+
+        _rect.DOKill();
+
+        // 시작은 정확히 discard 위치
+        Vector2 start = _discardPilePosition;
+        Vector2 end = _drawPilePosition;
+
+        _rect.anchoredPosition = start;
+        _rect.localScale = _originScale * _discardScale;
+
+        // 포물선용 mid
+        Vector2 mid = (start + end) * 0.5f
+                      + new Vector2(
+                          Random.Range(-40f, 40f),  // 좌우 살짝만
+                          Random.Range(120f, 200f)  // 위로 크게
+                      );
+
+        Vector3[] path = new Vector3[]
+        {
+        start,
+        mid,
+        end
+        };
+
+        Sequence seq = DOTween.Sequence();
+
+        float delay = Random.Range(0f, 0.08f);
+        seq.PrependInterval(delay);
+
+        // 핵심: 곡선 이동
+        seq.Append(
+            _rect.DOPath(path, 0.35f, PathType.CatmullRom)
+                .SetEase(Ease.InOutQuad)
+        );
+
+        // 회전은 자연스럽게
+        seq.Join(
+            _rect.DORotate(new Vector3(0, 0, Random.Range(-180f, 180f)), 0.35f)
+        );
+
+        // 살짝 줄어들면서 빨려들어감
+        seq.Join(
+            _rect.DOScale(_originScale * 0.15f, 0.35f)
+        );
+
+        seq.OnComplete(() =>
+        {
+            gameObject.SetActive(false);
+        });
+    }
+
+    public void PlayAddAnimation()
+    {
+        _state = CardState.Add;
+        _rect.DOKill();
+        
+        Sequence seq = DOTween.Sequence();
+        seq.Append(_rect.DOAnchorPos(_addPosition, 0.4f));
+        seq.Join(_rect.DOScale(_originScale * _addScale, 0.4f));
+        seq.Join(_rect.DORotate(new Vector3(0, 0, 360), 0.4f));
+        seq.OnComplete(() => Destroy(gameObject));
     }
 
     private void Update()
@@ -134,28 +242,12 @@ public class Card : MonoBehaviour
                 break;
 
             case CardState.Draw:
-                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
-                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _discardScale, _speed * 2.0f * Time.deltaTime);
-                _currentZAngle = _rect.eulerAngles.z;
-                _targetZAngle = 90.0f;
-                _newZAngle = Mathf.LerpAngle(_currentZAngle, _targetZAngle, _speed * Time.deltaTime);
-                _rect.rotation = Quaternion.Euler(0, 0, _newZAngle);
                 break;
 
             case CardState.Discard:
-                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
-                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _discardScale, _speed * 2.0f * Time.deltaTime);
-                _currentZAngle = _rect.eulerAngles.z;
-                _targetZAngle = -90.0f;
-                _newZAngle = Mathf.LerpAngle(_currentZAngle, _targetZAngle, _speed * Time.deltaTime);
-                _rect.rotation = Quaternion.Euler(0, 0, _newZAngle);
                 break;
 
             case CardState.Add:
-                _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
-                _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _addScale, _speed * 2.0f * Time.deltaTime);
-                if (Vector3.Distance(_rect.anchoredPosition, _originPosition) <= 2.0f) 
-                    Destroy(gameObject);
                 break;
         }
     }

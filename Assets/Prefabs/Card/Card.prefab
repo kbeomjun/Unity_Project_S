@@ -146,6 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2010322160581502439}
+  - component: {fileID: 4071282769350303193}
   - component: {fileID: 582947702535272105}
   m_Layer: 5
   m_Name: Card
@@ -178,6 +179,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 196, y: 280}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &4071282769350303193
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469396866082238096}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &582947702535272105
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -152,8 +152,7 @@ public class TownRestManager : MonoBehaviour
 
         if (_selectedCard.CardData.Coin <= GameManager.Instance.CurrentCoin)
         {
-            _selectedCard.State = CardState.Add;
-            _selectedCard.OriginPosition = _selectedCard.AddPosition;
+            _selectedCard.PlayAddAnimation();
             _selectedCard.Rect.SetParent(_canvasRect);
 
             int index = -1;

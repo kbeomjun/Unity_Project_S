@@ -78,8 +78,8 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        StartGame();
-        //StartBattle();
+        //StartGame();
+        StartBattle();
         //StartTown();
         //StartRest();
     }

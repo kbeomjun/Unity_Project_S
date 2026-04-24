@@ -15,9 +15,6 @@ public class DeckUI : MonoBehaviour
     private List<Card> _handCards = new List<Card>();
     private List<Card> _discardPileCards = new List<Card>();
 
-    private Vector2 _drawPileOffset = Vector2.zero;
-    private Vector2 _discardPileOffset = Vector2.zero;
-
     private float _spacing = 150.0f;
     private float _startX = 0.0f;
 
@@ -37,8 +34,6 @@ public class DeckUI : MonoBehaviour
     private void Awake()
     {
         _thresholdY = Screen.height * 0.4f;
-        _drawPileOffset = new Vector2(-Screen.width, 0.0f);
-        _discardPileOffset = new Vector2(Screen.width, 0.0f);
     }
 
     public void Init(List<CardData> playerCardDatas)
@@ -48,11 +43,7 @@ public class DeckUI : MonoBehaviour
         foreach (CardData cardData in playerCardDatas)
         {
             Card card = Instantiate(DataManager.Instance.CardPrefab);
-            RectTransform rect = card.Rect;
-
-            rect.SetParent(_handArea, false);
-            rect.anchoredPosition = _drawPileOffset;
-
+            card.Rect.SetParent(_handArea, false);
             card.Init(cardData);
             _discardPileCards.Add(card);
         }
@@ -63,7 +54,6 @@ public class DeckUI : MonoBehaviour
     public IEnumerator DrawCards(int num)
     {
         _isDrawing = true;
-
         for (int i = 0; i < num; i++)
         {
             yield return StartCoroutine(DrawCardRoutine());
@@ -71,7 +61,6 @@ public class DeckUI : MonoBehaviour
         }
 
         _isDrawing = false;
-
         if (_endTurnRequested)
         {
             _endTurnRequested = false;
@@ -95,36 +84,34 @@ public class DeckUI : MonoBehaviour
         }
 
         Card card = _drawPileCards[0];
+        card.gameObject.SetActive(true);
         card.State = CardState.Idle;
-        card.transform.SetAsLastSibling();
-        _handCards.Add(card);
         _drawPileCards.Remove(card);
+        _handCards.Add(card);
     }
 
     private IEnumerator Shuffle()
     {
-        while(_discardPileCards.Count > 0)
+        while (_discardPileCards.Count > 0)
         {
             int index = Random.Range(0, _discardPileCards.Count);
             Card card = _discardPileCards[index];
-            card.State = CardState.Draw;
-            card.OriginPosition = _drawPileOffset;
+            card.gameObject.SetActive(true); 
+            card.PlayShuffleAnimation();
             _drawPileCards.Add(card);
             _discardPileCards.Remove(card);
             yield return new WaitForSeconds(0.05f);
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
     }
 
     public void DiscardHandCards()
     {
         foreach(Card card in _handCards)
         {
-            card.State = CardState.Discard;
-            card.OriginPosition = _discardPileOffset;
+            card.PlayDiscardAnimation();
             _discardPileCards.Add(card);
         }
-
         _handCards.Clear();
     }
 
@@ -134,7 +121,6 @@ public class DeckUI : MonoBehaviour
         if (count <= 0) return;
         
         _startX = -(count - 1) * 0.5f * _spacing;
-
         for (int i = 0; i < count; i++)
         {
             Card card = _handCards[i];
@@ -176,7 +162,6 @@ public class DeckUI : MonoBehaviour
             Destroy(card.gameObject);
         foreach (Card card in _discardPileCards)
             Destroy(card.gameObject);
-
         _drawPileCards.Clear();
         _handCards.Clear();
         _discardPileCards.Clear();
@@ -185,7 +170,6 @@ public class DeckUI : MonoBehaviour
     public void OnClick()
     {
         if (_selectedCard == null) return;
-
         _isDrag = true;
         _selectedCard.State = CardState.Selected;
     }
@@ -196,14 +180,10 @@ public class DeckUI : MonoBehaviour
 
         if (_selectedCard.State == CardState.Selected && mousePos.y >= _thresholdY && _selectedCard.CardData.TargetType == TargetType.None)
         {
-            bool flag = BattleManager.Instance.UseCard(_selectedCard.CardData.Cost);
-            
-            if (flag)
+            if (BattleManager.Instance.UseCard(_selectedCard.CardData.Cost))
             {
                 Debug.Log("NonTargeting Card Used");
                 _selectedCard.Use();
-                _selectedCard.State = CardState.Discard;
-                _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);
                 _handCards.Remove(_selectedCard);
             }
@@ -215,14 +195,10 @@ public class DeckUI : MonoBehaviour
         }
         else if (_selectedCard.State == CardState.Targeting && _selectedUnit != null && mousePos.y >= _thresholdY)
         {
-            bool flag = BattleManager.Instance.UseCard(_selectedCard.CardData.Cost);
-
-            if (flag)
+            if (BattleManager.Instance.UseCard(_selectedCard.CardData.Cost))
             {
                 Debug.Log("Targeting Card Used");
                 _selectedCard.Use();
-                _selectedCard.State = CardState.Discard;
-                _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);
                 _handCards.Remove(_selectedCard);
             }
@@ -240,16 +216,15 @@ public class DeckUI : MonoBehaviour
 
         _isDrag = false;
         _selectedCard = null;
-
-        if (_selectedUnit != null)
-            _selectedUnit.SetHighlight(false);
-
+        if (_selectedUnit != null) _selectedUnit.SetHighlight(false);
         _selectedUnit = null;
         _targetArrow.Hide();
     }
 
     public void MouseProcess(Vector2 mousePos, Vector3 worldPos)
     {
+        if (_isDrawing) return;
+
         // Screen ¡æ UI ÁÂÇ¥ º¯È¯ (ÇÙ½É)
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
 
@@ -276,7 +251,6 @@ public class DeckUI : MonoBehaviour
                             _handCards[j].transform.SetSiblingIndex(_handCards[j].OriginIndex);
                         } 
                     }
-
                     break;
                 }
             }

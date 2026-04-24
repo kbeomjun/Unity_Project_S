@@ -249,9 +249,6 @@ public class RewardManager : MonoBehaviour
     {
         if (_selectedCard == null) return;
 
-        _selectedCard.State = CardState.Add;
-        _selectedCard.OriginPosition = _selectedCard.AddPosition;
-        _selectedCard.Rect.SetParent(_canvasRect);
         GameManager.Instance.AddCard(_selectedCard.CardData);
         RemoveItem(_selectedRewardCard);
         _selectedRewardCard = null;
