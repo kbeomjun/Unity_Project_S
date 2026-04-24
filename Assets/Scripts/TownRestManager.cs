@@ -55,12 +55,10 @@ public class TownRestManager : MonoBehaviour
         foreach(int index in set)
         {
             Card card = Instantiate(DataManager.Instance.CardPrefab);
-            RectTransform rect = card.Rect;
-
-            rect.anchoredPosition = Vector2.zero;
-            rect.SetParent(_cardPositions[i], false);
+            card.Rect.SetParent(_cardPositions[i], false);
             card.Init(DataManager.Instance.CardDatas[index]);
-            card.State = CardState.Idle;
+            card.Rect.anchoredPosition = Vector2.zero;
+            card.State = CardState.Stop;
 
             _cards[i] = card;
             _cardCoins[i].SetActive(true);

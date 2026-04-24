@@ -6,7 +6,8 @@ using TMPro;
 public class DeckUI : MonoBehaviour
 {
     [SerializeField] private RectTransform _canvasRect;
-    [SerializeField] private Transform _handArea;
+    [SerializeField] private RectTransform _handArea;
+    [SerializeField] private RectTransform _selectedCardArea;
     [SerializeField] private TMP_Text _drawPileText;
     [SerializeField] private TMP_Text _discardPileText;
     [SerializeField] private TargetArrow _targetArrow;
@@ -20,6 +21,8 @@ public class DeckUI : MonoBehaviour
 
     private bool _isDrawing = false;
     private bool _endTurnRequested = false;
+    private int _shuffleCount = 0;
+    private bool _shuffleDone = false;
 
     public bool IsDrawing => _isDrawing;
     public bool EndTurnRequested => _endTurnRequested;
@@ -48,7 +51,15 @@ public class DeckUI : MonoBehaviour
             _discardPileCards.Add(card);
         }
 
-        StartCoroutine(Shuffle());
+        while (_discardPileCards.Count > 0)
+        {
+            int index = Random.Range(0, _discardPileCards.Count);
+            Card card = _discardPileCards[index];
+            card.Rect.localScale = new Vector3(0.2f, 0.2f, 0.0f);
+            card.gameObject.SetActive(false);
+            _drawPileCards.Add(card);
+            _discardPileCards.Remove(card);
+        }
     }
 
     public IEnumerator DrawCards(int num)
@@ -85,24 +96,31 @@ public class DeckUI : MonoBehaviour
 
         Card card = _drawPileCards[0];
         card.gameObject.SetActive(true);
-        card.State = CardState.Idle;
+        card.State = CardState.Hand;
         _drawPileCards.Remove(card);
         _handCards.Add(card);
     }
 
     private IEnumerator Shuffle()
     {
+        _shuffleDone = false;
+        _shuffleCount = _discardPileCards.Count;
+
         while (_discardPileCards.Count > 0)
         {
-            int index = Random.Range(0, _discardPileCards.Count);
-            Card card = _discardPileCards[index];
-            card.gameObject.SetActive(true); 
-            card.PlayShuffleAnimation();
+            Card card = _discardPileCards[0];
+            _discardPileCards.RemoveAt(0);
             _drawPileCards.Add(card);
-            _discardPileCards.Remove(card);
+            card.PlayShuffleAnimation(() =>
+            {
+                _shuffleCount--;
+                if (_shuffleCount <= 0) _shuffleDone = true;
+            });
             yield return new WaitForSeconds(0.05f);
         }
-        yield return new WaitForSeconds(0.5f);
+
+        yield return new WaitUntil(() => _shuffleDone);
+        yield return new WaitForSeconds(0.1f);
     }
 
     public void DiscardHandCards()
@@ -189,8 +207,9 @@ public class DeckUI : MonoBehaviour
             }
             else
             {
-                _selectedCard.State = CardState.Idle;
-                _selectedCard.transform.SetSiblingIndex(_selectedCard.OriginIndex);
+                _selectedCard.State = CardState.Hand;
+                _selectedCard.Rect.SetParent(_handArea);
+                _selectedCard.Rect.SetSiblingIndex(_selectedCard.OriginIndex);
             }
         }
         else if (_selectedCard.State == CardState.Targeting && _selectedUnit != null && mousePos.y >= _thresholdY)
@@ -204,14 +223,16 @@ public class DeckUI : MonoBehaviour
             }
             else
             {
-                _selectedCard.State = CardState.Idle;
-                _selectedCard.transform.SetSiblingIndex(_selectedCard.OriginIndex);
+                _selectedCard.State = CardState.Hand;
+                _selectedCard.Rect.SetParent(_handArea);
+                _selectedCard.Rect.SetSiblingIndex(_selectedCard.OriginIndex);
             }
         }
         else
         {
-            _selectedCard.State = CardState.Idle;
-            _selectedCard.transform.SetSiblingIndex(_selectedCard.OriginIndex);
+            _selectedCard.State = CardState.Hand;
+            _selectedCard.Rect.SetParent(_handArea);
+            _selectedCard.Rect.SetSiblingIndex(_selectedCard.OriginIndex);
         }
 
         _isDrag = false;
@@ -223,8 +244,6 @@ public class DeckUI : MonoBehaviour
 
     public void MouseProcess(Vector2 mousePos, Vector3 worldPos)
     {
-        if (_isDrawing) return;
-
         // Screen ¡æ UI ÁÂÇ¥ º¯È¯ (ÇÙ½É)
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
 
@@ -240,16 +259,17 @@ public class DeckUI : MonoBehaviour
                 {
                     _selectedCard = card;
                     card.State = CardState.Hover;
-                    card.transform.SetAsLastSibling();
+                    card.Rect.SetParent(_selectedCardArea);
                     count++;
 
                     for (int j = 0; j < _handCards.Count; j++)
                     {
-                        if (j != i) 
+                        if (j != i)
                         {
-                            _handCards[j].State = CardState.Idle;
-                            _handCards[j].transform.SetSiblingIndex(_handCards[j].OriginIndex);
-                        } 
+                            _handCards[j].State = CardState.Hand;
+                            _handCards[j].Rect.SetParent(_handArea);
+                            _handCards[j].Rect.SetSiblingIndex(_handCards[j].OriginIndex);
+                        }
                     }
                     break;
                 }
@@ -258,11 +278,11 @@ public class DeckUI : MonoBehaviour
             if (count == 0)
             {
                 _selectedCard = null;
-
                 foreach (Card card in _handCards)
                 {
-                    card.State = CardState.Idle;
-                    card.transform.SetSiblingIndex(card.OriginIndex);
+                    card.State = CardState.Hand;
+                    card.Rect.SetParent(_handArea);
+                    card.Rect.SetSiblingIndex(card.OriginIndex);
                 }
             }
         }
@@ -272,7 +292,7 @@ public class DeckUI : MonoBehaviour
             if (_selectedCard.State != CardState.Targeting)
             {
                 _selectedCard.State = CardState.Selected;
-                _selectedCard.transform.SetAsLastSibling();
+                _selectedCard.Rect.SetParent(_selectedCardArea);
                 _selectedCard.Rect.anchoredPosition = _uiMousePos + new Vector2(0.0f, _selectedCard.Height * 1.5f);
             }
 
@@ -281,7 +301,7 @@ public class DeckUI : MonoBehaviour
                 if (_selectedCard.CardData.TargetType != TargetType.None)
                 {
                     _selectedCard.State = CardState.Targeting;
-                    _selectedCard.transform.SetAsLastSibling();
+                    _selectedCard.Rect.SetParent(_selectedCardArea);
                 }
             }
         }

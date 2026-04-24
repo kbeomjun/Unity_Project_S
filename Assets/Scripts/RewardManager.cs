@@ -15,6 +15,10 @@ public class RewardManager : MonoBehaviour
     private List<List<CardData>> _rewardCardDatasList = new List<List<CardData>>();
     private List<Card> _rewardCards = new List<Card>();
 
+    private Vector3 _originScale = new Vector3(1.4f, 1.4f, 0.0f);
+    private float _hoverScale = 1.2f;
+    private float _speed = 10.0f;
+
     private Card _selectedCard = null;
     private RewardItem _selectedRewardCard = null;
     Vector2 _uiMousePos = Vector2.zero;
@@ -110,17 +114,10 @@ public class RewardManager : MonoBehaviour
         foreach (CardData data in _rewardCardDatasList[rewardCard.Index])
         {
             Card card = Instantiate(DataManager.Instance.CardPrefab);
-            RectTransform rect = card.Rect;
-
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = new Vector2(startX + i * spacing, 0);
-            rect.SetParent(_cardRewardsTr, false);
-
+            card.Rect.SetParent(_cardRewardsTr, false);
             card.Init(data);
-            card.State = CardState.Idle;
-            card.OriginScale = new Vector3(1.5f, 1.5f, 1.5f);
+            card.State = CardState.Stop;
+            card.OriginScale = _originScale;
 
             rewardCards.Add(card);
             i++;
@@ -277,12 +274,12 @@ public class RewardManager : MonoBehaviour
             if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, mousePos, null))
             {
                 _selectedCard = card;
-                card.State = CardState.Hover;
+                _selectedCard.Rect.localScale = Vector3.Lerp(_selectedCard.Rect.localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
                 count++;
             }
             else
             {
-                card.State = CardState.Idle;
+                card.Rect.localScale = Vector3.Lerp(card.Rect.localScale, _originScale, _speed * Time.deltaTime);
             }
         }
 

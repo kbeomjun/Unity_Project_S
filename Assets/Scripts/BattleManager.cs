@@ -296,7 +296,7 @@ public class BattleManager : MonoBehaviour
             slotGround.gameObject.SetActive(false);
 
         InputManager.Instance.Push(InputState.Battle);
-        Invoke("StartPlayerTurn", 0.1f);
+        StartPlayerTurn();
     }
 
     public void OnClickEndTurnButton()

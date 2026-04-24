@@ -6,14 +6,14 @@ using DG.Tweening;
 
 public enum CardState
 {
-    Idle,
+    Stop,
+    Hand,
     Hover,
     Selected,
     Targeting,
     Draw,
     Discard,
     Add,
-    Stop
 }
 
 public class Card : MonoBehaviour
@@ -92,6 +92,8 @@ public class Card : MonoBehaviour
         _descriptionText.text = _cardData.Description;
         _iconImage.sprite = _cardData.Image;
 
+        _state = CardState.Stop;
+        _rect.anchoredPosition = _drawPilePosition;
         _originPosition = _rect.anchoredPosition;
         _originScale = _rect.localScale;
     }
@@ -113,14 +115,14 @@ public class Card : MonoBehaviour
         _rect.DOKill();
 
         Sequence seq = DOTween.Sequence();
+
         Vector2 target = _rect.anchoredPosition + new Vector2(0.0f, _hoverY);
         seq.Append(_rect.DOAnchorPos(target, 0.2f).SetEase(Ease.OutQuad));
         seq.Join(_rect.DOScale(_originScale * _hoverScale, 0.2f));
 
-        seq.Append(_rect.DOAnchorPos(_discardPilePosition, 0.6f).SetEase(Ease.InQuad));
-        seq.Join(_rect.DORotate(new Vector3(0, 0, 360.0f), 0.6f, RotateMode.FastBeyond360));
-        seq.Join(_rect.DOScale(_originScale * _discardScale, 0.6f));
-        seq.Join(_canvasGroup.DOFade(0, 0.6f));
+        seq.Append(_rect.DOAnchorPos(_discardPilePosition, 0.5f).SetEase(Ease.InQuad));
+        seq.Join(_rect.DORotate(new Vector3(0, 0, 360.0f), 0.5f, RotateMode.FastBeyond360));
+        seq.Join(_rect.DOScale(_originScale * _discardScale, 0.5f));
 
         seq.OnComplete(() => 
         {
@@ -134,69 +136,32 @@ public class Card : MonoBehaviour
         _rect.DOKill();
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(_rect.DOAnchorPos(_discardPilePosition, 0.35f).SetEase(Ease.InQuad));
-        seq.Join(_rect.DOScale(_originScale * 0.3f, 0.35f));
-        seq.Join(_canvasGroup.DOFade(0, 0.3f));
+
+        seq.Append(_rect.DOAnchorPos(_discardPilePosition, 0.5f).SetEase(Ease.InQuad));
+        seq.Join(_rect.DOScale(_originScale * _discardScale, 0.5f));
+
         seq.OnComplete(() =>
         {
             gameObject.SetActive(false);
         });
     }
 
-    public void PlayShuffleAnimation()
+    public void PlayShuffleAnimation(System.Action onComplete = null)
     {
         _state = CardState.Draw;
-
-        gameObject.SetActive(true);
-        _canvasGroup.alpha = 1.0f;
-
         _rect.DOKill();
-
-        // 시작은 정확히 discard 위치
-        Vector2 start = _discardPilePosition;
-        Vector2 end = _drawPilePosition;
-
-        _rect.anchoredPosition = start;
-        _rect.localScale = _originScale * _discardScale;
-
-        // 포물선용 mid
-        Vector2 mid = (start + end) * 0.5f
-                      + new Vector2(
-                          Random.Range(-40f, 40f),  // 좌우 살짝만
-                          Random.Range(120f, 200f)  // 위로 크게
-                      );
-
-        Vector3[] path = new Vector3[]
-        {
-        start,
-        mid,
-        end
-        };
+        gameObject.SetActive(true);
 
         Sequence seq = DOTween.Sequence();
 
-        float delay = Random.Range(0f, 0.08f);
-        seq.PrependInterval(delay);
-
-        // 핵심: 곡선 이동
-        seq.Append(
-            _rect.DOPath(path, 0.35f, PathType.CatmullRom)
-                .SetEase(Ease.InOutQuad)
-        );
-
-        // 회전은 자연스럽게
-        seq.Join(
-            _rect.DORotate(new Vector3(0, 0, Random.Range(-180f, 180f)), 0.35f)
-        );
-
-        // 살짝 줄어들면서 빨려들어감
-        seq.Join(
-            _rect.DOScale(_originScale * 0.15f, 0.35f)
-        );
+        seq.Append(_rect.DOAnchorPos(_drawPilePosition, 0.8f).SetEase(Ease.InQuad));
+        seq.Join(_rect.DOScale(_originScale * _discardScale, 0.8f));
+        seq.Join(_rect.DOLocalRotate(new Vector3(0, 0, Random.Range(-180.0f, 180.0f)), 0.8f));
 
         seq.OnComplete(() =>
         {
             gameObject.SetActive(false);
+            onComplete?.Invoke();
         });
     }
 
@@ -206,10 +171,15 @@ public class Card : MonoBehaviour
         _rect.DOKill();
         
         Sequence seq = DOTween.Sequence();
+        
         seq.Append(_rect.DOAnchorPos(_addPosition, 0.4f));
         seq.Join(_rect.DOScale(_originScale * _addScale, 0.4f));
         seq.Join(_rect.DORotate(new Vector3(0, 0, 360), 0.4f));
-        seq.OnComplete(() => Destroy(gameObject));
+
+        seq.OnComplete(() => 
+        {
+            Destroy(gameObject);
+        });
     }
 
     private void Update()
@@ -218,18 +188,19 @@ public class Card : MonoBehaviour
 
         switch (_state)
         {
-            case CardState.Idle:
+            case CardState.Hand:
                 _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, _originPosition, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale, _speed * Time.deltaTime);
                 _currentZAngle = _rect.eulerAngles.z;
                 _targetZAngle = 0.0f;
                 _newZAngle = Mathf.LerpAngle(_currentZAngle, _targetZAngle, _speed * Time.deltaTime);
-                _rect.rotation = Quaternion.Euler(0, 0, _newZAngle);
+                _rect.rotation = Quaternion.Euler(0.0f, 0.0f, _newZAngle);
                 break;
 
             case CardState.Hover:
                 _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, hoverOffset, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
+                _rect.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
                 break;
 
             case CardState.Selected:
@@ -239,15 +210,6 @@ public class Card : MonoBehaviour
             case CardState.Targeting:
                 _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, hoverOffset, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _selectedScale, _speed * Time.deltaTime);
-                break;
-
-            case CardState.Draw:
-                break;
-
-            case CardState.Discard:
-                break;
-
-            case CardState.Add:
                 break;
         }
     }
