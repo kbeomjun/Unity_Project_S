@@ -28,6 +28,8 @@ public class Card : MonoBehaviour
     private CardData _cardData;
     public CardData CardData => _cardData;
 
+    private Vector2 _drawPilePosition = new Vector2(907.0f, -47.0f);
+    private Vector2 _discardPilePosition = new Vector2(-907.0f, -47.0f);
     private Vector2 _addPosition = new Vector2(811.0f, 1037.0f);
     private Vector2 _originPosition;
     private Vector3 _originScale;

@@ -206,7 +206,6 @@ public class DeckUI : MonoBehaviour
                 _selectedCard.OriginPosition = _discardPileOffset;
                 _discardPileCards.Add(_selectedCard);
                 _handCards.Remove(_selectedCard);
-                
             }
             else
             {

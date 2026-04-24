@@ -2853,9 +2853,9 @@ MonoBehaviour:
   - {fileID: 7415239439242457113, guid: 491631197c0f8bd408440f65ac59e173, type: 3}
   StatusSprites:
   - {fileID: 21300000, guid: 737f80ee8da33594dbc2eae546e3d863, type: 3}
-  - {fileID: 21300000, guid: 23f51e2c4fe76a7478b7744b0cdc742b, type: 3}
-  - {fileID: 21300000, guid: 5cff77938bc1f68428d2041f96a76223, type: 3}
-  - {fileID: 21300000, guid: 5b88dcc397c3c704dbda071119fb764c, type: 3}
+  - {fileID: 21300000, guid: 6b80e042a30a2684581e3a409dcb7587, type: 3}
+  - {fileID: 21300000, guid: 6b76569d224683c43ade66d8ff15bd73, type: 3}
+  - {fileID: 21300000, guid: 2529be1c7dcdfc04096e124ea60cf324, type: 3}
   CardPrefab: {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
   CardImages:
   - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
@@ -2879,6 +2879,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f846c6072ceb0445bbcb59c41b57a5cb, type: 3}
   HitEffect: {fileID: 7711288077435556309, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
   BlockEffect: {fileID: 3451554484878522497, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+  DieEffect: {fileID: 3117531208549637922, guid: 7ae9e34c21c27d549b6f02ce6e52b9ad, type: 3}
+  HealEffect: {fileID: 5052626504233289286, guid: 7e691a0229efacd4cba2922df3888456, type: 3}
+  BuffEffect: {fileID: 5052626504233289286, guid: 68c7bb653c166ff46af969c953982166, type: 3}
+  DebuffEffect: {fileID: 1929034834037082553, guid: 2f77993eac95be84786eceb7d8ba3a2d, type: 3}
 --- !u!1 &365437768
 GameObject:
   m_ObjectHideFlags: 0
@@ -17564,7 +17568,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 21ae6066414691f4a837bd6c75c78f76, type: 3}
-  m_Color: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
+  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

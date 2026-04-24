@@ -13,11 +13,6 @@ public class UnitEffect : MonoBehaviour
         _animator.SetTrigger("Defense");
     }
 
-    public void HealEffect()
-    {
-        _animator.SetTrigger("Heal");
-    }
-
     public void Init()
     {
         _isStart = true;

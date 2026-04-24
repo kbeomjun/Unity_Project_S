@@ -94,6 +94,10 @@ public class DataManager : MonoBehaviour
     //Effect
     [SerializeField] public UnitEffect HitEffect;
     [SerializeField] public UnitEffect BlockEffect;
+    [SerializeField] public UnitEffect DieEffect;
+    [SerializeField] public UnitEffect HealEffect;
+    [SerializeField] public UnitEffect BuffEffect;
+    [SerializeField] public UnitEffect DebuffEffect;
 
     public static DataManager Instance { get; private set; }
     private void Awake()

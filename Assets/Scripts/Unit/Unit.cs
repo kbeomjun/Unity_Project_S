@@ -88,6 +88,19 @@ public class Unit : MonoBehaviour
 
     public void ApplyStatus(StatusType type, int duration)
     {
+        switch (type)
+        {
+            case StatusType.Fortify:
+            case StatusType.Brace:
+            case StatusType.Focus:
+                Instantiate(DataManager.Instance.BuffEffect, _unitEffectTr, false);
+                break;
+
+            case StatusType.Weak:
+                Instantiate(DataManager.Instance.DebuffEffect, _unitEffectTr, false);
+                break;
+        }
+
         for (int i = 0; i < _statuses.Count; i++)
         {
             IStatusEffect s = _statuses[i];
@@ -214,8 +227,7 @@ public class Unit : MonoBehaviour
             _healthBar.SetDefense(_currentDefense);
             if (damage != 0)
             {
-                UnitEffect e = Instantiate(DataManager.Instance.BlockEffect, _unitEffectTr, false);
-                e.Init();
+                Instantiate(DataManager.Instance.BlockEffect, _unitEffectTr, false);
             }
         }
         else
@@ -228,21 +240,18 @@ public class Unit : MonoBehaviour
             {
                 if(_currentAction == UnitAction.Skill && (_unitData.Type == UnitType.Knight || _unitData.Type == UnitType.Lancer))
                 {
-                    UnitEffect e = Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
-                    e.Init();
+                    Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
                 }
                 else
                 {
                     _animator.SetTrigger("Hit");
-                    UnitEffect e = Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
-                    e.Init();
+                    Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
                 }
             }
             else
             {
                 _unitData.CurrentHealth = 0;
-                UnitEffect e = Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
-                e.Init();
+                Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
                 Die();
             }
 
@@ -254,6 +263,7 @@ public class Unit : MonoBehaviour
     public virtual void Die()
     {
         _animator.SetTrigger("Die");
+        Instantiate(DataManager.Instance.DieEffect, _unitEffectTr, false);
     }
 
     public void AfterDie()
@@ -286,7 +296,8 @@ public class Unit : MonoBehaviour
         if (_unitData.CurrentHealth > _unitData.MaxHealth)
             _unitData.CurrentHealth = _unitData.MaxHealth;
         _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
-        _unitEffect.HealEffect();
+        //_unitEffect.HealEffect();
+        Instantiate(DataManager.Instance.HealEffect, _unitEffectTr, false);
     }
 
     public void SetNextAction(UnitAction action)
@@ -313,7 +324,7 @@ public class Unit : MonoBehaviour
 
     public void SetHighlight(bool onOff)
     {
-        _outlineMaterial.SetFloat("_OutlineSize", onOff ? 1.5f : 0f);
+        _outlineMaterial.SetFloat("_OutlineSize", onOff ? 1.5f : 0.0f);
     }
 
     private void Update()

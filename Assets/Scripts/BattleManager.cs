@@ -78,7 +78,7 @@ public class BattleManager : MonoBehaviour
         int random = Random.Range(4, 5);
         for (int i = 0; i < random; i++)
         {
-            int random2 = Random.Range(3, 4);
+            int random2 = Random.Range(0, 4);
             _enemyUnits[i] = Instantiate(DataManager.Instance.EnemyUnitPrefabs[random2], _enemySlots[i]);
             _enemyUnits[i].Init(new UnitData(DataManager.Instance.UnitDatas[random2]));
             _enemyUnits[i].UnitData.SlotIndex = i;
