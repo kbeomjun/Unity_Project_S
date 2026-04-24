@@ -24,7 +24,7 @@ public class DataManager : MonoBehaviour
     {
         new Skill(new List<Func<IEffect>>{
             () => new AddDefenseEffect(30, new SelfTargetSelector()),
-            () => new ApplyStatusEffect(StatusType.Fortify, 1, new SelfTargetSelector())
+            () => new ApplyStatusEffect(StatusType.IronWall, 1, new SelfTargetSelector())
         }),
         new Skill(new List<Func<IEffect>>{
             () => new ApplyStatusEffect(StatusType.Brace, 1, new SelfTargetSelector())

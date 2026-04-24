@@ -90,7 +90,7 @@ public class Unit : MonoBehaviour
     {
         switch (type)
         {
-            case StatusType.Fortify:
+            case StatusType.IronWall:
             case StatusType.Brace:
             case StatusType.Focus:
                 Instantiate(DataManager.Instance.BuffEffect, _unitEffectTr, false);

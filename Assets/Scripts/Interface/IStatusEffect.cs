@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum StatusType
 {
-    Fortify,        // 받는 피해 -50%
+    IronWall,       // 받는 피해 -50%
     Brace,          // 받는 피해 50% 반사
     Focus,          // 공격 +X
     Weak,           // 공격 -25%
@@ -37,7 +37,7 @@ public class StatusEffect : IStatusEffect
     {
         switch (Type)
         {
-            case StatusType.Fortify:
+            case StatusType.IronWall:
                 target.HitDamageMultiplier *= 0.5f;
                 break;
 
@@ -59,7 +59,7 @@ public class StatusEffect : IStatusEffect
     {
         switch (Type)
         {
-            case StatusType.Fortify:
+            case StatusType.IronWall:
                 target.HitDamageMultiplier /= 0.5f;
                 break;
 
@@ -81,7 +81,7 @@ public class StatusEffect : IStatusEffect
     {
         switch (Type)
         {
-            case StatusType.Fortify:
+            case StatusType.IronWall:
                 Duration--;
                 break;
 
