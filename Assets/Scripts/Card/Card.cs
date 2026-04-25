@@ -22,6 +22,7 @@ public class Card : MonoBehaviour
     [SerializeField] private TMP_Text _costText;
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private Image _iconImage;
+    [SerializeField] private GameObject _back;
 
     private CanvasGroup _canvasGroup;
     private RectTransform _rect;
@@ -151,6 +152,7 @@ public class Card : MonoBehaviour
         _state = CardState.Draw;
         _rect.DOKill();
         gameObject.SetActive(true);
+        _back.SetActive(true);
 
         Sequence seq = DOTween.Sequence();
 
@@ -161,6 +163,7 @@ public class Card : MonoBehaviour
         seq.OnComplete(() =>
         {
             gameObject.SetActive(false);
+            _back.SetActive(false);
             onComplete?.Invoke();
         });
     }
