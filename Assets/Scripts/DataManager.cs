@@ -9,13 +9,13 @@ public class DataManager : MonoBehaviour
     [SerializeField] public Unit[] EnemyUnitPrefabs;
     public UnitData[] UnitDatas = new UnitData[]
     {
-        new UnitData("Knight", UnitType.Knight, 90, 90, 1, 30, 0, 100, 100,
+        new UnitData("Knight", UnitType.Knight, 90, 20, 10, 30, 0, 100, 100,
                         "Reduce 50% damage, Takes all attack"),
-        new UnitData("Lancer", UnitType.Lancer, 70, 70, 2, 20, 0, 100, 100,
+        new UnitData("Lancer", UnitType.Lancer, 70, 20, 20, 20, 0, 100, 100,
                         "Reflex 10 damage to attacker"),
-        new UnitData("Archer", UnitType.Archer, 50, 50, 3, 10, 0, 100, 100,
+        new UnitData("Archer", UnitType.Archer, 50, 20, 30, 10, 0, 100, 100,
                         "Increase attack 100%"),
-        new UnitData("Monk", UnitType.Monk, 30, 30, 5, 5, 0, 100, 100,
+        new UnitData("Monk", UnitType.Monk, 30, 20, 5, 5, 0, 100, 100,
                         "Heal random ally unit by 10%")
     };
     public IUnitAction UnitAttack = new Attack(new List<Func<IEffect>> { () => new AttackEffect(new RandomAttackSelector()) });
