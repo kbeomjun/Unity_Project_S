@@ -1,0 +1,97 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class StartManager : MonoBehaviour
+{
+    [SerializeField] private RectTransform _canvasRect;
+    [SerializeField] private EventButton[] _eventButton;
+    [SerializeField] private GameObject _nextButton;
+
+    private List<EventOption> _startEvents = new List<EventOption>();
+
+    public static StartManager Instance { get; private set; }
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
+    public void StartStart(int chapter)
+    {
+        Clear();
+        RecruitRandomUnit();
+
+        for (int i = 0; i < GameManager.Instance.PlayerUnitDatas.Count; i++)
+            GameManager.Instance.CureUnit(i);
+
+        GameEvent gameEvent = CreateRandomStartEvent(chapter);
+
+        for (int i = 0; i < _eventButton.Length; i++)
+        {
+            _eventButton[i].gameObject.SetActive(true);
+            _eventButton[i].Init(gameEvent.Options[i]);
+        }
+    }
+
+    private void RecruitRandomUnit()
+    {
+        if (GameManager.Instance.PlayerUnitDatas.Count >= 4) return;
+        
+        int unitType = Random.Range(0, DataManager.Instance.PlayerUnitPrefabs.Length);
+        GameManager.Instance.AddUnit(unitType);
+        PlayRecruitAnimation(unitType);
+    }
+
+    private GameEvent CreateRandomStartEvent(int chapter)
+    {
+        HashSet<int> set = new HashSet<int>();
+        GameEvent gameEvent = new GameEvent(new List<EventOption>());
+
+        while(gameEvent.Options.Count < 3)
+        {
+            int random = Random.Range(0, _startEvents.Count);
+
+            if (set.Contains(random)) continue;
+
+            set.Add(random);
+            gameEvent.Options.Add(_startEvents[random]);
+        }
+
+        return gameEvent;
+    }
+
+    public void EndEvent()
+    {
+        for (int i = 0; i < _eventButton.Length; i++)
+        {
+            _eventButton[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void OnClickNextButton()
+    {
+        //Test
+        GameManager.Instance.OnClearNode();
+    }
+
+    public void PlayRecruitAnimation(int unitType)
+    {
+        UnitSprite unitSprite = Instantiate(DataManager.Instance.UnitSpritePrefab, _canvasRect, false);
+        unitSprite.Init(unitType);
+        unitSprite.PlayRecruitAnimation();
+    }
+
+    private void Clear()
+    {
+        _startEvents.Clear();
+        _startEvents = new List<EventOption>()
+        {
+            new EventOption("Gain 100 Gold", new List<IEventEffect> { new GainGold(100) }),
+            new EventOption("Recruit Unit: Knight", new List<IEventEffect> { new AddUnit(0) }),
+            new EventOption("Recruit Unit: Lancer", new List<IEventEffect> { new AddUnit(1) }),
+            new EventOption("Recruit Unit: Archer", new List<IEventEffect> { new AddUnit(2) }),
+            new EventOption("Recruit Unit: Monk", new List<IEventEffect> { new AddUnit(3) }),
+        };
+    }
+
+}

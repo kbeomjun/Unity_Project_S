@@ -175,7 +175,7 @@ public class Card : MonoBehaviour
         
         Sequence seq = DOTween.Sequence();
         
-        seq.Append(_rect.DOAnchorPos(_addPosition, 0.4f));
+        seq.Append(_rect.DOAnchorPos(_addPosition, 0.4f).SetEase(Ease.InQuad));
         seq.Join(_rect.DOScale(_originScale * _addScale, 0.4f));
         seq.Join(_rect.DORotate(new Vector3(0, 0, 360), 0.4f));
 

@@ -8,6 +8,7 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private RectTransform _mapScrollView;
 
     [SerializeField] private UIView _mapView;
+    [SerializeField] private UIView _startView;
     [SerializeField] private UIView _battleView;
     [SerializeField] private UIView _townView;
     [SerializeField] private UIView _restView;
@@ -47,6 +48,17 @@ public class ViewManager : MonoBehaviour
     {
         _mapScrollView.SetParent(_mapViewTr, false);
         ShowView(_mapView);
+
+        if (_popupStack.Count > 0)
+        {
+            if (_popupStack.Peek() == _mapPopup)
+                Pop();
+        }
+    }
+    
+    public void ShowStartView()
+    {
+        ShowView(_startView);
     }
 
     public void ShowBattleView()

@@ -62,10 +62,10 @@ public class GameManager : MonoBehaviour
         _maxChapter = _map.MaxChapter;
         TownRestManager.Instance.CardDeleteCoin = 100;
 
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
 
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[1]));
@@ -78,8 +78,9 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
 
-        //StartGame();
-        StartBattle();
+        StartGame();
+        //StartStart();
+        //StartBattle();
         //StartTown();
         //StartRest();
     }
@@ -124,7 +125,7 @@ public class GameManager : MonoBehaviour
         switch (_currentNode.Type)
         {
             case NodeType.Start:
-                OnClearNode();
+                StartStart();
                 break;
 
             case NodeType.Battle:
@@ -153,19 +154,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void StartBattle()
+    private void StartStart()
+    {
+        StartManager.Instance.StartStart(_currentChapter);
+        ViewManager.Instance.ShowStartView();
+    }
+
+    private void StartBattle()
     {
         BattleManager.Instance.StartBattle(_playerUnitDatas, _playerCardDatas);
         ViewManager.Instance.ShowBattleView();
     }
 
-    public void StartTown()
+    private void StartTown()
     {
         TownRestManager.Instance.StartTown();
         ViewManager.Instance.ShowTownView();
     }
 
-    public void StartRest()
+    private void StartRest()
     {
         ViewManager.Instance.ShowRestView();
     }
@@ -240,6 +247,7 @@ public class GameManager : MonoBehaviour
 
     public void AddUnit(int unitType)
     {
+        if (_playerUnitDatas.Count >= 4) return;
         _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[unitType]));
     }
 

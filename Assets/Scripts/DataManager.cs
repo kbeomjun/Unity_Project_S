@@ -37,6 +37,8 @@ public class DataManager : MonoBehaviour
         })
     };
     [SerializeField] public Sprite[] StatusSprites;
+    [SerializeField] public Sprite[] UnitSprites;
+    [SerializeField] public UnitSprite UnitSpritePrefab;
 
     // Card
     [SerializeField] public Card CardPrefab;
@@ -89,7 +91,6 @@ public class DataManager : MonoBehaviour
 
     //Reward
     [SerializeField] public Sprite[] RewardItemSprites;
-    [SerializeField] public Sprite[] UnitSprites;
 
     //Effect
     [SerializeField] public UnitEffect HitEffect;
