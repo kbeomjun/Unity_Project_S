@@ -2924,7 +2924,7 @@ MonoBehaviour:
   - {fileID: 6012671971255946176, guid: 31d1a4d0e1543474485951954b36a1cc, type: 3}
   - {fileID: 7415239439242457113, guid: 491631197c0f8bd408440f65ac59e173, type: 3}
   StatusSprites:
-  - {fileID: 21300000, guid: 23819f159996e504f896308c83ddb6ef, type: 3}
+  - {fileID: 21300000, guid: 68279ae42ce62bf4782a16f18d3d71cf, type: 3}
   - {fileID: 21300000, guid: 4699a73909f746c409bd8b33214b7343, type: 3}
   - {fileID: 21300000, guid: d7ec6f80bdfc06d498b3680a859e790d, type: 3}
   - {fileID: 21300000, guid: 3691f9e7eaf3a514e884d24d5bbbcad2, type: 3}
