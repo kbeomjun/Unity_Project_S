@@ -48,6 +48,7 @@ public class DeckUI : MonoBehaviour
             Card card = Instantiate(DataManager.Instance.CardPrefab);
             card.Rect.SetParent(_handArea, false);
             card.Init(cardData);
+            card.Rect.anchoredPosition = card.DrawPilePosition;
             _discardPileCards.Add(card);
         }
 

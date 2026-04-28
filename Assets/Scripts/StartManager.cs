@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class StartManager : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private EventButton[] _eventButton;
     [SerializeField] private GameObject _nextButton;
 

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform _eventButttonTr;
 
     private List<GameEvent> _events = new List<GameEvent>();

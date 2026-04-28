@@ -215,7 +215,7 @@ public class RewardManager : MonoBehaviour
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
 
-        //Test
+        BattleManager.Instance.ClearUnits();
         GameManager.Instance.OnClearNode();
     }
 
@@ -246,6 +246,9 @@ public class RewardManager : MonoBehaviour
     {
         if (_selectedCard == null) return;
 
+        _selectedCard.Rect.SetParent(_canvasRect);
+        _selectedCard.PlayRewardAddAnimation();
+        _rewardCards.Remove(_selectedCard);
         GameManager.Instance.AddCard(_selectedCard.CardData);
         RemoveItem(_selectedRewardCard);
         _selectedRewardCard = null;

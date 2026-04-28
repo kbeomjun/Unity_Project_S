@@ -310,7 +310,7 @@ public class BattleManager : MonoBehaviour
         EndPlayerTurn();
     }
 
-    private void ClearUnits()
+    public void ClearUnits()
     {
         foreach(Unit unit in _playerUnits)
         {

@@ -11,9 +11,6 @@ public enum CardState
     Hover,
     Selected,
     Targeting,
-    Draw,
-    Discard,
-    Add,
 }
 
 public class Card : MonoBehaviour
@@ -31,14 +28,18 @@ public class Card : MonoBehaviour
     private CardData _cardData;
     public CardData CardData => _cardData;
 
-    private Vector2 _drawPilePosition = new Vector2(-907.0f, -47.0f);
-    private Vector2 _discardPilePosition = new Vector2(907.0f, -47.0f);
-    private Vector2 _addPosition = new Vector2(811.0f, 1037.0f); // 804.0f, 501.0f
+    private Vector2 _drawPilePosition = new Vector2(-907.0f, -75.0f);
+    private Vector2 _discardPilePosition = new Vector2(907.0f, -75.0f);
+    private Vector2 _addPosition = new Vector2(829.0f, 497.0f);
+    private Vector2 _rewardAddPosition = new Vector2(1801.0f, -48.0f);
     private Vector2 _originPosition;
     private Vector3 _originScale;
     private int _originIndex = -1;
 
+    public Vector2 DrawPilePosition => _drawPilePosition;
+    public Vector2 DiscardPilePosition => _discardPilePosition;
     public Vector2 AddPosition => _addPosition;
+    public Vector2 RewardAddPosition => _rewardAddPosition;
     public Vector2 OriginPosition
     {
         get => _originPosition;
@@ -68,7 +69,7 @@ public class Card : MonoBehaviour
     private float _newZAngle = 0.0f;
     private float _speed = 5.0f;
 
-    private CardState _state = CardState.Draw;
+    private CardState _state;
     public CardState State
     {
         get => _state;
@@ -94,7 +95,6 @@ public class Card : MonoBehaviour
         _iconImage.sprite = _cardData.Image;
 
         _state = CardState.Stop;
-        _rect.anchoredPosition = _drawPilePosition;
         _originPosition = _rect.anchoredPosition;
         _originScale = _rect.localScale;
     }
@@ -112,7 +112,7 @@ public class Card : MonoBehaviour
 
     public void PlayUseAnimation()
     {
-        _state = CardState.Discard;
+        _state = CardState.Stop;
         _rect.DOKill();
 
         Sequence seq = DOTween.Sequence();
@@ -133,7 +133,7 @@ public class Card : MonoBehaviour
 
     public void PlayDiscardAnimation()
     {
-        _state = CardState.Discard;
+        _state = CardState.Stop;
         _rect.DOKill();
 
         Sequence seq = DOTween.Sequence();
@@ -149,7 +149,7 @@ public class Card : MonoBehaviour
 
     public void PlayShuffleAnimation(System.Action onComplete = null)
     {
-        _state = CardState.Draw;
+        _state = CardState.Stop;
         _rect.DOKill();
         gameObject.SetActive(true);
         _back.SetActive(true);
@@ -170,16 +170,33 @@ public class Card : MonoBehaviour
 
     public void PlayAddAnimation()
     {
-        _state = CardState.Add;
+        _state = CardState.Stop;
         _rect.DOKill();
         
         Sequence seq = DOTween.Sequence();
-        
-        seq.Append(_rect.DOAnchorPos(_addPosition, 0.4f).SetEase(Ease.InQuad));
-        seq.Join(_rect.DOScale(_originScale * _addScale, 0.4f));
-        seq.Join(_rect.DORotate(new Vector3(0, 0, 360), 0.4f));
+
+        seq.Append(_rect.DOAnchorPos(_addPosition, 1.0f).SetEase(Ease.InQuad));
+        seq.Join(_rect.DOScale(_originScale * _addScale, 1.0f));
+        seq.Join(_rect.DORotate(new Vector3(0, 0, 360), 1.0f));
 
         seq.OnComplete(() => 
+        {
+            Destroy(gameObject);
+        });
+    }
+
+    public void PlayRewardAddAnimation()
+    {
+        _state = CardState.Stop;
+        _rect.DOKill();
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(_rect.DOAnchorPos(_rewardAddPosition, 1.0f).SetEase(Ease.InQuad));
+        seq.Join(_rect.DOScale(_originScale * _addScale, 1.0f));
+        seq.Join(_rect.DORotate(new Vector3(0, 0, 360), 1.0f));
+
+        seq.OnComplete(() =>
         {
             Destroy(gameObject);
         });
