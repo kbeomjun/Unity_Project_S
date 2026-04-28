@@ -5,6 +5,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private Map _map;
     [SerializeField] private GameObject _topBar;
     [SerializeField] private TMP_Text _coinText;
@@ -62,10 +63,10 @@ public class GameManager : MonoBehaviour
         _maxChapter = _map.MaxChapter;
         TownRestManager.Instance.CardDeleteCoin = 100;
 
-        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
-        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
-        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
-        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
 
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[1]));
@@ -83,6 +84,7 @@ public class GameManager : MonoBehaviour
         //StartBattle();
         //StartTown();
         //StartRest();
+        //StartEvent();
     }
 
     private void StartGame()
@@ -145,7 +147,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case NodeType.Event:
-                OnClearNode();
+                StartEvent();
                 break;
 
             case NodeType.Boss:
@@ -175,6 +177,12 @@ public class GameManager : MonoBehaviour
     private void StartRest()
     {
         ViewManager.Instance.ShowRestView();
+    }
+
+    private void StartEvent()
+    {
+        EventManager.Instance.StartEvent(_currentChapter);
+        ViewManager.Instance.ShowEventView();
     }
 
     public void OnClearNode()
@@ -214,6 +222,71 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void AddUnit(int unitType)
+    {
+        if (_playerUnitDatas.Count >= 4) return;
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[unitType]));
+        PlayRecruitAnimation(unitType);
+    }
+
+    public void RemoveUnit(int index)
+    {
+        _playerUnitDatas.RemoveAt(index);
+    }
+
+    public void CureUnit(int index)
+    {
+        UnitData unit = _playerUnitDatas[index];
+        unit.CurrentHealth += (int)(unit.MaxHealth * 0.5f);
+        if (unit.CurrentHealth > unit.MaxHealth) unit.CurrentHealth = unit.MaxHealth;
+    }
+
+    public void HurtUnit(int damage, bool isAll)
+    {
+        if (isAll)
+        {
+            for (int i = _playerUnitDatas.Count - 1; i >= 0; i--)
+            {
+                _playerUnitDatas[i].CurrentHealth -= damage;
+                if (_playerUnitDatas[i].CurrentHealth < 0) RemoveUnit(i);
+            }
+        }
+        else
+        {
+            int index = Random.Range(0, _playerUnitDatas.Count);
+            _playerUnitDatas[index].CurrentHealth -= damage;
+            if (_playerUnitDatas[index].CurrentHealth < 0) RemoveUnit(index);
+        }
+
+        CheckGameOver();
+    }
+
+    public void AddCard(CardData data)
+    {
+        _playerCardDatas.Add(new CardData(data));
+    }
+
+    public void RemoveCard(int index)
+    {
+        _playerCardDatas.RemoveAt(index);
+    }
+
+    private void CheckGameOver()
+    {
+        if (_playerUnitDatas.Count <= 0)
+        {
+            _isGameStart = false;
+            ViewManager.Instance.ShowGameOverPopup();
+        }
+    }
+
+    public void PlayRecruitAnimation(int unitType)
+    {
+        UnitSprite unitSprite = Instantiate(DataManager.Instance.UnitSpritePrefab, _canvasRect, false);
+        unitSprite.Init(unitType);
+        unitSprite.PlayRecruitAnimation();
+    }
+
     public void OnClickMapButton()
     {
         if (ViewManager.Instance.ShowMapPopup())
@@ -244,34 +317,6 @@ public class GameManager : MonoBehaviour
             _cardCollectionUI.Init(_playerCardDatas, isRemove);
             InputManager.Instance.Push(InputState.CardCollection);
         }
-    }
-
-    public void AddUnit(int unitType)
-    {
-        if (_playerUnitDatas.Count >= 4) return;
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[unitType]));
-    }
-
-    public void RemoveUnit(int index)
-    {
-        _playerUnitDatas.RemoveAt(index);
-    }
-
-    public void CureUnit(int index)
-    {
-        UnitData unit = _playerUnitDatas[index];
-        unit.CurrentHealth += (int)(unit.MaxHealth * 0.5f);
-        if (unit.CurrentHealth > unit.MaxHealth) unit.CurrentHealth = unit.MaxHealth;
-    }
-
-    public void AddCard(CardData data)
-    {
-        _playerCardDatas.Add(new CardData(data));
-    }
-
-    public void RemoveCard(int index)
-    {
-        _playerCardDatas.RemoveAt(index);
     }
 
     private void UpdateUnitIndex()

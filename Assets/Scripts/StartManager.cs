@@ -14,11 +14,23 @@ public class StartManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        InitEvents();
+    }
+
+    private void InitEvents()
+    {
+        _startEvents = new List<EventOption>()
+        {
+            new EventOption("Gain 100 Coin", new List<IEventEffect> { new GainGold(100) }),
+            new EventOption("Recruit Unit: Knight", new List<IEventEffect> { new AddUnit(0) }),
+            new EventOption("Recruit Unit: Lancer", new List<IEventEffect> { new AddUnit(1) }),
+            new EventOption("Recruit Unit: Archer", new List<IEventEffect> { new AddUnit(2) }),
+            new EventOption("Recruit Unit: Monk", new List<IEventEffect> { new AddUnit(3) }),
+        };
     }
 
     public void StartStart(int chapter)
     {
-        Clear();
         RecruitRandomUnit();
 
         for (int i = 0; i < GameManager.Instance.PlayerUnitDatas.Count; i++)
@@ -39,7 +51,6 @@ public class StartManager : MonoBehaviour
         
         int unitType = Random.Range(0, DataManager.Instance.PlayerUnitPrefabs.Length);
         GameManager.Instance.AddUnit(unitType);
-        PlayRecruitAnimation(unitType);
     }
 
     private GameEvent CreateRandomStartEvent(int chapter)
@@ -72,26 +83,6 @@ public class StartManager : MonoBehaviour
     {
         //Test
         GameManager.Instance.OnClearNode();
-    }
-
-    public void PlayRecruitAnimation(int unitType)
-    {
-        UnitSprite unitSprite = Instantiate(DataManager.Instance.UnitSpritePrefab, _canvasRect, false);
-        unitSprite.Init(unitType);
-        unitSprite.PlayRecruitAnimation();
-    }
-
-    private void Clear()
-    {
-        _startEvents.Clear();
-        _startEvents = new List<EventOption>()
-        {
-            new EventOption("Gain 100 Gold", new List<IEventEffect> { new GainGold(100) }),
-            new EventOption("Recruit Unit: Knight", new List<IEventEffect> { new AddUnit(0) }),
-            new EventOption("Recruit Unit: Lancer", new List<IEventEffect> { new AddUnit(1) }),
-            new EventOption("Recruit Unit: Archer", new List<IEventEffect> { new AddUnit(2) }),
-            new EventOption("Recruit Unit: Monk", new List<IEventEffect> { new AddUnit(3) }),
-        };
     }
 
 }

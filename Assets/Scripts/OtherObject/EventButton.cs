@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,12 +13,20 @@ public class EventButton : MonoBehaviour
     {
         _eventOption = option;
         _eventText.text = option.Text;
-        
-        if(option.Effects[0] is AddUnit && GameManager.Instance.PlayerUnitDatas.Count >= 4)
+
+        foreach (IEventEffect effect in option.Effects)
         {
-            GetComponent<Button>().interactable = false;
-            _eventText.text += " (Party is Full)";
+            EffectResult result = effect.Evaluate();
+
+            if (!result.CanExecute)
+            {
+                GetComponent<Button>().interactable = false;
+                _eventText.text += $" ({result.Reason})";
+                return;
+            }
         }
+
+        GetComponent<Button>().interactable = true;
     }
 
     public void OnClick()
@@ -28,6 +37,28 @@ public class EventButton : MonoBehaviour
         }
 
         StartManager.Instance.EndEvent();
+        EventManager.Instance.EndEvent();
     }
+}
 
+public class GameEvent
+{
+    public List<EventOption> Options;
+
+    public GameEvent(List<EventOption> options)
+    {
+        Options = options;
+    }
+}
+
+public class EventOption
+{
+    public string Text;
+    public List<IEventEffect> Effects;
+
+    public EventOption(string text, List<IEventEffect> effects)
+    {
+        Text = text;
+        Effects = effects;
+    }
 }
