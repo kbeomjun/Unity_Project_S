@@ -186,6 +186,8 @@ public class GameManager : MonoBehaviour
 
         if (_currentLayer >= _maxLayer)
         {
+            _currentChapter++;
+
             if(_currentChapter >= _maxChapter)
             {
                 Debug.Log("Game Clear");
@@ -193,7 +195,6 @@ public class GameManager : MonoBehaviour
             }
             
             Debug.Log("Chapter Clear");
-            _currentChapter++;
             StartChapter();
         }
 

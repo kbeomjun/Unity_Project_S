@@ -411,8 +411,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33
-  m_fontSizeBase: 33
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2934,7 +2934,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8fd2d0449599e4f7a9a1f1f170b6a2b0, type: 3}
   - {fileID: 21300000, guid: f846c6072ceb0445bbcb59c41b57a5cb, type: 3}
   UnitSpritePrefab: {fileID: 3958598621428503842, guid: 452f546bd5d03a94797c4b36b211c9f8, type: 3}
-  CardPrefab: {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
+  CardPrefab: {fileID: 582947702535272105, guid: f9079ddfce386474e9adab49f5562d47, type: 3}
   CardImages:
   - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
   - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
@@ -15927,8 +15927,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -850, y: 300}
-  m_SizeDelta: {x: 128, y: 128}
+  m_AnchoredPosition: {x: -881, y: 300}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1766838955
 MonoBehaviour:
@@ -15950,7 +15950,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 56ce71218a6d94b7ab49d5573f6b001b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b5a1dc9d46f80de4db5a290ac86807eb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

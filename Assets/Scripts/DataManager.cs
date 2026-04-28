@@ -46,31 +46,31 @@ public class DataManager : MonoBehaviour
     public CardData[] CardDatas = new CardData[]
     {
         new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 0, 50,
-                        $"Change unit's next action: <color=#FF5555>Attack</color>"),
+                        $"Change unit's next action: <color=#008844>Attack</color>"),
         
         new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 1, 50,
-                        $"Change unit's next action: <color=#FF5555>Defense</color>"),
+                        $"Change unit's next action: <color=#008844>Defense</color>"),
         
         new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 2, 50,
-                        $"Change unit's next action: <color=#FF5555>Skill</color>"),
+                        $"Change unit's next action: <color=#008844>Skill</color>"),
 
         new CardData("Focus", 1, CardType.Buff, TargetType.Ally, 3, 50,
-                        $"Inflicts a <color=#FF5555>Focus</color> status on the selected unit"),
+                        $"Inflicts a <color=#008844>Focus</color> status on the selected unit"),
 
         new CardData("Defense", 1, CardType.Buff, TargetType.Ally, 4, 50,
-                        $"Add <color=#FF5555>10</color> defense to my unit this turn"),
+                        $"Add <color=#008844>10</color> defense to my unit this turn"),
 
         new CardData("FrontDefense", 2, CardType.Buff, TargetType.None, 5, 50,
-                        $"Add <color=#FF5555>10</color> defense to my units in front line this turn"),
+                        $"Add <color=#008844>10</color> defense to my units in front line this turn"),
 
-        new CardData("Load, Aim, Fire", 2, CardType.Buff, TargetType.None, 6, 50,
-                        $"Inflicts a <color=#FF5555>Focus</color> status to my units in back line"),
+        new CardData("Load Aim Fire", 2, CardType.Buff, TargetType.None, 6, 50,
+                        $"Inflicts a <color=#008844>Focus</color> status to my units in back line"),
 
         new CardData("HealAll", 3, CardType.Skill, TargetType.None, 7, 50,
-                        $"Restore all my units <color=#FF5555>10%</color> of their maximum health"),
+                        $"Restore all my units <color=#008844>10%</color> of their maximum health"),
 
         new CardData("Weakness", 2, CardType.Debuff, TargetType.Enemy, 8, 50,
-                        $"Inflicts a <color=#FF5555>Weak</color> status on the selected enemy"),
+                        $"Inflicts a <color=#008844>Weak</color> status on the selected enemy"),
 
         new CardData("ResetAllEnemyAction", 2, CardType.Skill, TargetType.None, 9, 50,
                         $"Reset all next actions of enemy units")
