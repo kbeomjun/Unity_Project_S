@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a0f4fab77b344f7b9386a7c87e492b1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8d6904399d7c6a74ea1dd01fd89a6b42, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -359,8 +359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8d00b2da2809d44be2d84be1a503f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardItem
-  _button: {fileID: 481026476339700773}
-  _rect: {fileID: 2991633657839918317}
   _icon: {fileID: 7744398824208865625}
   _iconRect: {fileID: 6267341579611822140}
   _text: {fileID: 8924371428460879970}
