@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
                 OnClearNode();
                 break;
 
-            case NodeType.Shop:
+            case NodeType.Town:
                 StartTown();
                 break;
 

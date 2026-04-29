@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -222,7 +221,7 @@ public class Map : MonoBehaviour
                         .ToList();
 
                     if ((currentNode.Type == NodeType.Elite && sortedNextNodes[0].Type == NodeType.Elite)
-                        || (currentNode.Type == NodeType.Shop && sortedNextNodes[0].Type == NodeType.Shop)
+                        || (currentNode.Type == NodeType.Town && sortedNextNodes[0].Type == NodeType.Town)
                         || (currentNode.Type == NodeType.Rest && sortedNextNodes[0].Type == NodeType.Rest))
                         sortedNextNodes[0] = ResetNodeType(sortedNextNodes[0], l);
 
@@ -280,7 +279,7 @@ public class Map : MonoBehaviour
         }
 
         if((a.Type == NodeType.Elite && b.Type == NodeType.Elite)
-            || (a.Type == NodeType.Shop && b.Type == NodeType.Shop)
+            || (a.Type == NodeType.Town && b.Type == NodeType.Town)
             || (a.Type == NodeType.Rest && b.Type == NodeType.Rest)) 
             b = ResetNodeType(b, layer);
 
@@ -308,7 +307,7 @@ public class Map : MonoBehaviour
             if (_shopCountInChapter < _maxShopInChapter) allowedTypes.Add(3);
             if (_restCountInChapter < _maxRestInChapter && layer > 4) allowedTypes.Add(4);
         } 
-        else if (node.Type == NodeType.Shop)
+        else if (node.Type == NodeType.Town)
         {
             _shopCountInChapter--;
             if (_eliteCountInChapter < _maxEliteInChapter && layer > 5) allowedTypes.Add(2);
