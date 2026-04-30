@@ -20,6 +20,9 @@ public class Card : MonoBehaviour
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private Image _iconImage;
     [SerializeField] private GameObject _back;
+    [SerializeField] private CardTooltipPanel _tooltipPanel;
+    [SerializeField] private RectTransform _leftTooltipPos;
+    [SerializeField] private RectTransform _rightTooltipPos;
 
     private CanvasGroup _canvasGroup;
     private RectTransform _rect;
@@ -97,6 +100,8 @@ public class Card : MonoBehaviour
         _state = CardState.Stop;
         _originPosition = _rect.anchoredPosition;
         _originScale = _rect.localScale;
+
+        _tooltipPanel.Init(GetTooltipDatas());
     }
 
     public void Use()
@@ -188,6 +193,7 @@ public class Card : MonoBehaviour
     public void PlayRewardAddAnimation()
     {
         _state = CardState.Stop;
+        HideTooltip();
         _rect.DOKill();
 
         Sequence seq = DOTween.Sequence();
@@ -200,6 +206,41 @@ public class Card : MonoBehaviour
         {
             Destroy(gameObject);
         });
+    }
+
+    public List<TooltipData> GetTooltipDatas()
+    {
+        List<TooltipData> datas = new List<TooltipData>();
+
+        foreach (var factory in _cardData.Effects)
+        {
+            IEffect effect = factory();
+
+            if (effect is ApplyStatusEffect ase)
+            {
+                StatusEffect se = new StatusEffect(ase.StatusType, 0);
+                datas.Add(new TooltipData(TooltipType.Status, se.Type.ToString(), se.GetStatusDescription(), se.Icon));
+            }
+        }
+
+        return datas;
+    }
+
+    public void ShowTooltip()
+    {
+        float screenCenterX = Screen.width * 0.5f;
+        float cardScreenX = Rect.position.x;
+
+        RectTransform targetAnchor = cardScreenX < screenCenterX ? _rightTooltipPos : _leftTooltipPos;
+
+        _tooltipPanel.transform.SetParent(targetAnchor, false);
+        _tooltipPanel.transform.localPosition = Vector3.zero;
+        _tooltipPanel.Show();
+    }
+
+    public void HideTooltip()
+    {
+        _tooltipPanel.Hide();
     }
 
     private void Update()
@@ -215,21 +256,25 @@ public class Card : MonoBehaviour
                 _targetZAngle = 0.0f;
                 _newZAngle = Mathf.LerpAngle(_currentZAngle, _targetZAngle, _speed * Time.deltaTime);
                 _rect.rotation = Quaternion.Euler(0.0f, 0.0f, _newZAngle);
+                HideTooltip();
                 break;
 
             case CardState.Hover:
                 _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, hoverOffset, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
                 _rect.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+                ShowTooltip();
                 break;
 
             case CardState.Selected:
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _selectedScale, _speed * Time.deltaTime);
+                HideTooltip();
                 break;
 
             case CardState.Targeting:
                 _rect.anchoredPosition = Vector2.Lerp(_rect.anchoredPosition, hoverOffset, _speed * Time.deltaTime);
                 _rect.localScale = Vector3.Lerp(_rect.localScale, _originScale * _selectedScale, _speed * Time.deltaTime);
+                HideTooltip();
                 break;
         }
     }

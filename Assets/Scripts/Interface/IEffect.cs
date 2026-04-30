@@ -172,6 +172,8 @@ public class ApplyStatusEffect : IEffect
     private StatusType _type;
     private int _duration;
 
+    public StatusType StatusType => _type;
+
     public ApplyStatusEffect(StatusType type, int duration, ITargetSelector selector)
     {
         _type = type;

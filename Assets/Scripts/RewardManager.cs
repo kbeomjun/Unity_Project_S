@@ -276,13 +276,15 @@ public class RewardManager : MonoBehaviour
 
             if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, mousePos, null))
             {
+                card.Rect.localScale = Vector3.Lerp(card.Rect.localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
+                card.ShowTooltip();
                 _selectedCard = card;
-                _selectedCard.Rect.localScale = Vector3.Lerp(_selectedCard.Rect.localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
                 count++;
             }
             else
             {
                 card.Rect.localScale = Vector3.Lerp(card.Rect.localScale, _originScale, _speed * Time.deltaTime);
+                card.HideTooltip();
             }
         }
 

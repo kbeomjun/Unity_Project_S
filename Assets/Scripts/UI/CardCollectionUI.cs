@@ -104,12 +104,14 @@ public class CardCollectionUI : MonoBehaviour
             if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, mousePos, null))
             {
                 card.Rect.localScale = Vector3.Lerp(card.Rect.localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
+                card.ShowTooltip();
                 _selectedCard = card;
                 count++;
             }
             else
             {
                 card.Rect.localScale = Vector3.Lerp(card.Rect.localScale, _originScale, _speed * Time.deltaTime);
+                card.HideTooltip();
             }
         }
 

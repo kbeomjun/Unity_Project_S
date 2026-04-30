@@ -5,8 +5,6 @@ using UnityEngine.UI;
 public class TooltipPanel : MonoBehaviour
 {
     [SerializeField] private RectTransform _canvasRect;
-    [SerializeField] private Tooltip _tooltipPrefab;
-
     public RectTransform CanvasRect => _canvasRect;
 
     private RectTransform _rect;
@@ -27,7 +25,7 @@ public class TooltipPanel : MonoBehaviour
 
         foreach (TooltipData data in datas)
         {
-            Tooltip tooltip = Instantiate(_tooltipPrefab, _rect);
+            Tooltip tooltip = Instantiate(DataManager.Instance.TooltipPrefab, _rect);
             tooltip.Init(data);
             _tooltips.Add(tooltip);
         }

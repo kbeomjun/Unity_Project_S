@@ -152,7 +152,7 @@ MonoBehaviour:
   _unitEffect: {fileID: 6093372138343835309}
   _unitEffectTr: {fileID: 4181578821849836311}
   _statusIconGroup: {fileID: 4047923415307958341}
-  _tooltipAnchor: {fileID: 1449231113136367004}
+  _tooltipTr: {fileID: 1449231113136367004}
 --- !u!1 &5129060627494908756
 GameObject:
   m_ObjectHideFlags: 0

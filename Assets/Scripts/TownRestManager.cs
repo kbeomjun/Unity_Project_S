@@ -193,13 +193,15 @@ public class TownRestManager : MonoBehaviour
 
             if (RectTransformUtility.RectangleContainsScreenPoint(card.Rect, mousePos, null))
             {
-                _selectedCard = card;
                 _cardPositions[i].localScale = Vector3.Lerp(_cardPositions[i].localScale, _originScale * _hoverScale, _speed * Time.deltaTime);
+                card.ShowTooltip();
+                _selectedCard = card;
                 count++;
             }
             else
             {
                 _cardPositions[i].localScale = Vector3.Lerp(_cardPositions[i].localScale, _originScale, _speed * Time.deltaTime);
+                card.HideTooltip();
             }
         }
 

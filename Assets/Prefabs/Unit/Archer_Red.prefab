@@ -382,7 +382,7 @@ MonoBehaviour:
   _unitEffect: {fileID: 2277275923909611190}
   _unitEffectTr: {fileID: 6023507146912291754}
   _statusIconGroup: {fileID: 8486722195012571849}
-  _tooltipAnchor: {fileID: 2840031725387999060}
+  _tooltipTr: {fileID: 2840031725387999060}
 --- !u!1001 &3699383511332069493
 PrefabInstance:
   m_ObjectHideFlags: 0

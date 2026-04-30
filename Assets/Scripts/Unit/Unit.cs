@@ -24,10 +24,9 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private UnitEffect _unitEffect;
     [SerializeField] private Transform _unitEffectTr;
     [SerializeField] private StatusIconGroup _statusIconGroup;
-    [SerializeField] private Transform _tooltipAnchor;
+    [SerializeField] private Transform _tooltipTr;
 
     public NextAction NextActionScript => _nextActionScript;
-    public Transform TooltipAnchor => _tooltipAnchor;
 
     protected UnitData _unitData;
     public UnitData UnitData => _unitData;
@@ -335,7 +334,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             if (status is StatusEffect se)
             {
-                datas.Add(new TooltipData(TooltipType.Status, se.Type.ToString(), GetStatusDescription(se), se.Icon));
+                datas.Add(new TooltipData(TooltipType.Status, se.Type.ToString(), se.GetStatusDescription(), se.Icon));
             }
         }
 
@@ -360,33 +359,12 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    public string GetStatusDescription(StatusEffect se)
-    {
-        switch (se.Type)
-        {
-            case StatusType.IronWall:
-                return "Reduce damage taken by 50%";
-
-            case StatusType.Brace:
-                return "Reflect 50% of damage taken";
-
-            case StatusType.Focus:
-                return "Damage increased by 100%";
-
-            case StatusType.Weak:
-                return "Damage reduced by 25%";
-
-            default:
-                return "";
-        }
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!InputManager.Instance.CanTooltip()) return;
         SetHighlight(true);
         List<TooltipData> datas = GetTooltipDatas();
-        Vector2 pos = TooltipUtility.GetCanvasPosition(TooltipPanel.Instance.CanvasRect, _tooltipAnchor.position, Camera.main);
+        Vector2 pos = TooltipUtility.GetCanvasPosition(TooltipPanel.Instance.CanvasRect, _tooltipTr.position, Camera.main);
         TooltipPanel.Instance.Show(pos, datas);
     }
 

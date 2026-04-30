@@ -104,4 +104,26 @@ public class StatusEffect : IStatusEffect
                 break;
         }
     }
+
+    public string GetStatusDescription()
+    {
+        switch (Type)
+        {
+            case StatusType.IronWall:
+                return "Reduce damage taken by 50%";
+
+            case StatusType.Brace:
+                return "Reflect 50% of damage taken";
+
+            case StatusType.Focus:
+                return "Damage increased by 100%";
+
+            case StatusType.Weak:
+                return "Damage reduced by 25%";
+
+            default:
+                return "";
+        }
+    }
+
 }
