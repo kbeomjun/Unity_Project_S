@@ -4,13 +4,12 @@ using TMPro;
 
 public class NextAction : MonoBehaviour
 {
-    [SerializeField] private Image _nextActionImage;
+    [SerializeField] private Image _nextActionIcon;
     [SerializeField] private TMP_Text _nextActionNumberText;
-    [SerializeField] private Sprite[] _actionImages;
-
+    
     public void UpdateNextActionIcon(int index, int attack, int defense)
     {
-        _nextActionImage.sprite = _actionImages[index];
+        _nextActionIcon.sprite = DataManager.Instance.NextActionSprites[index];
         _nextActionNumberText.gameObject.SetActive(true);
 
         if (index == 0)
@@ -25,6 +24,11 @@ public class NextAction : MonoBehaviour
         {
             _nextActionNumberText.gameObject.SetActive(false);
         }
+    }
+
+    public Sprite GetNextActionIcon()
+    {
+        return _nextActionIcon.sprite;
     }
 
 }

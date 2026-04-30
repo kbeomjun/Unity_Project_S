@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &965395339013228260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1449231113136367004}
+  m_Layer: 0
+  m_Name: TooltipPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1449231113136367004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965395339013228260}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.5, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6744642925727221510}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1289280077641253580
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,6 +130,7 @@ Transform:
   - {fileID: 1201126759439582066}
   - {fileID: 4181578821849836311}
   - {fileID: 1707247010923467835}
+  - {fileID: 1449231113136367004}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7415239439242457113
@@ -120,6 +152,7 @@ MonoBehaviour:
   _unitEffect: {fileID: 6093372138343835309}
   _unitEffectTr: {fileID: 4181578821849836311}
   _statusIconGroup: {fileID: 4047923415307958341}
+  _tooltipAnchor: {fileID: 1449231113136367004}
 --- !u!1 &5129060627494908756
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,6 +229,7 @@ GameObject:
   - component: {fileID: 718119286438708288}
   - component: {fileID: 737218095571321323}
   - component: {fileID: 1855339188901204494}
+  - component: {fileID: 8627427407804301490}
   m_Layer: 0
   m_Name: Monk_Red
   m_TagString: Untagged
@@ -312,6 +346,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitAnimationEventReceiver
   _unit: {fileID: 7415239439242457113}
+--- !u!70 &8627427407804301490
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6847963418911410584}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.022481382, y: -0.022485793}
+  m_Size: {x: 0.8567761, y: 1.1565608}
+  m_Direction: 0
 --- !u!1001 &1726726328375837052
 PrefabInstance:
   m_ObjectHideFlags: 0

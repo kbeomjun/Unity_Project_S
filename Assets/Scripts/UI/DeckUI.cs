@@ -190,6 +190,7 @@ public class DeckUI : MonoBehaviour
     {
         if (_selectedCard == null) return;
         _isDrag = true;
+        InputManager.Instance.InteractionState = InteractionState.Dragging;
         _selectedCard.State = CardState.Selected;
     }
 
@@ -237,6 +238,7 @@ public class DeckUI : MonoBehaviour
         }
 
         _isDrag = false;
+        InputManager.Instance.InteractionState = InteractionState.None;
         _selectedCard = null;
         if (_selectedUnit != null) _selectedUnit.SetHighlight(false);
         _selectedUnit = null;

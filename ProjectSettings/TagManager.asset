@@ -51,5 +51,8 @@ TagManager:
   - name: Effect
     uniqueID: 1540394489
     locked: 0
+  - name: Tooltip
+    uniqueID: 1590158033
+    locked: 0
   m_RenderingLayers:
   - Default

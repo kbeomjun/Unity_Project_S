@@ -4,7 +4,7 @@ public enum StatusType
 {
     IronWall,       // 받는 피해 -50%
     Brace,          // 받는 피해 50% 반사
-    Focus,          // 공격 +X
+    Focus,          // 공격 +100%
     Weak,           // 공격 -25%
 }
 
@@ -104,5 +104,4 @@ public class StatusEffect : IStatusEffect
                 break;
         }
     }
-
 }

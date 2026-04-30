@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum UnitAction
 {
@@ -14,7 +15,7 @@ public enum UnitTeam
     Enemy 
 }
 
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] protected Animator _animator;
@@ -23,8 +24,10 @@ public class Unit : MonoBehaviour
     [SerializeField] private UnitEffect _unitEffect;
     [SerializeField] private Transform _unitEffectTr;
     [SerializeField] private StatusIconGroup _statusIconGroup;
-    
+    [SerializeField] private Transform _tooltipAnchor;
+
     public NextAction NextActionScript => _nextActionScript;
+    public Transform TooltipAnchor => _tooltipAnchor;
 
     protected UnitData _unitData;
     public UnitData UnitData => _unitData;
@@ -320,6 +323,77 @@ public class Unit : MonoBehaviour
     public virtual void UseSkill()
     {
 
+    }
+
+    public List<TooltipData> GetTooltipDatas()
+    {
+        List<TooltipData> datas = new List<TooltipData>();
+
+        datas.Add(new TooltipData(TooltipType.NextAction, _nextAction.ToString(), GetNextActionDescription(), _nextActionScript.GetNextActionIcon()));
+
+        foreach (IStatusEffect status in _statuses)
+        {
+            if (status is StatusEffect se)
+            {
+                datas.Add(new TooltipData(TooltipType.Status, se.Type.ToString(), GetStatusDescription(se), se.Icon));
+            }
+        }
+
+        return datas;
+    }
+
+    private string GetNextActionDescription()
+    {
+        switch (_nextAction) 
+        {
+            case UnitAction.Attack:
+                return $"Attacks with {_totalAttack} damage";
+
+            case UnitAction.Defense:
+                return $"Gain {_totalDefense} defense";
+
+            case UnitAction.Skill:
+                return $"Use special skill";
+
+            default:
+                return $"";
+        }
+    }
+
+    public string GetStatusDescription(StatusEffect se)
+    {
+        switch (se.Type)
+        {
+            case StatusType.IronWall:
+                return "Reduce damage taken by 50%";
+
+            case StatusType.Brace:
+                return "Reflect 50% of damage taken";
+
+            case StatusType.Focus:
+                return "Damage increased by 100%";
+
+            case StatusType.Weak:
+                return "Damage reduced by 25%";
+
+            default:
+                return "";
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (!InputManager.Instance.CanTooltip()) return;
+        SetHighlight(true);
+        List<TooltipData> datas = GetTooltipDatas();
+        Vector2 pos = TooltipUtility.GetCanvasPosition(TooltipPanel.Instance.CanvasRect, _tooltipAnchor.position, Camera.main);
+        TooltipPanel.Instance.Show(pos, datas);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        SetHighlight(false);
+        TooltipPanel.Instance.Hide();
     }
 
     public void SetHighlight(bool onOff)

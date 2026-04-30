@@ -99,6 +99,7 @@ Transform:
   - {fileID: 5771728368887973234}
   - {fileID: 7043879846469376733}
   - {fileID: 4539284907077239016}
+  - {fileID: 2314905993912838572}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4259618837807430659
@@ -120,6 +121,7 @@ MonoBehaviour:
   _unitEffect: {fileID: 2118371148661248416}
   _unitEffectTr: {fileID: 7043879846469376733}
   _statusIconGroup: {fileID: 6540955274269408381}
+  _tooltipAnchor: {fileID: 2314905993912838572}
 --- !u!1 &4956068816158438003
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +152,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5410798397464800920}
+  m_Father: {fileID: 3010161541893954370}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6117916115598988321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2314905993912838572}
+  m_Layer: 0
+  m_Name: TooltipPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2314905993912838572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6117916115598988321}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.5, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 3010161541893954370}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7904539923983893801
@@ -196,6 +229,7 @@ GameObject:
   - component: {fileID: 4827583419819592680}
   - component: {fileID: 6061440291321794974}
   - component: {fileID: 825274755536229725}
+  - component: {fileID: 5385462230751868256}
   m_Layer: 0
   m_Name: Lancer_Red
   m_TagString: Untagged
@@ -312,6 +346,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitAnimationEventReceiver
   _unit: {fileID: 4259618837807430659}
+--- !u!70 &5385462230751868256
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8473824174039707394}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.03746879, y: 0.015004694}
+  m_Size: {x: 0.8484404, y: 1.3131489}
+  m_Direction: 0
 --- !u!1001 &2041847250762387137
 PrefabInstance:
   m_ObjectHideFlags: 0

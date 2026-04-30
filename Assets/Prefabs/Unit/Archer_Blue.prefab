@@ -67,6 +67,7 @@ Transform:
   - {fileID: 1649171175476535089}
   - {fileID: 6470835393730557001}
   - {fileID: 1142780738970238224}
+  - {fileID: 1944496711269714625}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4021216087757598612
@@ -88,6 +89,7 @@ MonoBehaviour:
   _unitEffect: {fileID: 2954603206345917788}
   _unitEffectTr: {fileID: 6470835393730557001}
   _statusIconGroup: {fileID: 7697096826669836351}
+  _tooltipAnchor: {fileID: 1944496711269714625}
 --- !u!1 &2765429837184574410
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,6 +154,37 @@ Transform:
   - {fileID: 1521965601877871189}
   m_Father: {fileID: 7972907010994246786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6843782228094811632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1944496711269714625}
+  m_Layer: 0
+  m_Name: TooltipPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1944496711269714625
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6843782228094811632}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.5, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7972907010994246786}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8407071644460383674
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,6 +197,7 @@ GameObject:
   - component: {fileID: 4219234689783115102}
   - component: {fileID: 6339229427705760946}
   - component: {fileID: 623164878389872039}
+  - component: {fileID: 3569642875939734671}
   m_Layer: 0
   m_Name: Archer_Blue
   m_TagString: Untagged
@@ -280,6 +314,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventReciver
   _unit: {fileID: 4021216087757598612}
+--- !u!70 &3569642875939734671
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8407071644460383674}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.059950292, y: 0.00747931}
+  m_Size: {x: 1.0516144, y: 1.3364781}
+  m_Direction: 0
 --- !u!1 &9101316225393915800
 GameObject:
   m_ObjectHideFlags: 0

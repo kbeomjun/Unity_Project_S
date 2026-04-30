@@ -12,9 +12,16 @@ public enum InputState
     Shop,
 }
 
+public enum InteractionState
+{
+    None,
+    Dragging,
+}
+
 public class InputManager : MonoBehaviour
 {
     public InputState State => _stateStack.Count > 0 ? _stateStack.Peek() : InputState.None;
+    public InteractionState InteractionState { get; set; }
     private Stack<InputState> _stateStack = new Stack<InputState>();
 
     private PlayerInputActions _input;
@@ -56,6 +63,12 @@ public class InputManager : MonoBehaviour
             if (state == InputState.CardCollection || state == InputState.None)
                 ViewManager.Instance.Pop();
         }
+    }
+
+    public bool CanTooltip()
+    {
+        if (State == InputState.BattlePrepare) return false;
+        return InteractionState == InteractionState.None;
     }
 
     private void OnEnable()

@@ -253,12 +253,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2301209b034bdf4a8baa57853124c41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NextAction
-  _nextActionImage: {fileID: 5016166205312575586}
+  _nextActionIcon: {fileID: 5016166205312575586}
   _nextActionNumberText: {fileID: 2504144771886307142}
-  _actionImages:
-  - {fileID: 21300000, guid: 5cff77938bc1f68428d2041f96a76223, type: 3}
-  - {fileID: 21300000, guid: 737f80ee8da33594dbc2eae546e3d863, type: 3}
-  - {fileID: 21300000, guid: 0a406c3ccaf9c4942bee138c22c54b04, type: 3}
+  _nextActionSprites: []
 --- !u!1 &3375601675770945782
 GameObject:
   m_ObjectHideFlags: 0

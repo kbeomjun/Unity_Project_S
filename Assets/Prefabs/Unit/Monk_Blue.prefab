@@ -32,6 +32,37 @@ Transform:
   - {fileID: 5962321218176881973}
   m_Father: {fileID: 1495843646583775553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1007438465016329816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6281827941116874944}
+  m_Layer: 0
+  m_Name: TooltipPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6281827941116874944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007438465016329816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.5, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1495843646583775553}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3377686475318486832
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,6 +139,7 @@ GameObject:
   - component: {fileID: 4405588108307547012}
   - component: {fileID: 7754610862082200788}
   - component: {fileID: 3693624052350230683}
+  - component: {fileID: 3072684415007477734}
   m_Layer: 0
   m_Name: Monk_Blue
   m_TagString: Untagged
@@ -224,6 +256,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitAnimationEventReceiver
   _unit: {fileID: 6621683844414708312}
+--- !u!70 &3072684415007477734
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4491893455786300430}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.0074938536, y: -0.022482514}
+  m_Size: {x: 0.91672635, y: 1.1864989}
+  m_Direction: 0
 --- !u!1 &5021000406112403656
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +328,7 @@ Transform:
   - {fileID: 2343070845581042205}
   - {fileID: 1882604211409940773}
   - {fileID: 2015420492669138170}
+  - {fileID: 6281827941116874944}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6621683844414708312
@@ -280,6 +350,7 @@ MonoBehaviour:
   _unitEffect: {fileID: 6665632530561681576}
   _unitEffectTr: {fileID: 1882604211409940773}
   _statusIconGroup: {fileID: 6424853686931251680}
+  _tooltipAnchor: {fileID: 6281827941116874944}
 --- !u!1 &6787646958787805908
 GameObject:
   m_ObjectHideFlags: 0
