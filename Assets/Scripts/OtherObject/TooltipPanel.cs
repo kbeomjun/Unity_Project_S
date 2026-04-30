@@ -5,7 +5,10 @@ using UnityEngine.UI;
 public class TooltipPanel : MonoBehaviour
 {
     [SerializeField] private RectTransform _canvasRect;
+    [SerializeField] private RectTransform _tooltipLayer;
+    
     public RectTransform CanvasRect => _canvasRect;
+    public RectTransform TooltipLayer => _tooltipLayer;
 
     private RectTransform _rect;
     private List<Tooltip> _tooltips = new List<Tooltip>();

@@ -81,6 +81,7 @@ public class CardCollectionUI : MonoBehaviour
         _selectedCard.Rect.SetParent(_cardHighlitedTr);
         _selectedCard.Rect.anchoredPosition = new Vector2(0.0f, -30.0f);
         _selectedCard.Rect.localScale = _originScale * _highlitedScale;
+        _selectedCard.ShowTooltip();
         if (_isRemove) _cardHighlitedRemoveButton.SetActive(true);
 
         InputManager.Instance.Push(InputState.None);

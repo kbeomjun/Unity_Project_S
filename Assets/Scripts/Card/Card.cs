@@ -228,14 +228,18 @@ public class Card : MonoBehaviour
 
     public void ShowTooltip()
     {
+        HideTooltip();
         float screenCenterX = Screen.width * 0.5f;
         float cardScreenX = Rect.position.x;
-
         RectTransform targetAnchor = cardScreenX < screenCenterX ? _rightTooltipPos : _leftTooltipPos;
 
         _tooltipPanel.transform.SetParent(targetAnchor, false);
         _tooltipPanel.transform.localPosition = Vector3.zero;
         _tooltipPanel.Show();
+
+        //_tooltipPanel.transform.SetParent(TooltipPanel.Instance.TooltipLayer, true);
+        //Vector3 worldPos = targetAnchor.position;
+        //_tooltipPanel.transform.position = worldPos;
     }
 
     public void HideTooltip()
