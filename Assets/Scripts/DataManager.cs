@@ -39,7 +39,6 @@ public class DataManager : MonoBehaviour
     [SerializeField] public Sprite[] NextActionSprites;
     [SerializeField] public Sprite[] StatusSprites;
     [SerializeField] public Sprite[] UnitSprites;
-    [SerializeField] public UnitSprite UnitSpritePrefab;
 
     // Card
     [SerializeField] public Card CardPrefab;
@@ -91,6 +90,7 @@ public class DataManager : MonoBehaviour
     };
 
     //Reward
+    [SerializeField] public RewardItemButton RewardItemButtonPrefab;
     [SerializeField] public Sprite[] RewardItemSprites;
 
     //Effect
@@ -107,6 +107,10 @@ public class DataManager : MonoBehaviour
     //Tooltip
     [SerializeField] public Tooltip WorldTooltipPrefab;
     [SerializeField] public Tooltip UITooltipPrefab;
+
+    //Else
+    [SerializeField] public ItemSprite ItemSpritePrefab;
+    [SerializeField] public RectTransform CanvasRect;
 
     public static DataManager Instance { get; private set; }
     private void Awake()

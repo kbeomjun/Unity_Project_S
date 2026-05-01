@@ -5,7 +5,6 @@ using TMPro;
 
 public class DeckUI : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform _handArea;
     [SerializeField] private RectTransform _selectedCardArea;
     [SerializeField] private TMP_Text _drawPileText;
@@ -248,7 +247,7 @@ public class DeckUI : MonoBehaviour
     public void MouseProcess(Vector2 mousePos, Vector3 worldPos)
     {
         // Screen ¡æ UI ÁÂÇ¥ º¯È¯ (ÇÙ½É)
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(DataManager.Instance.CanvasRect, mousePos, null, out _uiMousePos);
 
         if (!_isDrag)
         {

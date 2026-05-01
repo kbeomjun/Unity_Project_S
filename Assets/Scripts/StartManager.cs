@@ -47,9 +47,9 @@ public class StartManager : MonoBehaviour
     private void RecruitRandomUnit()
     {
         if (GameManager.Instance.PlayerUnitDatas.Count >= 4) return;
-        
         int unitType = Random.Range(0, DataManager.Instance.PlayerUnitPrefabs.Length);
         GameManager.Instance.AddUnit(unitType);
+        GameManager.Instance.PlayRecruitAnimation(unitType);
     }
 
     private GameEvent CreateRandomStartEvent(int chapter)

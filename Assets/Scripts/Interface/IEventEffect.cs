@@ -58,6 +58,7 @@ public class AddUnit : IEventEffect
     public void Execute()
     {
         GameManager.Instance.AddUnit(_unitType);
+        GameManager.Instance.PlayRecruitAnimation(_unitType);
     }
 }
 

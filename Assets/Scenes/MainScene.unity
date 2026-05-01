@@ -287,7 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88abbe7b6a9cf43478034a1fe1a7d23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TownManager
-  _canvasRect: {fileID: 397832734}
   _cardPositions:
   - {fileID: 189090102}
   - {fileID: 2096978519}
@@ -2095,55 +2094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6030814f8f10b44cab999baa4a2b93c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotGround
---- !u!1 &246494457
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 246494458}
-  - component: {fileID: 246494459}
-  m_Layer: 0
-  m_Name: RewardManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &246494458
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 246494457}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1667663372}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &246494459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 246494457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a52e5e771edb9914892e857e12f0b167, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RewardManager
-  _canvasRect: {fileID: 397832734}
-  _rewardContentTr: {fileID: 1323096168}
-  _layoutGroup: {fileID: 1323096169}
-  _rewardItemPrefab: {fileID: 4927312963012964703, guid: b7929c3ca1b4caf479717ad33acc5d26, type: 3}
-  _cardRewardsTr: {fileID: 2082992163}
 --- !u!1 &248410091
 GameObject:
   m_ObjectHideFlags: 0
@@ -3025,7 +2975,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1ae77def86fe54f889da24e43f32ae32, type: 3}
   - {fileID: 21300000, guid: 8fd2d0449599e4f7a9a1f1f170b6a2b0, type: 3}
   - {fileID: 21300000, guid: f846c6072ceb0445bbcb59c41b57a5cb, type: 3}
-  UnitSpritePrefab: {fileID: 3958598621428503842, guid: 452f546bd5d03a94797c4b36b211c9f8, type: 3}
   CardPrefab: {fileID: 582947702535272105, guid: 577c666e7d3e8ff4d901eb3a45ff87ac, type: 3}
   CardImages:
   - {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
@@ -3038,6 +2987,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0d367a35462be424abefc74b7b8dcd4d, type: 3}
   - {fileID: 21300000, guid: dd9553335d5e8ac4f8cd1bf7715b004f, type: 3}
   - {fileID: 21300000, guid: dbff2fdea1155ce40840f937864dcdde, type: 3}
+  RewardItemButtonPrefab: {fileID: 4927312963012964703, guid: b7929c3ca1b4caf479717ad33acc5d26, type: 3}
   RewardItemSprites:
   - {fileID: 21300000, guid: 8d6904399d7c6a74ea1dd01fd89a6b42, type: 3}
   - {fileID: 0}
@@ -3051,6 +3001,8 @@ MonoBehaviour:
   EventButtonPrefab: {fileID: 6338676333616541145, guid: 2503105a6a9afd74a99379e00150233e, type: 3}
   WorldTooltipPrefab: {fileID: 5294735683324570882, guid: 8bdbafc3f606dcb4dbc2b1310899d850, type: 3}
   UITooltipPrefab: {fileID: 1961057467289604145, guid: 5a135eceac5fad740bf101217077cc3a, type: 3}
+  ItemSpritePrefab: {fileID: 3958598621428503842, guid: 452f546bd5d03a94797c4b36b211c9f8, type: 3}
+  CanvasRect: {fileID: 397832734}
 --- !u!1 &365437768
 GameObject:
   m_ObjectHideFlags: 0
@@ -5248,8 +5200,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 246494459}
-        m_TargetAssemblyTypeName: RewardManager, Assembly-CSharp
+      - m_Target: {fileID: 2015149250}
+        m_TargetAssemblyTypeName: RewardUI, Assembly-CSharp
         m_MethodName: OnClickRewardCardPrevButton
         m_Mode: 1
         m_Arguments:
@@ -6146,8 +6098,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 246494459}
-        m_TargetAssemblyTypeName: RewardManager, Assembly-CSharp
+      - m_Target: {fileID: 2015149250}
+        m_TargetAssemblyTypeName: RewardUI, Assembly-CSharp
         m_MethodName: OnClickRewardNextButton
         m_Mode: 1
         m_Arguments:
@@ -9689,7 +9641,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -35.6, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1058886921
 MonoBehaviour:
@@ -10049,7 +10001,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -35.6, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1114469928
 MonoBehaviour:
@@ -10124,7 +10076,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -35.6, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1129676681
 MonoBehaviour:
@@ -12107,7 +12059,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f58536aa75f11d449381ac46bf3d48c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _canvasRect: {fileID: 397832734}
   _map: {fileID: 673251878}
   _topBar: {fileID: 175609074}
   _coinText: {fileID: 1172240403}
@@ -12128,7 +12079,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 314c435315f458f4aaafdf7746c828c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameUI
-  _canvasRect: {fileID: 397832734}
   _cardCollectionContent: {fileID: 1212416678}
   _cardHighlitedTr: {fileID: 113908199}
   _cardHighlitedRemoveButton: {fileID: 621862310}
@@ -12658,7 +12608,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 424, y: 0}
-  m_SizeDelta: {x: 60, y: 60}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1376303159
 MonoBehaviour:
@@ -14450,7 +14400,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -35.6, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1593520767
 MonoBehaviour:
@@ -15336,7 +15286,6 @@ Transform:
   - {fileID: 1330473543}
   - {fileID: 2015149247}
   - {fileID: 309057097}
-  - {fileID: 246494458}
   - {fileID: 1374866722}
   - {fileID: 5147816}
   m_Father: {fileID: 0}
@@ -15915,7 +15864,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -35.6, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1744956357
 MonoBehaviour:
@@ -16455,7 +16404,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 34eb3d91d333b614cb64e43c462d57b2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 240135cd47cd81c478cb4e14f3446623, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17896,7 +17845,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -35.6, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1923016656
 MonoBehaviour:
@@ -18565,6 +18514,7 @@ GameObject:
   - component: {fileID: 2015149247}
   - component: {fileID: 2015149248}
   - component: {fileID: 2015149249}
+  - component: {fileID: 2015149250}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -18630,12 +18580,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b556ad202ebf58447a79ba422d7954ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeckUI
-  _canvasRect: {fileID: 397832734}
   _handArea: {fileID: 1184276595}
   _selectedCardArea: {fileID: 769884211}
   _drawPileText: {fileID: 2094228009}
   _discardPileText: {fileID: 506577091}
   _targetArrow: {fileID: 776698472}
+--- !u!114 &2015149250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015149246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52e5e771edb9914892e857e12f0b167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardUI
+  _rewardContentTr: {fileID: 1323096168}
+  _layoutGroup: {fileID: 1323096169}
+  _cardRewardsTr: {fileID: 2082992163}
 --- !u!1 &2018533397
 GameObject:
   m_ObjectHideFlags: 0
@@ -19661,7 +19625,7 @@ GameObject:
   - component: {fileID: 2082992165}
   - component: {fileID: 2082992167}
   m_Layer: 5
-  m_Name: CardRewards
+  m_Name: CardRewardPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

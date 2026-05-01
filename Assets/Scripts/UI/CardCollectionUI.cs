@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CardCollectionUI : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform _cardCollectionContent;
     [SerializeField] private RectTransform _cardHighlitedTr;
     [SerializeField] private GameObject _cardHighlitedRemoveButton;
@@ -58,7 +57,7 @@ public class CardCollectionUI : MonoBehaviour
     public void OnClickCardHighlitedRemoveButton()
     {
         _cardHighlitedRemoveButton.SetActive(false);
-
+        _cards.Remove(_selectedCard);
         GameManager.Instance.RemoveCard(_selectedCard.OriginIndex);
         Destroy(_selectedCard.gameObject);
         TownRestManager.Instance.OnRemoveCard();
@@ -97,7 +96,7 @@ public class CardCollectionUI : MonoBehaviour
     public void MouseProcess(Vector2 mousePos)
     {
         // Screen ¡æ UI ÁÂÇ¥ º¯È¯ (ÇÙ½É)
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(DataManager.Instance.CanvasRect, mousePos, null, out _uiMousePos);
 
         int count = 0;
 

@@ -102,7 +102,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.RewardCard:
-                RewardManager.Instance.OnClick();
+                BattleManager.Instance.RewardUI.OnClick();
                 break;
 
             case InputState.Shop:
@@ -128,7 +128,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.RewardCard:
-                RewardManager.Instance.OnRelease();
+                BattleManager.Instance.RewardUI.OnRelease();
                 break;
 
             case InputState.Shop:
@@ -160,7 +160,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case InputState.RewardCard:
-                RewardManager.Instance.MouseProcess(_mousePos);
+                BattleManager.Instance.RewardUI.MouseProcess(_mousePos);
                 break;
 
             case InputState.Shop:

@@ -5,7 +5,6 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private Map _map;
     [SerializeField] private GameObject _topBar;
     [SerializeField] private TMP_Text _coinText;
@@ -213,7 +212,7 @@ public class GameManager : MonoBehaviour
     {
         if (isWin)
         {
-            RewardManager.Instance.ShowRewards(NodeType.Battle);
+            BattleManager.Instance.ShowRewards(NodeType.Battle);
         }
         else
         {
@@ -226,7 +225,6 @@ public class GameManager : MonoBehaviour
     {
         if (_playerUnitDatas.Count >= 4) return;
         _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[unitType]));
-        PlayRecruitAnimation(unitType);
     }
 
     public void RemoveUnit(int index)
@@ -282,9 +280,9 @@ public class GameManager : MonoBehaviour
 
     public void PlayRecruitAnimation(int unitType)
     {
-        UnitSprite unitSprite = Instantiate(DataManager.Instance.UnitSpritePrefab, _canvasRect, false);
-        unitSprite.Init(unitType);
-        unitSprite.PlayRecruitAnimation();
+        ItemSprite unitSprite = Instantiate(DataManager.Instance.ItemSpritePrefab, DataManager.Instance.CanvasRect, false);
+        unitSprite.Init(1, unitType);
+        unitSprite.PlayRecruitAnimation(1);
     }
 
     public void OnClickMapButton()

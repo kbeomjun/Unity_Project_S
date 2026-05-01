@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6267341579611822140}
   - component: {fileID: 2014814515237642335}
   - component: {fileID: 7744398824208865625}
+  - component: {fileID: 4771287109877066925}
   m_Layer: 5
   m_Name: RewardItemIconImage
   m_TagString: Untagged
@@ -32,10 +33,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2991633657839918317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 60, y: 0}
-  m_SizeDelta: {x: 64, y: 64}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -160, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2014814515237642335
 CanvasRenderer:
@@ -75,6 +76,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4771287109877066925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5243636745731170023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc562670ebc94d4a8e13488623bb2b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSprite
 --- !u!1 &6397511753722109141
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,9 +120,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2991633657839918317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 312, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 83.2, y: 0}
   m_SizeDelta: {x: 400, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5725658027357059628
@@ -361,4 +374,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RewardItem
   _icon: {fileID: 7744398824208865625}
   _iconRect: {fileID: 6267341579611822140}
+  _iconScript: {fileID: 4771287109877066925}
   _text: {fileID: 8924371428460879970}

@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RewardManager : MonoBehaviour
+public class RewardUI : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform _rewardContentTr;
     [SerializeField] private VerticalLayoutGroup _layoutGroup;
-    [SerializeField] private RewardItem _rewardItemPrefab;
     [SerializeField] private RectTransform _cardRewardsTr;
 
-    private List<RewardItem> _rewardItems = new List<RewardItem>();
+    private List<RewardItemButton> _rewardItems = new List<RewardItemButton>();
     private List<List<CardData>> _rewardCardDatasList = new List<List<CardData>>();
     private List<Card> _rewardCards = new List<Card>();
 
@@ -20,15 +18,8 @@ public class RewardManager : MonoBehaviour
     private float _speed = 10.0f;
 
     private Card _selectedCard = null;
-    private RewardItem _selectedRewardCard = null;
+    private RewardItemButton _selectedRewardCard = null;
     Vector2 _uiMousePos = Vector2.zero;
-
-    public static RewardManager Instance { get; private set; }
-    private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
 
     public void ShowRewards(NodeType nodeType)
     {
@@ -39,10 +30,10 @@ public class RewardManager : MonoBehaviour
 
     private void CreateRewards(NodeType nodeType)
     {
-        RewardItem coin = null;
-        RewardItem unit = null;
-        RewardItem card = null;
-        RewardItem item = null;
+        RewardItemButton coin = null;
+        RewardItemButton unit = null;
+        RewardItemButton card = null;
+        RewardItemButton item = null;
         int coinValue = 0;
         int unitValue = 0;
         int cardValue = 3;
@@ -52,14 +43,14 @@ public class RewardManager : MonoBehaviour
         {
             case NodeType.Battle:
                 coinValue = Random.Range(30, 34);
-                coin = Instantiate(_rewardItemPrefab, _rewardContentTr);
+                coin = Instantiate(DataManager.Instance.RewardItemButtonPrefab, _rewardContentTr);
                 coin.Init(RewardItemType.Coin, coinValue, cardCount);
 
                 unitValue = Random.Range(0, DataManager.Instance.UnitDatas.Length);
-                unit = Instantiate(_rewardItemPrefab, _rewardContentTr);
+                unit = Instantiate(DataManager.Instance.RewardItemButtonPrefab, _rewardContentTr);
                 unit.Init(RewardItemType.Unit, unitValue, cardCount);
 
-                card = Instantiate(_rewardItemPrefab, _rewardContentTr);
+                card = Instantiate(DataManager.Instance.RewardItemButtonPrefab, _rewardContentTr);
                 card.Init(RewardItemType.Card, cardValue, cardCount++);
                 break;
 
@@ -81,7 +72,7 @@ public class RewardManager : MonoBehaviour
         }
     }
 
-    public void ShowCardRewards(RewardItem rewardCard)
+    public void ShowCardRewards(RewardItemButton rewardCard)
     {
         ClearRewardCards();
         _selectedRewardCard = rewardCard;
@@ -129,16 +120,16 @@ public class RewardManager : MonoBehaviour
         ViewManager.Instance.ShowRewardCardPopup();
     }
 
-    public void RemoveItem(RewardItem item)
+    public void RemoveItem(RewardItemButton item)
     {
         StartCoroutine(SmoothRemove(item));
     }
 
-    private IEnumerator SmoothRemove(RewardItem item)
+    private IEnumerator SmoothRemove(RewardItemButton item)
     {
         // 현재 아이템들 가져오기
         List<RectTransform> rects = new List<RectTransform>();
-        foreach (RewardItem it in _rewardItems)
+        foreach (RewardItemButton it in _rewardItems)
         {
             rects.Add(it.Rect);
         }
@@ -206,7 +197,7 @@ public class RewardManager : MonoBehaviour
         _selectedCard = null;
         _selectedRewardCard = null;
 
-        foreach (RewardItem item in _rewardItems)
+        foreach (RewardItemButton item in _rewardItems)
             Destroy(item.gameObject);
         _rewardItems.Clear();
         _rewardCardDatasList.Clear();
@@ -230,7 +221,7 @@ public class RewardManager : MonoBehaviour
 
     private void ClearRewardItems()
     {
-        foreach (RewardItem item in _rewardItems)
+        foreach (RewardItemButton item in _rewardItems)
             Destroy(item.gameObject);
         _rewardItems.Clear();
     }
@@ -246,7 +237,7 @@ public class RewardManager : MonoBehaviour
     {
         if (_selectedCard == null) return;
 
-        _selectedCard.Rect.SetParent(_canvasRect);
+        _selectedCard.Rect.SetParent(DataManager.Instance.CanvasRect);
         _selectedCard.PlayRewardAddAnimation();
         _rewardCards.Remove(_selectedCard);
         GameManager.Instance.AddCard(_selectedCard.CardData);
@@ -266,7 +257,7 @@ public class RewardManager : MonoBehaviour
     public void MouseProcess(Vector2 mousePos)
     {
         // Screen → UI 좌표 변환 (핵심)
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(DataManager.Instance.CanvasRect, mousePos, null, out _uiMousePos);
 
         int count = 0;
 

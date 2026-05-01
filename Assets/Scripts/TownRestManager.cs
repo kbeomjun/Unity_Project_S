@@ -5,7 +5,6 @@ using TMPro;
 
 public class TownRestManager : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform[] _cardPositions;
     [SerializeField] private GameObject[] _cardCoins;
     [SerializeField] private TMP_Text[] _cardCoinTexts;
@@ -42,7 +41,7 @@ public class TownRestManager : MonoBehaviour
     private void CreateCards()
     {
         ClearCards();
-        _cardRemoveButton.enabled = true;
+        _cardRemoveButton.interactable = true;
 
         HashSet<int> set = new HashSet<int>();
         while (set.Count < _cardCount)
@@ -151,7 +150,7 @@ public class TownRestManager : MonoBehaviour
         if (_selectedCard.CardData.Coin <= GameManager.Instance.CurrentCoin)
         {
             _selectedCard.PlayAddAnimation();
-            _selectedCard.Rect.SetParent(_canvasRect);
+            _selectedCard.Rect.SetParent(DataManager.Instance.CanvasRect);
 
             int index = -1;
             for (int i = 0; i < _cards.Length; i++)
@@ -181,7 +180,7 @@ public class TownRestManager : MonoBehaviour
     public void MouseProcess(Vector2 mousePos)
     {
         // Screen ¡æ UI ÁÂÇ¥ º¯È¯ (ÇÙ½É)
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, mousePos, null, out _uiMousePos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(DataManager.Instance.CanvasRect, mousePos, null, out _uiMousePos);
 
         int count = 0;
 

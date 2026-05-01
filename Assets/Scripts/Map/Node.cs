@@ -33,27 +33,13 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private RectTransform _rect;
     private Image _selectCircleImage;
 
-    private Color[] _colors =
-    {
-        new Color32(255, 255, 255, 255),
-        new Color32(255, 255, 255, 255),
-        new Color32(255, 255, 255, 255),
-        new Color32(255, 255, 255, 255),
-        new Color32(18, 156, 34, 255),
-        new Color32(221, 190, 20, 255),
-        new Color32(255, 255, 255, 255)
-    };
-
     public NodeType Type
     {
         get => _type;
         set
         {
             _type = value;
-            
             _icon.sprite = _images[(int)value];
-            _icon.color = _colors[(int)value];
-            _iconBaseColor = _icon.color;
         }
     }
     public NodeState State

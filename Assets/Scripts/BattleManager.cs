@@ -23,7 +23,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Button _endTurnButton;
 
     private DeckUI _deckUI;
+    private RewardUI _rewardUI;
     public DeckUI DeckUI => _deckUI;
+    public RewardUI RewardUI => _rewardUI;
 
     private Unit[] _playerUnits = new Unit[4];
     private Unit[] _enemyUnits = new Unit[4];
@@ -48,6 +50,7 @@ public class BattleManager : MonoBehaviour
         else Destroy(gameObject);
 
         _deckUI = GetComponent<DeckUI>();
+        _rewardUI = GetComponent<RewardUI>();
         for (int i = 0; i < _playerSlotGrounds.Length; i++)
             _playerSlotGrounds[i].SlotIndex = i;
     }
@@ -277,6 +280,11 @@ public class BattleManager : MonoBehaviour
         if (validIndexes.Count == 0) return -1;
         
         return validIndexes[Random.Range(0, validIndexes.Count)];
+    }
+
+    public void ShowRewards(NodeType nodeType)
+    {
+        _rewardUI.ShowRewards(nodeType);
     }
 
     public void OnClickEndPrepareButton()
