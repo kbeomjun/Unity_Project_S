@@ -364,14 +364,14 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (!InputManager.Instance.CanTooltip()) return;
         SetHighlight(true);
         List<TooltipData> datas = GetTooltipDatas();
-        Vector2 pos = TooltipUtility.GetCanvasPosition(TooltipPanel.Instance.CanvasRect, _tooltipTr.position, Camera.main);
-        TooltipPanel.Instance.Show(pos, datas);
+        Vector2 pos = TooltipUtility.GetCanvasPosition(WorldTooltipPanel.Instance.CanvasRect, _tooltipTr.position, Camera.main);
+        WorldTooltipPanel.Instance.Show(pos, datas);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         SetHighlight(false);
-        TooltipPanel.Instance.Hide();
+        WorldTooltipPanel.Instance.Hide();
     }
 
     public void SetHighlight(bool onOff)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TooltipPanel : MonoBehaviour
+public class WorldTooltipPanel : MonoBehaviour
 {
     [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform _tooltipLayer;
@@ -13,7 +13,7 @@ public class TooltipPanel : MonoBehaviour
     private RectTransform _rect;
     private List<Tooltip> _tooltips = new List<Tooltip>();
 
-    public static TooltipPanel Instance { get; private set; }
+    public static WorldTooltipPanel Instance { get; private set; }
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -28,7 +28,7 @@ public class TooltipPanel : MonoBehaviour
 
         foreach (TooltipData data in datas)
         {
-            Tooltip tooltip = Instantiate(DataManager.Instance.TooltipPrefab, _rect);
+            Tooltip tooltip = Instantiate(DataManager.Instance.WorldTooltipPrefab, _rect);
             tooltip.Init(data);
             _tooltips.Add(tooltip);
         }

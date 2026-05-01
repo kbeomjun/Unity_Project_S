@@ -20,7 +20,7 @@ public class Card : MonoBehaviour
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private Image _iconImage;
     [SerializeField] private GameObject _back;
-    [SerializeField] private CardTooltipPanel _tooltipPanel;
+    [SerializeField] private UITooltipPanel _tooltipPanel;
     [SerializeField] private RectTransform _leftTooltipPos;
     [SerializeField] private RectTransform _rightTooltipPos;
 

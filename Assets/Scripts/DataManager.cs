@@ -105,7 +105,8 @@ public class DataManager : MonoBehaviour
     [SerializeField] public EventButton EventButtonPrefab;
 
     //Tooltip
-    [SerializeField] public Tooltip TooltipPrefab;
+    [SerializeField] public Tooltip WorldTooltipPrefab;
+    [SerializeField] public Tooltip UITooltipPrefab;
 
     public static DataManager Instance { get; private set; }
     private void Awake()

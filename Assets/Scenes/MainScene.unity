@@ -3049,7 +3049,8 @@ MonoBehaviour:
   BuffEffect: {fileID: 5052626504233289286, guid: 68c7bb653c166ff46af969c953982166, type: 3}
   DebuffEffect: {fileID: 1929034834037082553, guid: 2f77993eac95be84786eceb7d8ba3a2d, type: 3}
   EventButtonPrefab: {fileID: 6338676333616541145, guid: 2503105a6a9afd74a99379e00150233e, type: 3}
-  TooltipPrefab: {fileID: 5294735683324570882, guid: 8bdbafc3f606dcb4dbc2b1310899d850, type: 3}
+  WorldTooltipPrefab: {fileID: 5294735683324570882, guid: 8bdbafc3f606dcb4dbc2b1310899d850, type: 3}
+  UITooltipPrefab: {fileID: 1961057467289604145, guid: 5a135eceac5fad740bf101217077cc3a, type: 3}
 --- !u!1 &365437768
 GameObject:
   m_ObjectHideFlags: 0
@@ -10976,7 +10977,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 130}
+  m_AnchoredPosition: {x: 0, y: 90}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1184276597
@@ -18262,7 +18263,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3-15
+  m_text: 55
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}

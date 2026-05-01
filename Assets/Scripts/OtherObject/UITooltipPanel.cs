@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardTooltipPanel : MonoBehaviour
+public class UITooltipPanel : MonoBehaviour
 {
     private RectTransform _rect;
 
@@ -15,7 +15,7 @@ public class CardTooltipPanel : MonoBehaviour
     {
         foreach (TooltipData data in datas)
         {
-            Tooltip tooltip = Instantiate(DataManager.Instance.TooltipPrefab, _rect);
+            Tooltip tooltip = Instantiate(DataManager.Instance.UITooltipPrefab, _rect);
             tooltip.Init(data);
         }
     }

@@ -353,7 +353,7 @@ public class GameManager : MonoBehaviour
         int minute = (int)((_playTime % 3600) / 60);
         int second = (int)(_playTime % 60);
 
-        _layerText.text = $"{_currentChapter + 1}-{_currentLayer + 1}";
+        _layerText.text = $"{_currentLayer + 1}";
         _playTimeText.text = $"{hour:D2}:{minute:D2}:{second:D2}";
         _partyNumText.text = _playerUnitDatas.Count.ToString();
         _cardNumText.text = _playerCardDatas.Count.ToString();
