@@ -228,23 +228,29 @@ public class Card : MonoBehaviour
 
     public void ShowTooltip()
     {
-        HideTooltip();
         float screenCenterX = Screen.width * 0.5f;
         float cardScreenX = Rect.position.x;
+
         RectTransform targetAnchor = cardScreenX < screenCenterX ? _rightTooltipPos : _leftTooltipPos;
 
-        _tooltipPanel.transform.SetParent(targetAnchor, false);
-        _tooltipPanel.transform.localPosition = Vector3.zero;
-        _tooltipPanel.Show();
+        // tooltip을 최상단 layer로 이동
+        if (_tooltipPanel.transform.parent != WorldTooltipPanel.Instance.TooltipLayer)
+        {
+            _tooltipPanel.transform.SetParent(WorldTooltipPanel.Instance.TooltipLayer, true);
+        }
 
-        //_tooltipPanel.transform.SetParent(TooltipPanel.Instance.TooltipLayer, true);
-        //Vector3 worldPos = targetAnchor.position;
-        //_tooltipPanel.transform.position = worldPos;
+        _tooltipPanel.Show(targetAnchor);
     }
 
     public void HideTooltip()
     {
         _tooltipPanel.Hide();
+    }
+
+    private void OnDestroy()
+    {
+        if (_tooltipPanel == null) return;
+        Destroy(_tooltipPanel.gameObject);
     }
 
     private void Update()

@@ -83,7 +83,7 @@ public class TownRestManager : MonoBehaviour
 
     public void OnRemoveCard()
     {
-        _cardRemoveButton.enabled = false;
+        _cardRemoveButton.interactable = false;
         _cardRemoveCoin.SetActive(false);
         GameManager.Instance.CurrentCoin -= CardDeleteCoin;
         CardDeleteCoin += 50;
