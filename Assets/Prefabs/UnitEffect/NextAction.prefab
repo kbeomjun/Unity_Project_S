@@ -223,7 +223,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3750493928110671669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,7 +255,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NextAction
   _nextActionIcon: {fileID: 5016166205312575586}
   _nextActionNumberText: {fileID: 2504144771886307142}
-  _nextActionSprites: []
 --- !u!1 &3375601675770945782
 GameObject:
   m_ObjectHideFlags: 0

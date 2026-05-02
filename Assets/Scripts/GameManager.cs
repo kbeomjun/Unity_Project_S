@@ -287,34 +287,32 @@ public class GameManager : MonoBehaviour
 
     public void OnClickMapButton()
     {
-        if (ViewManager.Instance.ShowMapPopup())
-        {
-            InputManager.Instance.Push(InputState.None);
-        }
+        if (!ViewManager.Instance.ShowMapPopup()) return;
+        InputManager.Instance.Push(InputState.None);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickMapPrevButton()
     {
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickUnitCollectionButton(int type)
     {
-        if (ViewManager.Instance.ShowUnitCollectionPopup())
-        {
-            _unitCollectionUI.Init(_playerUnitDatas, type);
-            InputManager.Instance.Push(InputState.None);
-        }
+        if (!ViewManager.Instance.ShowUnitCollectionPopup()) return;
+        _unitCollectionUI.Init(_playerUnitDatas, type);
+        InputManager.Instance.Push(InputState.None);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickCardCollectionButton(bool isRemove)
     {
-        if (ViewManager.Instance.ShowCardCollectionPopup())
-        {
-            _cardCollectionUI.Init(_playerCardDatas, isRemove);
-            InputManager.Instance.Push(InputState.CardCollection);
-        }
+        if (!ViewManager.Instance.ShowCardCollectionPopup()) return;
+        _cardCollectionUI.Init(_playerCardDatas, isRemove);
+        InputManager.Instance.Push(InputState.CardCollection);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void UpdateUnitIndex()
