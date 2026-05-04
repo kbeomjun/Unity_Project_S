@@ -32,7 +32,7 @@ public class EventManager : MonoBehaviour
             (
                 new List<EventOption>
                 {
-                    new EventOption("Gain 100 Coin", new List<IEventEffect> { new GainGold(50) }),
+                    new EventOption("Gain 100 Coin", new List<IEventEffect> { new GainGold(100) }),
                     new EventOption("Add Unit: Knight", new List<IEventEffect> { new AddUnit(0) }),
                     new EventOption("Gain 200 Coin, Lose 20 Health(All Party)", new List<IEventEffect> { new GainGold(200), new HurtUnit(20, true) })
                 }

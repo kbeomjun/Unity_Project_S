@@ -80,8 +80,8 @@ public class StartManager : MonoBehaviour
 
     public void OnClickNextButton()
     {
-        //Test
         GameManager.Instance.OnClearNode();
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
 }

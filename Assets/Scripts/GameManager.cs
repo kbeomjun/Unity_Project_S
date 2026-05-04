@@ -159,6 +159,7 @@ public class GameManager : MonoBehaviour
     {
         StartManager.Instance.StartStart(_currentChapter);
         ViewManager.Instance.ShowStartView();
+        SoundManager.Instance.PlayBGM(BGMType.Start);
     }
 
     private void StartBattle()
@@ -171,6 +172,7 @@ public class GameManager : MonoBehaviour
     {
         TownRestManager.Instance.StartTown();
         ViewManager.Instance.ShowTownView();
+        SoundManager.Instance.PlayBGM(BGMType.Town);
     }
 
     private void StartRest()
@@ -206,6 +208,7 @@ public class GameManager : MonoBehaviour
         }
 
         ViewManager.Instance.ShowMapView();
+        SoundManager.Instance.StopBGM();
     }
 
     public void OnBattleEnd(bool isWin)
@@ -289,14 +292,14 @@ public class GameManager : MonoBehaviour
     {
         if (!ViewManager.Instance.ShowMapPopup()) return;
         InputManager.Instance.Push(InputState.None);
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.Instance.PlayMapButtonClickSound();
     }
 
     public void OnClickMapPrevButton()
     {
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.Instance.PlayMapButtonClickSound();
     }
 
     public void OnClickUnitCollectionButton(int type)
@@ -322,6 +325,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator UpdateCoinText()
     {
+        SoundManager.Instance.PlayCoinSound();
         float time = 0.0f;
         float duration = 1.0f;
 

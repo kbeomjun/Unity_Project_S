@@ -2351,7 +2351,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -15998,11 +15998,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948704c21b2175942a8991c02f885793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  bgmSource: {fileID: 1823093328}
-  uiSource: {fileID: 1067857720}
-  sfxSource: {fileID: 268826301}
-  buttonClickClip: {fileID: 8300000, guid: 5640e622fef9e424aa9dd8b99c329dcd, type: 3}
-  coinClip: {fileID: 0}
+  _bgmSource: {fileID: 1823093328}
+  _sfxSource: {fileID: 268826301}
+  _uiSource: {fileID: 1067857720}
+  _startNodeClip: {fileID: 8300000, guid: 493b419f54a25454bae5587a25b82769, type: 3}
+  _townNodeClip: {fileID: 8300000, guid: 524478537fb588443afa357054d0eca2, type: 3}
+  _attackClips:
+  - {fileID: 8300000, guid: 4319114e3882b1d4db3ecaea73beae2c, type: 3}
+  - {fileID: 8300000, guid: 4319114e3882b1d4db3ecaea73beae2c, type: 3}
+  - {fileID: 8300000, guid: cd059395fc1ae4f48b36ce0b3817e1e9, type: 3}
+  - {fileID: 8300000, guid: 4319114e3882b1d4db3ecaea73beae2c, type: 3}
+  _hitClip: {fileID: 8300000, guid: 7584ea7959c69ae4d88b07c8bd7ab26a, type: 3}
+  _blockClip: {fileID: 8300000, guid: dddcf30fbc93a484ca4e85cba842f913, type: 3}
+  _buttonClickClip: {fileID: 8300000, guid: 5640e622fef9e424aa9dd8b99c329dcd, type: 3}
+  _mapButtonClickClip: {fileID: 8300000, guid: 2bb7f496f1e0d3047aabf050903ab63d, type: 3}
+  _coinClip: {fileID: 8300000, guid: 8d246186ca92c6442ae45974a9689512, type: 3}
 --- !u!1 &1733020473
 GameObject:
   m_ObjectHideFlags: 0
@@ -17086,7 +17096,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0

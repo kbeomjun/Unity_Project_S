@@ -150,26 +150,24 @@ public class DeckUI : MonoBehaviour
 
     public void OnClickDrawPileCardButton()
     {
-        if (ViewManager.Instance.ShowCardCollectionPopup())
-        {
-            List<CardData> list = new List<CardData>();
-            foreach (Card card in _drawPileCards)
-                list.Add(card.CardData);
-            GameManager.Instance.CardCollectionUI.Init(list, false);
-            InputManager.Instance.Push(InputState.CardCollection);
-        }
+        if (!ViewManager.Instance.ShowCardCollectionPopup()) return;
+        List<CardData> list = new List<CardData>();
+        foreach (Card card in _drawPileCards)
+            list.Add(card.CardData);
+        GameManager.Instance.CardCollectionUI.Init(list, false);
+        InputManager.Instance.Push(InputState.CardCollection);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickDiscardPileCardButton()
     {
-        if (ViewManager.Instance.ShowCardCollectionPopup())
-        {
-            List<CardData> list = new List<CardData>();
-            foreach (Card card in _discardPileCards)
-                list.Add(card.CardData);
-            GameManager.Instance.CardCollectionUI.Init(list, false);
-            InputManager.Instance.Push(InputState.CardCollection);
-        }
+        if (!ViewManager.Instance.ShowCardCollectionPopup()) return;
+        List<CardData> list = new List<CardData>();
+        foreach (Card card in _discardPileCards)
+            list.Add(card.CardData);
+        GameManager.Instance.CardCollectionUI.Init(list, false);
+        InputManager.Instance.Push(InputState.CardCollection);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void ClearCards()

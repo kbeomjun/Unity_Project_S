@@ -208,6 +208,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _target = target;
         _animator.SetTrigger("Attack");
+        SoundManager.Instance.PlayAttackSound(_unitData.Type);
     }
 
     public void HitTarget()
@@ -230,6 +231,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             if (damage != 0)
             {
                 Instantiate(DataManager.Instance.BlockEffect, _unitEffectTr, false);
+                SoundManager.Instance.PlayBlockSound();
             }
         }
         else
@@ -243,17 +245,20 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 if(_currentAction == UnitAction.Skill && (_unitData.Type == UnitType.Knight || _unitData.Type == UnitType.Lancer))
                 {
                     Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
+                    SoundManager.Instance.PlayHitSound();
                 }
                 else
                 {
                     _animator.SetTrigger("Hit");
                     Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
+                    SoundManager.Instance.PlayHitSound();
                 }
             }
             else
             {
                 _unitData.CurrentHealth = 0;
                 Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
+                SoundManager.Instance.PlayHitSound();
                 Die();
             }
 
