@@ -16009,7 +16009,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cd059395fc1ae4f48b36ce0b3817e1e9, type: 3}
   - {fileID: 8300000, guid: 4319114e3882b1d4db3ecaea73beae2c, type: 3}
   _hitClip: {fileID: 8300000, guid: 7584ea7959c69ae4d88b07c8bd7ab26a, type: 3}
-  _blockClip: {fileID: 8300000, guid: dddcf30fbc93a484ca4e85cba842f913, type: 3}
+  _blockClip: {fileID: 8300000, guid: 7e726fd38b737b44092da1c504fbea1c, type: 3}
   _buttonClickClip: {fileID: 8300000, guid: 5640e622fef9e424aa9dd8b99c329dcd, type: 3}
   _mapButtonClickClip: {fileID: 8300000, guid: 2bb7f496f1e0d3047aabf050903ab63d, type: 3}
   _coinClip: {fileID: 8300000, guid: 8d246186ca92c6442ae45974a9689512, type: 3}
