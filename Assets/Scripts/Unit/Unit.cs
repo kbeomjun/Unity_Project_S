@@ -284,6 +284,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _currentDefense += _unitData.Defense;
         _unitEffect.DefenseEffect();
         _healthBar.SetDefense(_currentDefense);
+        SoundManager.Instance.PlayDefenseSound();
     }
 
     public void Heal(Unit target)
@@ -322,6 +323,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _currentDefense += defense;
         _unitEffect.DefenseEffect();
         _healthBar.SetDefense(_currentDefense);
+        SoundManager.Instance.PlayDefenseSound();
     }
 
     public virtual void UseSkill()

@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip _townNodeClip;
 
     [SerializeField] private AudioClip[] _attackClips;
+    [SerializeField] private AudioClip _defenseClip;
     [SerializeField] private AudioClip _hitClip;
     [SerializeField] private AudioClip _blockClip;
 
@@ -64,6 +65,11 @@ public class SoundManager : MonoBehaviour
     public void PlayAttackSound(UnitType type)
     {
         _sfxSource.PlayOneShot(_attackClips[(int)type]);
+    }
+
+    public void PlayDefenseSound()
+    {
+        _sfxSource.PlayOneShot(_defenseClip);
     }
 
     public void PlayHitSound()
