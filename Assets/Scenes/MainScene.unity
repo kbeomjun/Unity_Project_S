@@ -16005,7 +16005,7 @@ MonoBehaviour:
   _townNodeClip: {fileID: 8300000, guid: 524478537fb588443afa357054d0eca2, type: 3}
   _attackClips:
   - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
-  - {fileID: 8300000, guid: 4319114e3882b1d4db3ecaea73beae2c, type: 3}
+  - {fileID: 8300000, guid: c266e86e5ec11e344bf66dede26cbc46, type: 3}
   - {fileID: 8300000, guid: 1775800ec3a3b94499f2b51a5e752e1b, type: 3}
   - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
   _defenseClip: {fileID: 8300000, guid: 31f39398781f83746a1b0bea0190b974, type: 3}

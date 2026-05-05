@@ -62,12 +62,12 @@ public class GameManager : MonoBehaviour
         _maxChapter = _map.MaxChapter;
         TownRestManager.Instance.CardDeleteCoin = 100;
 
-        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
         //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
         //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
 
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
