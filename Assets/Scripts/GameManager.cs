@@ -64,11 +64,11 @@ public class GameManager : MonoBehaviour
 
         //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[0]));
         //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[1]));
-        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
-        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        _playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[2]));
+        //_playerUnitDatas.Add(new UnitData(DataManager.Instance.UnitDatas[3]));
 
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[1]));

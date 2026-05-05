@@ -16004,12 +16004,12 @@ MonoBehaviour:
   _startNodeClip: {fileID: 8300000, guid: 493b419f54a25454bae5587a25b82769, type: 3}
   _townNodeClip: {fileID: 8300000, guid: 524478537fb588443afa357054d0eca2, type: 3}
   _attackClips:
-  - {fileID: 8300000, guid: 33c72ed457c25ea4091b9d77dbca97ea, type: 3}
+  - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
   - {fileID: 8300000, guid: 4319114e3882b1d4db3ecaea73beae2c, type: 3}
-  - {fileID: 8300000, guid: cd059395fc1ae4f48b36ce0b3817e1e9, type: 3}
-  - {fileID: 8300000, guid: 0b0e9493f1a1ede429b60c75924510a5, type: 3}
+  - {fileID: 8300000, guid: 1775800ec3a3b94499f2b51a5e752e1b, type: 3}
+  - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
   _defenseClip: {fileID: 8300000, guid: 31f39398781f83746a1b0bea0190b974, type: 3}
-  _hitClip: {fileID: 8300000, guid: 3a8e0fa325dde904b827b07c722deea4, type: 3}
+  _hitClip: {fileID: 8300000, guid: 74198389e177d0948b63ca9a3fb22801, type: 3}
   _blockClip: {fileID: 8300000, guid: 7e726fd38b737b44092da1c504fbea1c, type: 3}
   _buttonClickClip: {fileID: 8300000, guid: 5640e622fef9e424aa9dd8b99c329dcd, type: 3}
   _mapButtonClickClip: {fileID: 8300000, guid: 2bb7f496f1e0d3047aabf050903ab63d, type: 3}
