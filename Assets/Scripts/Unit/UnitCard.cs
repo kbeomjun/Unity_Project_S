@@ -7,6 +7,9 @@ public class UnitCard : MonoBehaviour
     [SerializeField] private GameObject _unitInfo;
     [SerializeField] private Image _unitIconImage;
     [SerializeField] private TMP_Text _nameText;
+    [SerializeField] private TMP_InputField _nameInput;
+    [SerializeField] private GameObject _nameUpdateButton;
+    [SerializeField] private GameObject _nameAgreeButton;
     [SerializeField] private TMP_Text _unitTypeText;
     [SerializeField] private TMP_Text _HPText;
     [SerializeField] private TMP_Text _AttackText;
@@ -35,13 +38,20 @@ public class UnitCard : MonoBehaviour
         _type = type;
 
         _unitInfo.SetActive(false);
+        _nameInput.gameObject.SetActive(false);
+        _nameUpdateButton.SetActive(false);
+        _nameAgreeButton.SetActive(false);
         _unitBarrackButtons.SetActive(false);
         _unitRecruitButton.SetActive(false);
         _unitCureButton.SetActive(false);
 
         if(data != null)
         {
-            if (type == 1)
+            if(type == 0)
+            {
+                _nameUpdateButton.SetActive(true);
+            }
+            else if (type == 1)
             {
                 _unitBarrackButtons.SetActive(true);
                 _upgradeCoinText.text = data.UpgradeCoin.ToString();
@@ -82,6 +92,34 @@ public class UnitCard : MonoBehaviour
                 _unitRecruitCoinText.text = _unitRecruitCoin.ToString();
             }
         }
+    }
+
+    public void OnClickNameUpdateButton()
+    {
+        _nameInput.text = _unitData.Name;
+        _nameInput.gameObject.SetActive(true);
+        _nameUpdateButton.SetActive(false);
+        _nameAgreeButton.SetActive(true);
+        SoundManager.Instance.PlayButtonClickSound();
+    }
+
+    public void OnClickAgreeButton()
+    {
+        string newName = _nameInput.text;
+        if (newName.Length > 11)
+        {
+            newName = newName.Substring(0, 11);
+        }
+        if (!string.IsNullOrEmpty(newName))
+        {
+            _unitData.Name = newName;
+            GameManager.Instance.PlayerUnitDatas[_unitData.Index].Name = newName;
+            _nameText.text = newName;
+        }
+        _nameInput.gameObject.SetActive(false);
+        _nameUpdateButton.SetActive(true);
+        _nameAgreeButton.SetActive(false);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickUpgradeButton()
