@@ -4,10 +4,8 @@ using UnityEngine.UI;
 
 public class WorldTooltipPanel : MonoBehaviour
 {
-    [SerializeField] private RectTransform _canvasRect;
     [SerializeField] private RectTransform _tooltipLayer;
     
-    public RectTransform CanvasRect => _canvasRect;
     public RectTransform TooltipLayer => _tooltipLayer;
 
     private RectTransform _rect;
@@ -52,8 +50,8 @@ public class WorldTooltipPanel : MonoBehaviour
         Vector2 pos = _rect.anchoredPosition;
         Vector2 size = _rect.rect.size;
 
-        float canvasWidth = _canvasRect.rect.width;
-        float canvasHeight = _canvasRect.rect.height;
+        float canvasWidth = DataManager.Instance.CanvasRect.rect.width;
+        float canvasHeight = DataManager.Instance.CanvasRect.rect.height;
 
         float halfWidth = size.x * 0.5f;
         float halfHeight = size.y * 0.5f;

@@ -57,6 +57,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle(List<UnitData> playerUnitDatas, List<CardData> playerCardDatas)
     {
+        NamePanel.Instance.Init();
         ClearUnits();
 
         _currentTurn = 0;

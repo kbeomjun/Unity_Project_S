@@ -25,6 +25,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private Transform _unitEffectTr;
     [SerializeField] private StatusIconGroup _statusIconGroup;
     [SerializeField] private Transform _tooltipTr;
+    [SerializeField] private Transform _namePanelTr;
 
     public NextAction NextActionScript => _nextActionScript;
 
@@ -371,14 +372,18 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (!InputManager.Instance.CanTooltip()) return;
         SetHighlight(true);
         List<TooltipData> datas = GetTooltipDatas();
-        Vector2 pos = TooltipUtility.GetCanvasPosition(WorldTooltipPanel.Instance.CanvasRect, _tooltipTr.position, Camera.main);
-        WorldTooltipPanel.Instance.Show(pos, datas);
+        Vector2 tooltipPos = TooltipUtility.GetCanvasPosition(DataManager.Instance.CanvasRect, _tooltipTr.position, Camera.main);
+        WorldTooltipPanel.Instance.Show(tooltipPos, datas);
+        Vector2 namePanelPos = TooltipUtility.GetCanvasPosition(DataManager.Instance.CanvasRect, _namePanelTr.position, Camera.main);
+        string text = $"{_unitData.Name}({_unitData.Upgrade})";
+        NamePanel.Instance.Show(namePanelPos, text);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         SetHighlight(false);
         WorldTooltipPanel.Instance.Hide();
+        NamePanel.Instance.Hide();
     }
 
     public void SetHighlight(bool onOff)
