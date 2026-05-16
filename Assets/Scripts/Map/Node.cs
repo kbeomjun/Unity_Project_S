@@ -110,6 +110,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     IEnumerator DrawCircle()
     {
+        SoundManager.Instance.PlaySelectCircleSound();
         _selectCircleImage.fillAmount = 0.0f;
 
         float t = 0.0f;

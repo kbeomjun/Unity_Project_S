@@ -24,10 +24,16 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip _defenseClip;
     [SerializeField] private AudioClip _hitClip;
     [SerializeField] private AudioClip _blockClip;
+    [SerializeField] private AudioClip _buffClip;
+    [SerializeField] private AudioClip _debuffClip;
+    [SerializeField] private AudioClip _healClip;
+    [SerializeField] private AudioClip _dieClip;
 
     [SerializeField] private AudioClip _buttonClickClip;
     [SerializeField] private AudioClip _mapButtonClickClip;
     [SerializeField] private AudioClip _coinClip;
+    [SerializeField] private AudioClip _selectCircleClip;
+    [SerializeField] private AudioClip _renameClip;
 
     public static SoundManager Instance { get; private set; }
     private void Awake()
@@ -82,6 +88,26 @@ public class SoundManager : MonoBehaviour
         _sfxSource.PlayOneShot(_blockClip);
     }
 
+    public void PlayBuffSound()
+    {
+        _sfxSource.PlayOneShot(_buffClip);
+    }
+
+    public void PlayDebuffSound()
+    {
+        _sfxSource.PlayOneShot(_debuffClip);
+    }
+
+    public void PlayHealSound()
+    {
+        _sfxSource.PlayOneShot(_healClip);
+    }
+
+    public void PlayDieSound()
+    {
+        _sfxSource.PlayOneShot(_dieClip);
+    }
+
     public void PlayButtonClickSound()
     {
         _uiSource.PlayOneShot(_buttonClickClip);
@@ -95,6 +121,16 @@ public class SoundManager : MonoBehaviour
     public void PlayCoinSound()
     {
         _uiSource.PlayOneShot(_coinClip);
+    }
+
+    public void PlaySelectCircleSound()
+    {
+        _uiSource.PlayOneShot(_selectCircleClip);
+    }
+
+    public void PlayRenameSound()
+    {
+        _uiSource.PlayOneShot(_renameClip);
     }
 
 }

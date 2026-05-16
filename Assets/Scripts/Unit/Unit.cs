@@ -97,10 +97,12 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             case StatusType.Brace:
             case StatusType.Focus:
                 Instantiate(DataManager.Instance.BuffEffect, _unitEffectTr, false);
+                SoundManager.Instance.PlayBuffSound();
                 break;
 
             case StatusType.Weak:
                 Instantiate(DataManager.Instance.DebuffEffect, _unitEffectTr, false);
+                SoundManager.Instance.PlayDebuffSound();
                 break;
         }
 
@@ -272,6 +274,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _animator.SetTrigger("Die");
         Instantiate(DataManager.Instance.DieEffect, _unitEffectTr, false);
+        SoundManager.Instance.PlayDieSound();
     }
 
     public void AfterDie()
@@ -305,8 +308,8 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (_unitData.CurrentHealth > _unitData.MaxHealth)
             _unitData.CurrentHealth = _unitData.MaxHealth;
         _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
-        //_unitEffect.HealEffect();
         Instantiate(DataManager.Instance.HealEffect, _unitEffectTr, false);
+        SoundManager.Instance.PlayHealSound();
     }
 
     public void SetNextAction(UnitAction action)
