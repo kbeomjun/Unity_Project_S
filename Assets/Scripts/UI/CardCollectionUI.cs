@@ -42,7 +42,7 @@ public class CardCollectionUI : MonoBehaviour
     {
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.Instance.PlayCardCollectionButtonClickSound();
     }
 
     public void OnClickCardHighlitedPrevButton()
@@ -53,7 +53,7 @@ public class CardCollectionUI : MonoBehaviour
 
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.Instance.PlayCardCollectionButtonClickSound();
     }
 
     public void OnClickCardHighlitedRemoveButton()
@@ -67,7 +67,7 @@ public class CardCollectionUI : MonoBehaviour
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
         ViewManager.Instance.Pop();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.Instance.PlayCardCollectionButtonClickSound();
     }
 
     private void ClearCards()

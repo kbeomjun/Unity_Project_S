@@ -1600,7 +1600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &175609075
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3002,7 +3002,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &297686632
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16294,6 +16294,8 @@ MonoBehaviour:
   _dieClip: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
   _buttonClickClip: {fileID: 8300000, guid: 5640e622fef9e424aa9dd8b99c329dcd, type: 3}
   _mapButtonClickClip: {fileID: 8300000, guid: 2bb7f496f1e0d3047aabf050903ab63d, type: 3}
+  _unitCollectionButtonClickClip: {fileID: 8300000, guid: fd8af14cb27bc644db039908c812c985, type: 3}
+  _cardCollectionButtonClickClip: {fileID: 8300000, guid: b3c0638240863954398bd3e667ccaf0c, type: 3}
   _coinClip: {fileID: 8300000, guid: 8d246186ca92c6442ae45974a9689512, type: 3}
   _selectCircleClip: {fileID: 8300000, guid: 5d7f9ad82c983a24582b94dacb3ca03a, type: 3}
   _renameClip: {fileID: 8300000, guid: 7879bc2c26b8c7244b87eb184f5ee733, type: 3}
@@ -20045,7 +20047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2070254268
 RectTransform:
   m_ObjectHideFlags: 0

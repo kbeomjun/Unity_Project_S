@@ -31,6 +31,8 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioClip _buttonClickClip;
     [SerializeField] private AudioClip _mapButtonClickClip;
+    [SerializeField] private AudioClip _unitCollectionButtonClickClip;
+    [SerializeField] private AudioClip _cardCollectionButtonClickClip;
     [SerializeField] private AudioClip _coinClip;
     [SerializeField] private AudioClip _selectCircleClip;
     [SerializeField] private AudioClip _renameClip;
@@ -116,6 +118,16 @@ public class SoundManager : MonoBehaviour
     public void PlayMapButtonClickSound()
     {
         _uiSource.PlayOneShot(_mapButtonClickClip);
+    }
+
+    public void PlayUnitCollectionButtonClickSound()
+    {
+        _uiSource.PlayOneShot(_unitCollectionButtonClickClip);
+    }
+
+    public void PlayCardCollectionButtonClickSound()
+    {
+        _uiSource.PlayOneShot(_cardCollectionButtonClickClip);
     }
 
     public void PlayCoinSound()

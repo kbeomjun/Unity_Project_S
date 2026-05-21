@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour
         if (!ViewManager.Instance.ShowUnitCollectionPopup()) return;
         _unitCollectionUI.Init(_playerUnitDatas, type);
         InputManager.Instance.Push(InputState.None);
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.Instance.PlayUnitCollectionButtonClickSound();
     }
 
     public void OnClickCardCollectionButton(bool isRemove)
@@ -315,7 +315,7 @@ public class GameManager : MonoBehaviour
         if (!ViewManager.Instance.ShowCardCollectionPopup()) return;
         _cardCollectionUI.Init(_playerCardDatas, isRemove);
         InputManager.Instance.Push(InputState.CardCollection);
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.Instance.PlayCardCollectionButtonClickSound();
     }
 
     private void UpdateUnitIndex()
