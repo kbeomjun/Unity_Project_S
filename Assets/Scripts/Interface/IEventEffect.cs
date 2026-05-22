@@ -18,11 +18,11 @@ public interface IEventEffect
     void Execute();
 }
 
-public class GainGold : IEventEffect
+public class GainCoin : IEventEffect
 {
     private int _amount;
 
-    public GainGold(int amount)
+    public GainCoin(int amount)
     {
         _amount = amount;
     }
@@ -35,6 +35,28 @@ public class GainGold : IEventEffect
     public void Execute()
     {
         GameManager.Instance.CurrentCoin += _amount;
+    }
+}
+
+public class PayCoin : IEventEffect
+{
+    private int _amount;
+
+    public PayCoin(int amount)
+    {
+        _amount = amount;
+    }
+
+    public EffectResult Evaluate()
+    {
+        if (GameManager.Instance.CurrentCoin < _amount) 
+            return new EffectResult(false, "Not Enough Coin");
+        return new EffectResult(true);
+    }
+
+    public void Execute()
+    {
+        GameManager.Instance.CurrentCoin -= _amount;
     }
 }
 
@@ -51,7 +73,6 @@ public class AddUnit : IEventEffect
     {
         if (GameManager.Instance.PlayerUnitDatas.Count >= 4)
             return new EffectResult(false, "Party is Full");
-
         return new EffectResult(true);
     }
 

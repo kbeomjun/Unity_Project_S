@@ -20,11 +20,11 @@ public class StartManager : MonoBehaviour
     {
         _startEvents = new List<EventOption>()
         {
-            new EventOption("Gain 100 Coin", new List<IEventEffect> { new GainGold(100) }),
-            new EventOption("Recruit Unit: Knight", new List<IEventEffect> { new AddUnit(0) }),
-            new EventOption("Recruit Unit: Lancer", new List<IEventEffect> { new AddUnit(1) }),
-            new EventOption("Recruit Unit: Archer", new List<IEventEffect> { new AddUnit(2) }),
-            new EventOption("Recruit Unit: Monk", new List<IEventEffect> { new AddUnit(3) }),
+            new EventOption("Replenish supplies", "Gain 100 coin", new List<IEventEffect> { new GainCoin(100) }),
+            new EventOption("Recruit troops", "Add unit to party: Knight", new List<IEventEffect> { new AddUnit(0) }),
+            new EventOption("Recruit troops", "Add unit to party: Lancer", new List<IEventEffect> { new AddUnit(1) }),
+            new EventOption("Recruit troops", "Add unit to party: Archer", new List<IEventEffect> { new AddUnit(2) }),
+            new EventOption("Recruit troops", "Add unit to party: Monk", new List<IEventEffect> { new AddUnit(3) }),
         };
     }
 

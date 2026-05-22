@@ -5,14 +5,16 @@ using TMPro;
 
 public class EventButton : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _eventText;
+    [SerializeField] private TMP_Text _eventOptionTitle;
+    [SerializeField] private TMP_Text _eventOptionText;
 
     private EventOption _eventOption;
 
     public void Init(EventOption option)
     {
         _eventOption = option;
-        _eventText.text = option.Text;
+        _eventOptionTitle.text = option.Title;
+        _eventOptionText.text = option.Text;
 
         foreach (IEventEffect effect in option.Effects)
         {
@@ -21,7 +23,7 @@ public class EventButton : MonoBehaviour
             if (!result.CanExecute)
             {
                 GetComponent<Button>().interactable = false;
-                _eventText.text += $" ({result.Reason})";
+                _eventOptionText.text += $" ({result.Reason})";
                 return;
             }
         }
@@ -53,11 +55,13 @@ public class GameEvent
 
 public class EventOption
 {
+    public string Title;
     public string Text;
     public List<IEventEffect> Effects;
 
-    public EventOption(string text, List<IEventEffect> effects)
+    public EventOption(string title, string text, List<IEventEffect> effects)
     {
+        Title = title;
         Text = text;
         Effects = effects;
     }
