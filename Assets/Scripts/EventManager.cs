@@ -33,7 +33,7 @@ public class EventManager : MonoBehaviour
                 new List<EventOption>
                 {
                     new EventOption("Sell supplies", "Gain 50 coin", new List<IEventEffect> { new GainCoin(50) }),
-                    new EventOption("Plunder the mercenary group", "Gain 300 coin, Lose 20 health(All Party)", new List<IEventEffect> { new GainCoin(100), new HurtUnit(20, true) }),
+                    new EventOption("Plunder the mercenary group", "Gain 300 coin, Lose 20 health(All Party)", new List<IEventEffect> { new GainCoin(300), new HurtUnit(20, true) }),
                     CreateOption()
                 }
             ),
