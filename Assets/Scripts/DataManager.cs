@@ -112,6 +112,7 @@ public class DataManager : MonoBehaviour
     //Else
     [SerializeField] public ItemSprite ItemSpritePrefab;
     [SerializeField] public RectTransform CanvasRect;
+    [SerializeField] public Sprite[] CursorSprites;
 
     public static DataManager Instance { get; private set; }
     private void Awake()

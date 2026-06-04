@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public enum InputState
@@ -20,6 +21,9 @@ public enum InteractionState
 
 public class InputManager : MonoBehaviour
 {
+    [SerializeField] private RectTransform _cursorRect;
+    [SerializeField] private Image _cursorImage;
+
     public InputState State => _stateStack.Count > 0 ? _stateStack.Peek() : InputState.None;
     public InteractionState InteractionState { get; set; }
     private Stack<InputState> _stateStack = new Stack<InputState>();
@@ -87,6 +91,8 @@ public class InputManager : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
+        _cursorImage.sprite = DataManager.Instance.CursorSprites[1];
+
         switch (State)
         {
             case InputState.CardCollection:
@@ -113,6 +119,8 @@ public class InputManager : MonoBehaviour
 
     private void OnRelease(InputAction.CallbackContext ctx)
     {
+        _cursorImage.sprite = DataManager.Instance.CursorSprites[0];
+
         switch (State)
         {
             case InputState.CardCollection:
@@ -171,6 +179,8 @@ public class InputManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        _cursorRect.position = _screenPos;
+
         switch (State)
         {
             case InputState.Battle:
