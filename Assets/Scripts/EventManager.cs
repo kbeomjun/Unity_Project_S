@@ -24,17 +24,27 @@ public class EventManager : MonoBehaviour
     {
         _eventDescriptions = new List<string>()
         {
-            "Your party encountered a wandering mercenary group...",
+            //"Encountered a wandering mercenary group...",
+            "Discovered an ancient sanctuary deep in the forest. A faint light is emanating from the altar...",
         };
         _events = new List<GameEvent>()
         {
+            //new GameEvent
+            //(
+            //    new List<EventOption>
+            //    {
+            //        new EventOption("Sell supplies", "Gain 50 coin", new List<IEventEffect> { new GainCoin(50) }),
+            //        new EventOption("Plunder the mercenary group", "Gain 300 coin, Lose 20 health(All Party)", new List<IEventEffect> { new GainCoin(300), new HurtUnit(20, true) }),
+            //        CreateOption()
+            //    }
+            //),
             new GameEvent
             (
                 new List<EventOption>
                 {
-                    new EventOption("Sell supplies", "Gain 50 coin", new List<IEventEffect> { new GainCoin(50) }),
-                    new EventOption("Plunder the mercenary group", "Gain 300 coin, Lose 20 health(All Party)", new List<IEventEffect> { new GainCoin(300), new HurtUnit(20, true) }),
-                    CreateOption()
+                    new EventOption("Offer a prayer to God", "Increase defense by 5(All Party)", new List<IEventEffect> { new UpgradeDefense(5) }),
+                    new EventOption("Offer tribute", "Pay 100 coin, Increase health by 5(All Party)", new List<IEventEffect> { new PayCoin(100), new UpgradeHealth(5) }),
+                    new EventOption("Pledge a blood oath.", "Lose 10 health(All Party), Increase attack by 5(All Party)", new List<IEventEffect> { new HurtUnit(10, true), new UpgradeAttack(5) }),
                 }
             ),
         };

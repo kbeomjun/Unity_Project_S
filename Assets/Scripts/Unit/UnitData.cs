@@ -68,4 +68,20 @@ public class UnitData
         SellCoin = (int)(SellCoin * (1 + 0.05f));
     }
 
+    public void UpgradeDefense(int amount)
+    {
+        Defense += amount;
+    }
+
+    public void UpgradeHealth(int amount)
+    {
+        MaxHealth += amount;
+        CurrentHealth += amount;
+    }
+
+    public void UpgradeAttack(int amount)
+    {
+        Attack += amount;
+    }
+
 }

@@ -104,3 +104,72 @@ public class HurtUnit : IEventEffect
         GameManager.Instance.HurtUnit(_damage, _isAll);
     }
 }
+
+public class UpgradeDefense : IEventEffect
+{
+    private int _amount;
+
+    public UpgradeDefense(int amount)
+    {
+        _amount = amount;
+     }
+
+    public EffectResult Evaluate()
+    {
+        return new EffectResult(true);
+    }
+
+    public void Execute()
+    {
+        foreach(UnitData unit in GameManager.Instance.PlayerUnitDatas)
+        {
+            unit.UpgradeDefense(_amount);
+        }
+    }
+}
+
+public class UpgradeHealth : IEventEffect
+{
+    private int _amount;
+
+    public UpgradeHealth(int amount)
+    {
+        _amount = amount;
+    }
+
+    public EffectResult Evaluate()
+    {
+        return new EffectResult(true);
+    }
+
+    public void Execute()
+    {
+        foreach (UnitData unit in GameManager.Instance.PlayerUnitDatas)
+        {
+            unit.UpgradeHealth(_amount);
+        }
+    }
+}
+
+public class UpgradeAttack : IEventEffect
+{
+    private int _amount;
+
+    public UpgradeAttack(int amount)
+    {
+        _amount = amount;
+    }
+
+    public EffectResult Evaluate()
+    {
+        return new EffectResult(true);
+    }
+
+    public void Execute()
+    {
+        foreach (UnitData unit in GameManager.Instance.PlayerUnitDatas)
+        {
+            unit.UpgradeAttack(_amount);
+        }
+    }
+}

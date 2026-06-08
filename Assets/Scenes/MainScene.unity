@@ -3131,6 +3131,7 @@ MonoBehaviour:
   DebuffEffect: {fileID: 1929034834037082553, guid: 2f77993eac95be84786eceb7d8ba3a2d, type: 3}
   EventSprites:
   - {fileID: 21300000, guid: dfecd6bb857207e4e90a2fe6b6011e6b, type: 3}
+  - {fileID: 21300000, guid: 966b7ec62187f914690f0112a6ece58e, type: 3}
   EventButtonPrefab: {fileID: 6338676333616541145, guid: 2503105a6a9afd74a99379e00150233e, type: 3}
   WorldTooltipPrefab: {fileID: 5294735683324570882, guid: 8bdbafc3f606dcb4dbc2b1310899d850, type: 3}
   UITooltipPrefab: {fileID: 1961057467289604145, guid: 5a135eceac5fad740bf101217077cc3a, type: 3}
@@ -16708,7 +16709,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dfecd6bb857207e4e90a2fe6b6011e6b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 966b7ec62187f914690f0112a6ece58e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
