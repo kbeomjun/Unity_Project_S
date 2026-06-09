@@ -84,4 +84,12 @@ public class UnitData
         Attack += amount;
     }
 
+    public void DecreaseHealth(int amount)
+    {
+        MaxHealth -= amount;
+
+        if (CurrentHealth > MaxHealth) CurrentHealth = MaxHealth;
+        if (CurrentHealth <= 0) GameManager.Instance.RemoveUnit(Index);
+    }
+
 }

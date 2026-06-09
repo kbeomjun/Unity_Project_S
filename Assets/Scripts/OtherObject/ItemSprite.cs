@@ -24,15 +24,9 @@ public class ItemSprite : MonoBehaviour
         _originScale = _rect.localScale;
     }
 
-    public void PlayRecruitAnimation(int itemType)
+    public void PlayRecruitAnimation()
     {
-        Vector2 addPosition = Vector2.zero;
-        switch (itemType)
-        {
-            case 1:
-                addPosition = _addUnitPosition;
-                break;
-        }
+        Vector2 addPosition = _addUnitPosition;
 
         _rect.DOKill();
 

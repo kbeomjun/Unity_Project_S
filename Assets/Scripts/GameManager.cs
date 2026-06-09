@@ -233,6 +233,7 @@ public class GameManager : MonoBehaviour
     public void RemoveUnit(int index)
     {
         _playerUnitDatas.RemoveAt(index);
+        CheckGameOver();
     }
 
     public void CureUnit(int index)
@@ -258,8 +259,6 @@ public class GameManager : MonoBehaviour
             _playerUnitDatas[index].CurrentHealth -= damage;
             if (_playerUnitDatas[index].CurrentHealth < 0) RemoveUnit(index);
         }
-
-        CheckGameOver();
     }
 
     public void AddCard(CardData data)
@@ -285,7 +284,14 @@ public class GameManager : MonoBehaviour
     {
         ItemSprite unitSprite = Instantiate(DataManager.Instance.ItemSpritePrefab, DataManager.Instance.CanvasRect, false);
         unitSprite.Init(1, unitType);
-        unitSprite.PlayRecruitAnimation(1);
+        unitSprite.PlayRecruitAnimation();
+    }
+
+    public void PlayAddCardAnimation(CardData data)
+    {
+        Card card = Instantiate(DataManager.Instance.CardPrefab, DataManager.Instance.CanvasRect, false);
+        card.Init(data);
+        card.PlayAddAnimation();
     }
 
     public void OnClickMapButton()

@@ -173,3 +173,52 @@ public class UpgradeAttack : IEventEffect
         }
     }
 }
+
+public class DecreaseHealth : IEventEffect
+{
+    private int _amount;
+
+    public DecreaseHealth(int amount)
+    {
+        _amount = amount;
+    }
+
+    public EffectResult Evaluate()
+    {
+        return new EffectResult(true);
+    }
+
+    public void Execute()
+    {
+        foreach (UnitData unit in GameManager.Instance.PlayerUnitDatas)
+        {
+            unit.DecreaseHealth(_amount);
+        }
+    }
+}
+
+public class GetRandomCard : IEventEffect
+{
+    private int _count;
+
+    public GetRandomCard(int count)
+    {
+        _count = count;
+    }
+
+    public EffectResult Evaluate()
+    {
+        return new EffectResult(true);
+    }
+
+    public void Execute()
+    {
+        for(int i = 0; i < _count; i++)
+        {
+            int index = Random.Range(0, DataManager.Instance.CardDatas.Length);
+            CardData data = DataManager.Instance.CardDatas[index];
+            GameManager.Instance.AddCard(data);
+            GameManager.Instance.PlayAddCardAnimation(data);
+        }
+    }
+}

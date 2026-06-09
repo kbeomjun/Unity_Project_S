@@ -70,7 +70,7 @@ public class RewardItemButton : MonoBehaviour
                     GameManager.Instance.AddUnit(Value);
                     _iconRect.SetParent(DataManager.Instance.CanvasRect, true);
                     _iconScript.Init((int)Type, Value);
-                    _iconScript.PlayRecruitAnimation((int)Type);
+                    _iconScript.PlayRecruitAnimation();
                     BattleManager.Instance.RewardUI.RemoveItem(this);
                 }
                 else
