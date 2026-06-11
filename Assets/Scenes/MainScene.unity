@@ -3118,6 +3118,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0d367a35462be424abefc74b7b8dcd4d, type: 3}
   - {fileID: 21300000, guid: dd9553335d5e8ac4f8cd1bf7715b004f, type: 3}
   - {fileID: 21300000, guid: dbff2fdea1155ce40840f937864dcdde, type: 3}
+  - {fileID: 21300000, guid: 124c66be887a04346894c8412044ccc0, type: 3}
   RewardItemButtonPrefab: {fileID: 4927312963012964703, guid: b7929c3ca1b4caf479717ad33acc5d26, type: 3}
   RewardItemSprites:
   - {fileID: 21300000, guid: 8d6904399d7c6a74ea1dd01fd89a6b42, type: 3}

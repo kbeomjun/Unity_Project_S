@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,25 +47,25 @@ public class AttackEffect : IEffect
     }
 }
 
-public class AddAttackEffect : IEffect
-{
-    public ITargetSelector TargetSelector { get; set; }
-    private int _attack;
+//public class AddAttackEffect : IEffect
+//{
+//    public ITargetSelector TargetSelector { get; set; }
+//    private int _attack;
 
-    public AddAttackEffect(int attack, ITargetSelector selector)
-    {
-        _attack = attack;
-        TargetSelector = selector;
-    }
+//    public AddAttackEffect(int attack, ITargetSelector selector)
+//    {
+//        _attack = attack;
+//        TargetSelector = selector;
+//    }
 
-    public void Execute(Unit caster, List<Unit> targets)
-    {
-        foreach (Unit target in targets)
-        {
-            target.AddAttack(_attack);
-        }
-    }
-}
+//    public void Execute(Unit caster, List<Unit> targets)
+//    {
+//        foreach (Unit target in targets)
+//        {
+//            target.AddAttack(_attack);
+//        }
+//    }
+//}
 
 public class AddDefenseEffect : IEffect
 {
@@ -188,4 +189,42 @@ public class ApplyStatusEffect : IEffect
             target.ApplyStatus(_type, _duration);
         }
     }
+}
+
+public class DealEffect : IEffect
+{
+    public ITargetSelector TargetSelector { get; set; }
+    private int _damage;
+
+    public DealEffect(int damage, ITargetSelector selector)
+    {
+        _damage = damage;
+        TargetSelector = selector;
+    }
+
+    public void Execute(Unit caster, List<Unit> targets)
+    {
+        foreach (Unit target in targets)
+        {
+            target.Hit(_damage);
+        }
+    }
+}
+
+public class DrawCardEffect : IEffect
+{
+    public ITargetSelector TargetSelector { get; set; }
+    private int _drawCardNum;
+
+    public DrawCardEffect(int drawCardNum, ITargetSelector selector)
+    {
+        _drawCardNum = drawCardNum;
+        TargetSelector = selector;
+    }
+
+    public void Execute(Unit caster, List<Unit> targets)
+    {
+        BattleManager.Instance.StartCoroutine(BattleManager.Instance.DeckUI.DrawCards(_drawCardNum));
+    }
+
 }

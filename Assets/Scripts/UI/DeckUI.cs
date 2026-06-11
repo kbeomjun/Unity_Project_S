@@ -18,6 +18,7 @@ public class DeckUI : MonoBehaviour
     private float _spacing = 150.0f;
     private float _startX = 0.0f;
 
+    public const int MAX_HAND_COUNT = 10;
     private bool _isDrawing = false;
     private bool _endTurnRequested = false;
     private int _shuffleCount = 0;
@@ -86,11 +87,13 @@ public class DeckUI : MonoBehaviour
 
     public IEnumerator DrawCardRoutine()
     {
+        if (_handCards.Count >= MAX_HAND_COUNT)
+            yield break;
+
         if (_drawPileCards.Count <= 0)
         {
             if (_discardPileCards.Count <= 0)
                 yield break;
-
             yield return StartCoroutine(Shuffle());
         }
 

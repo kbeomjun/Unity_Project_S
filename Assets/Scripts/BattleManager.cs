@@ -61,7 +61,7 @@ public class BattleManager : MonoBehaviour
         ClearUnits();
 
         _currentTurn = 0;
-        _drawCardNum = 10;
+        _drawCardNum = 5;
         _maxCost = 10;
         _state = BattleState.Prepare;
         _endPrepareButton.gameObject.SetActive(true);

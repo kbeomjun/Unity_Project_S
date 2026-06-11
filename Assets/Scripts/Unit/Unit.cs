@@ -221,7 +221,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         Hit(reflectionDamage);
     }
 
-    private void Hit(int damage)
+    public void Hit(int damage)
     {
         damage = (int)(damage * _hitdamageMultiplier);
 

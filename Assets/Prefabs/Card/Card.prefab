@@ -692,7 +692,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restore all my units <color=#008844>10%</color> of their maximum health
+  m_text: Deal <color=#8B0000>10</color> damage to one of my units and draw <color=#008844>3</color>
+    cards
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -829,7 +830,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 030288083a94df04cbffcae106f2ae96, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 124c66be887a04346894c8412044ccc0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -45,13 +45,13 @@ public class DataManager : MonoBehaviour
     [SerializeField] public Sprite[] CardImages;
     public CardData[] CardDatas = new CardData[]
     {
-        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 0, 50,
+        new CardData("Manipulation", 1, CardType.Skill, TargetType.Ally, 0, 50,
                         $"Change unit's next action: <color=#008844>Attack</color>"),
         
-        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 1, 50,
+        new CardData("Manipulation", 1, CardType.Skill, TargetType.Ally, 1, 50,
                         $"Change unit's next action: <color=#008844>Defense</color>"),
         
-        new CardData("ChangeAction", 1, CardType.Skill, TargetType.Ally, 2, 50,
+        new CardData("Manipulation", 1, CardType.Skill, TargetType.Ally, 2, 50,
                         $"Change unit's next action: <color=#008844>Skill</color>"),
 
         new CardData("Focus", 1, CardType.Buff, TargetType.Ally, 3, 50,
@@ -60,20 +60,23 @@ public class DataManager : MonoBehaviour
         new CardData("Defense", 1, CardType.Buff, TargetType.Ally, 4, 50,
                         $"Add <color=#008844>10</color> defense to my unit this turn"),
 
-        new CardData("FrontDefense", 2, CardType.Buff, TargetType.None, 5, 50,
+        new CardData("ShieldWall", 2, CardType.Buff, TargetType.None, 5, 50,
                         $"Add <color=#008844>10</color> defense to my units in front line this turn"),
 
         new CardData("Load Aim Fire", 2, CardType.Buff, TargetType.None, 6, 50,
                         $"Inflicts a <color=#008844>Focus</color> status to my units in back line"),
 
-        new CardData("HealAll", 3, CardType.Skill, TargetType.None, 7, 50,
+        new CardData("Goddess's Embrace", 3, CardType.Skill, TargetType.None, 7, 50,
                         $"Restore all my units <color=#008844>10%</color> of their maximum health"),
 
         new CardData("Weakness", 2, CardType.Debuff, TargetType.Enemy, 8, 50,
                         $"Inflicts a <color=#008844>Weak</color> status on the selected enemy"),
 
-        new CardData("ResetAllEnemyAction", 2, CardType.Skill, TargetType.None, 9, 50,
-                        $"Reset all next actions of enemy units")
+        new CardData("Chaos", 2, CardType.Skill, TargetType.None, 9, 50,
+                        $"Reset all next actions of enemy units"),
+
+        new CardData("Price of Wisdom", 0, CardType.Skill, TargetType.Ally, 10, 50,
+                        $"Deal <color=#8B0000>10</color> damage to one of my units and draw <color=#008844>3</color> cards"),
     };
     public List<Func<IEffect>>[] CardEffects = new List<Func<IEffect>>[]
     {
@@ -86,7 +89,8 @@ public class DataManager : MonoBehaviour
         new List<Func<IEffect>>{ () => new ApplyStatusEffect(StatusType.Focus, 1, new BackAllySelector()) },
         new List<Func<IEffect>>{ () => new HealByPercentageEffect(0.1f, new AllAllySelector()) },
         new List<Func<IEffect>>{ () => new ApplyStatusEffect(StatusType.Weak, 1, new SingleTargetSelector()) },
-        new List<Func<IEffect>>{ () => new ResetActionEffect(new AllEnemySelector()) }
+        new List<Func<IEffect>>{ () => new ResetActionEffect(new AllEnemySelector()) },
+        new List<Func<IEffect>>{ () => new DealEffect(10, new SingleTargetSelector()), () => new DrawCardEffect(3, new SelfTargetSelector()) },
     };
 
     //Reward

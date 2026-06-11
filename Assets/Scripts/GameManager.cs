@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[0]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[1]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[2]));
+
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[3]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[4]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[5]));
@@ -77,6 +78,13 @@ public class GameManager : MonoBehaviour
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[7]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[8]));
         _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[9]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[10]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[10]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[10]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[10]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[10]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[10]));
+        _playerCardDatas.Add(new CardData(DataManager.Instance.CardDatas[10]));
 
         StartGame();
         //StartStart();
