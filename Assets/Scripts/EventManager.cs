@@ -26,7 +26,8 @@ public class EventManager : MonoBehaviour
         {
             //"Encountered a wandering mercenary group...",
             //"Discovered an ancient sanctuary deep in the forest. A faint light is emanating from the altar...",
-            "Found a seriously injured man by the side of the forest path. A worn-out bag lay beside him. He appeared to still be alive.",
+            //"Found a seriously injured man by the side of the forest path. A worn-out bag lay beside him. He appeared to still be alive.",
+            "Beneath a worn canvas tent, a shady man beckons you closer.\r\n\r\n\"Care for a game?\"",
         };
         _events = new List<GameEvent>()
         {
@@ -48,13 +49,22 @@ public class EventManager : MonoBehaviour
             //        new EventOption("Pledge a blood oath.", "Lose 10 health(All Party), Increase attack by 5(All Party)", new List<IEventEffect> { new HurtUnit(10, true), new UpgradeAttack(5) }),
             //    }
             //),
+            //new GameEvent
+            //(
+            //    new List<EventOption>
+            //    {
+            //        new EventOption("Heal it", "Pay 100 coin, Get 1 random card", new List<IEventEffect> { new PayCoin(100), new GetRandomCard(1) }),
+            //        new EventOption("Kill and plunder", "Decrease maxhealth by 5(All Party), Get 1 random card", new List<IEventEffect> { new DecreaseHealth(5), new GetRandomCard(1) }),
+            //        new EventOption("Abandon and leave", "Nothing happens", new List<IEventEffect> { }),
+            //    }
+            //),
             new GameEvent
             (
                 new List<EventOption>
                 {
-                    new EventOption("Heal it", "Pay 100 coin, Get 1 random card", new List<IEventEffect> { new PayCoin(100), new GetRandomCard(1) }),
-                    new EventOption("Kill and plunder", "Decrease maxhealth by 5(All Party), Get 1 random card", new List<IEventEffect> { new DecreaseHealth(5), new GetRandomCard(1) }),
-                    new EventOption("Abandon and leave", "Nothing happens", new List<IEventEffect> { }),
+                    new EventOption("Bet 100 Gold", "50% chance to gain 150 Gold", new List<IEventEffect> { new BetCoin(100, 150, 0.5f) }),
+                    new EventOption("Bet 200 Gold", "50% chance to gain 300 Gold", new List<IEventEffect> { new BetCoin(200, 300, 0.5f) }),
+                    new EventOption("Decline", "Nothing happens", new List<IEventEffect> { }),
                 }
             ),
         };

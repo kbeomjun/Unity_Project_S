@@ -50,7 +50,7 @@ public class PayCoin : IEventEffect
     public EffectResult Evaluate()
     {
         if (GameManager.Instance.CurrentCoin < _amount) 
-            return new EffectResult(false, "Not Enough Coin");
+            return new EffectResult(false, "Not enough coin");
         return new EffectResult(true);
     }
 
@@ -72,7 +72,7 @@ public class AddUnit : IEventEffect
     public EffectResult Evaluate()
     {
         if (GameManager.Instance.PlayerUnitDatas.Count >= 4)
-            return new EffectResult(false, "Party is Full");
+            return new EffectResult(false, "Party is full");
         return new EffectResult(true);
     }
 
@@ -220,5 +220,34 @@ public class GetRandomCard : IEventEffect
             GameManager.Instance.AddCard(data);
             GameManager.Instance.PlayAddCardAnimation(data);
         }
+    }
+}
+
+public class BetCoin : IEventEffect
+{
+    private int _betCoin;
+    private int _earnCoin;
+    private float _successChance;
+
+    public BetCoin(int betCoin, int earnCoin, float successChance)
+    {
+        _betCoin = betCoin;
+        _earnCoin = earnCoin;
+        _successChance = successChance;
+    }
+
+    public EffectResult Evaluate()
+    {
+        if (GameManager.Instance.CurrentCoin < _betCoin)
+            return new EffectResult(false, "Not enough coin");
+        return new EffectResult(true);
+    }
+
+    public void Execute()
+    {
+        if (Random.value < _successChance)
+            GameManager.Instance.CurrentCoin += _earnCoin;
+        else
+            GameManager.Instance.CurrentCoin -= _betCoin;
     }
 }

@@ -3133,6 +3133,8 @@ MonoBehaviour:
   EventSprites:
   - {fileID: 21300000, guid: dfecd6bb857207e4e90a2fe6b6011e6b, type: 3}
   - {fileID: 21300000, guid: 966b7ec62187f914690f0112a6ece58e, type: 3}
+  - {fileID: 21300000, guid: 337fa774076cb524c8bc800ebcefda20, type: 3}
+  - {fileID: 21300000, guid: f1561b1e2bf5f1d43b9e1ce9e2513b2c, type: 3}
   EventButtonPrefab: {fileID: 6338676333616541145, guid: 2503105a6a9afd74a99379e00150233e, type: 3}
   WorldTooltipPrefab: {fileID: 5294735683324570882, guid: 8bdbafc3f606dcb4dbc2b1310899d850, type: 3}
   UITooltipPrefab: {fileID: 1961057467289604145, guid: 5a135eceac5fad740bf101217077cc3a, type: 3}
@@ -15810,7 +15812,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your party encountered a wandering mercenary group...
+  m_text: Beneath a worn canvas tent, a shady man beckons you closer.\r\n\r\n\"Care
+    for a game?\"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -16710,7 +16713,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 337fa774076cb524c8bc800ebcefda20, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f1561b1e2bf5f1d43b9e1ce9e2513b2c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
