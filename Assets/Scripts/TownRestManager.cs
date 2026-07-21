@@ -111,21 +111,21 @@ public class TownRestManager : MonoBehaviour
     public void OnClickTownNextButton()
     {
         GameManager.Instance.OnClearNode();
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickCardRemoveButton()
     {
         if (CardDeleteCoin > GameManager.Instance.CurrentCoin) return;
         GameManager.Instance.OnClickCardCollectionButton(true);
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickShopPrevButton()
     {
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickRestNextButton()
@@ -133,7 +133,7 @@ public class TownRestManager : MonoBehaviour
         _restSelectButtons.SetActive(true);
 
         GameManager.Instance.OnClearNode();
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void ClearCards()

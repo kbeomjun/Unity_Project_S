@@ -306,7 +306,7 @@ public class BattleManager : MonoBehaviour
 
         InputManager.Instance.Push(InputState.Battle);
         StartPlayerTurn();
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickEndTurnButton()
@@ -318,7 +318,7 @@ public class BattleManager : MonoBehaviour
         }
 
         EndPlayerTurn();
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void ClearUnits()

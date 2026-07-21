@@ -81,7 +81,7 @@ public class StartManager : MonoBehaviour
     public void OnClickNextButton()
     {
         GameManager.Instance.OnClearNode();
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
 }

@@ -159,7 +159,7 @@ public class DeckUI : MonoBehaviour
             list.Add(card.CardData);
         GameManager.Instance.CardCollectionUI.Init(list, false);
         InputManager.Instance.Push(InputState.CardCollection);
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickDiscardPileCardButton()
@@ -170,7 +170,7 @@ public class DeckUI : MonoBehaviour
             list.Add(card.CardData);
         GameManager.Instance.CardCollectionUI.Init(list, false);
         InputManager.Instance.Push(InputState.CardCollection);
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void ClearCards()

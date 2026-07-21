@@ -208,7 +208,7 @@ public class RewardUI : MonoBehaviour
 
         BattleManager.Instance.ClearUnits();
         GameManager.Instance.OnClearNode();
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void OnClickRewardCardPrevButton()
@@ -218,7 +218,7 @@ public class RewardUI : MonoBehaviour
 
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
-        SoundManager.Instance.PlayButtonClickSound();
+        //SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void ClearRewardItems()

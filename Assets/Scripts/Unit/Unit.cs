@@ -97,12 +97,12 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             case StatusType.Brace:
             case StatusType.Focus:
                 Instantiate(DataManager.Instance.BuffEffect, _unitEffectTr, false);
-                SoundManager.Instance.PlayBuffSound();
+                //SoundManager.Instance.PlayBuffSound();
                 break;
 
             case StatusType.Weak:
                 Instantiate(DataManager.Instance.DebuffEffect, _unitEffectTr, false);
-                SoundManager.Instance.PlayDebuffSound();
+                //SoundManager.Instance.PlayDebuffSound();
                 break;
         }
 
@@ -211,7 +211,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _target = target;
         _animator.SetTrigger("Attack");
-        SoundManager.Instance.PlayAttackSound(_unitData.Type);
+        //SoundManager.Instance.PlayAttackSound(_unitData.Type);
     }
 
     public void HitTarget()
@@ -234,7 +234,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             if (damage != 0)
             {
                 Instantiate(DataManager.Instance.BlockEffect, _unitEffectTr, false);
-                SoundManager.Instance.PlayBlockSound();
+                //SoundManager.Instance.PlayBlockSound();
             }
         }
         else
@@ -248,20 +248,20 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 if(_currentAction == UnitAction.Skill && (_unitData.Type == UnitType.Knight || _unitData.Type == UnitType.Lancer))
                 {
                     Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
-                    SoundManager.Instance.PlayHitSound();
+                    //SoundManager.Instance.PlayHitSound();
                 }
                 else
                 {
                     _animator.SetTrigger("Hit");
                     Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
-                    SoundManager.Instance.PlayHitSound();
+                    //SoundManager.Instance.PlayHitSound();
                 }
             }
             else
             {
                 _unitData.CurrentHealth = 0;
                 Instantiate(DataManager.Instance.HitEffect, _unitEffectTr, false);
-                SoundManager.Instance.PlayHitSound();
+                //SoundManager.Instance.PlayHitSound();
                 Die();
             }
 
@@ -274,7 +274,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _animator.SetTrigger("Die");
         Instantiate(DataManager.Instance.DieEffect, _unitEffectTr, false);
-        SoundManager.Instance.PlayDieSound();
+        //SoundManager.Instance.PlayDieSound();
     }
 
     public void AfterDie()
@@ -288,7 +288,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _currentDefense += _unitData.Defense;
         _unitEffect.DefenseEffect();
         _healthBar.SetDefense(_currentDefense);
-        SoundManager.Instance.PlayDefenseSound();
+        //SoundManager.Instance.PlayDefenseSound();
     }
 
     public void Heal(Unit target)
@@ -309,7 +309,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             _unitData.CurrentHealth = _unitData.MaxHealth;
         _healthBar.SetHp(_unitData.CurrentHealth, _unitData.MaxHealth);
         Instantiate(DataManager.Instance.HealEffect, _unitEffectTr, false);
-        SoundManager.Instance.PlayHealSound();
+        //SoundManager.Instance.PlayHealSound();
     }
 
     public void SetNextAction(UnitAction action)
@@ -327,7 +327,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _currentDefense += defense;
         _unitEffect.DefenseEffect();
         _healthBar.SetDefense(_currentDefense);
-        SoundManager.Instance.PlayDefenseSound();
+        //SoundManager.Instance.PlayDefenseSound();
     }
 
     public virtual void UseSkill()

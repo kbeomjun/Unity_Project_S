@@ -13,7 +13,7 @@ public class Archer : Unit
     public override void UseSkill()
     {
         _animator.SetTrigger("Skill");
-        SoundManager.Instance.PlayAttackSound(_unitData.Type);
+        //SoundManager.Instance.PlayAttackSound(_unitData.Type);
     }
 
 }

@@ -100,7 +100,7 @@ public class UnitCard : MonoBehaviour
         _nameInput.gameObject.SetActive(true);
         _nameUpdateButton.SetActive(false);
         _nameAgreeButton.SetActive(true);
-        SoundManager.Instance.PlayRenameSound();
+        //SoundManager.Instance.PlayRenameSound();
     }
 
     public void OnClickAgreeButton()
@@ -119,7 +119,7 @@ public class UnitCard : MonoBehaviour
         _nameInput.gameObject.SetActive(false);
         _nameUpdateButton.SetActive(true);
         _nameAgreeButton.SetActive(false);
-        SoundManager.Instance.PlayRenameSound();
+        //SoundManager.Instance.PlayRenameSound();
     }
 
     public void OnClickUpgradeButton()

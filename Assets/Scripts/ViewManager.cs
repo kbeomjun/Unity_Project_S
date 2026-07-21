@@ -1,8 +1,12 @@
+using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ViewManager : MonoBehaviour
 {
+    [SerializeField] private Image _fadeImage;
     [SerializeField] private RectTransform _mapViewTr;
     [SerializeField] private RectTransform _mapPopupTr;
     [SerializeField] private RectTransform _mapScrollView;
@@ -32,6 +36,19 @@ public class ViewManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        Color color = _fadeImage.color;
+        color.a = 0.0f;
+        _fadeImage.color = color;
+        _fadeImage.gameObject.SetActive(false);
+    }
+
+    public IEnumerator ChangeView(UIView nextView)
+    {
+        _fadeImage.gameObject.SetActive(true);
+        yield return _fadeImage.DOFade(1f, 0.25f).WaitForCompletion();
+        ShowView(nextView);
+        yield return _fadeImage.DOFade(0f, 0.25f).WaitForCompletion();
+        _fadeImage.gameObject.SetActive(false);
     }
 
     public void ShowView(UIView view)
@@ -48,7 +65,7 @@ public class ViewManager : MonoBehaviour
     public void ShowMapView()
     {
         _mapScrollView.SetParent(_mapViewTr, false);
-        ShowView(_mapView);
+        StartCoroutine(ChangeView(_mapView));
 
         if (_popupStack.Count > 0)
         {
@@ -59,27 +76,27 @@ public class ViewManager : MonoBehaviour
     
     public void ShowStartView()
     {
-        ShowView(_startView);
+        StartCoroutine(ChangeView(_startView));
     }
 
     public void ShowBattleView()
     {
-        ShowView(_battleView);
+        StartCoroutine(ChangeView(_battleView));
     }
 
     public void ShowTownView()
     {
-        ShowView(_townView);
+        StartCoroutine(ChangeView(_townView));
     }
 
     public void ShowRestView()
     {
-        ShowView(_restView);
+        StartCoroutine(ChangeView(_restView));
     }
 
     public void ShowEventView()
     {
-        ShowView(_eventView);
+        StartCoroutine(ChangeView(_eventView));
     }
 
     public void Push(UIPopup popup)
