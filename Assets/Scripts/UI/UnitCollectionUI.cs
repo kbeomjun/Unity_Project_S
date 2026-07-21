@@ -20,7 +20,7 @@ public class UnitCollectionUI : MonoBehaviour
     {
         InputManager.Instance.Pop();
         ViewManager.Instance.Pop();
-        //SoundManager.Instance.PlayUnitCollectionButtonClickSound();
+        //SoundManager.Instance.PlayUnitCollectionButtonClickSound();s
     }
 
 }
