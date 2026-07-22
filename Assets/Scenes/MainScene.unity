@@ -15986,7 +15986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1732700348
 Transform:
   m_ObjectHideFlags: 0
@@ -16017,30 +16017,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948704c21b2175942a8991c02f885793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  _bgmSource: {fileID: 1823093328}
-  _sfxSource: {fileID: 268826301}
-  _uiSource: {fileID: 1067857720}
-  _startNodeClip: {fileID: 8300000, guid: 493b419f54a25454bae5587a25b82769, type: 3}
-  _townNodeClip: {fileID: 8300000, guid: 524478537fb588443afa357054d0eca2, type: 3}
-  _attackClips:
-  - {fileID: 8300000, guid: 482611fe6bc559142a00be6e726b4862, type: 3}
-  - {fileID: 8300000, guid: c266e86e5ec11e344bf66dede26cbc46, type: 3}
-  - {fileID: 8300000, guid: 1775800ec3a3b94499f2b51a5e752e1b, type: 3}
-  - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
-  _defenseClip: {fileID: 8300000, guid: 31f39398781f83746a1b0bea0190b974, type: 3}
-  _hitClip: {fileID: 8300000, guid: 74198389e177d0948b63ca9a3fb22801, type: 3}
-  _blockClip: {fileID: 8300000, guid: 7e726fd38b737b44092da1c504fbea1c, type: 3}
-  _buffClip: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
-  _debuffClip: {fileID: 8300000, guid: acbcb75601b0082458fda8807f67c813, type: 3}
-  _healClip: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
-  _dieClip: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
-  _buttonClickClip: {fileID: 8300000, guid: 5640e622fef9e424aa9dd8b99c329dcd, type: 3}
-  _mapButtonClickClip: {fileID: 8300000, guid: 2bb7f496f1e0d3047aabf050903ab63d, type: 3}
-  _unitCollectionButtonClickClip: {fileID: 8300000, guid: fd8af14cb27bc644db039908c812c985, type: 3}
-  _cardCollectionButtonClickClip: {fileID: 8300000, guid: b3c0638240863954398bd3e667ccaf0c, type: 3}
-  _coinClip: {fileID: 8300000, guid: 8d246186ca92c6442ae45974a9689512, type: 3}
-  _selectCircleClip: {fileID: 8300000, guid: 5d7f9ad82c983a24582b94dacb3ca03a, type: 3}
-  _renameClip: {fileID: 8300000, guid: 7879bc2c26b8c7244b87eb184f5ee733, type: 3}
 --- !u!1 &1733020473
 GameObject:
   m_ObjectHideFlags: 0
